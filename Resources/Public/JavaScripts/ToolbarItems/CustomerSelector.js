@@ -28,7 +28,7 @@
  * class to handle the open documents menu, loads the open documents dynamically
  *
  */
-var ksSitemgr = Class.create({
+var sitemgrCustomerSelector = Class.create({
 	ajaxScript: 'ajax.php',
 	menu: null,
 	toolbarItemIcon: null,
@@ -41,16 +41,16 @@ var ksSitemgr = Class.create({
 
 		Ext.onReady(function() {
 			this.positionMenu();
-			this.toolbarItemIcon     = $$('#tx-ks-sitemgr-menu .toolbar-item img.t3-icon')[0];
+			this.toolbarItemIcon     = $$('#tx-sitemgr-menu .toolbar-item img.t3-icon')[0];
 			this.origToolbarItemIcon = this.toolbarItemIcon.src;
 			this.ajaxScript          = top.TS.PATH_typo3 + this.ajaxScript; // can't be initialized earlier
 
-			Event.observe($$('#tx-ks-sitemgr-menu .toolbar-item')[0], 'click', this.toggleMenu);
-			this.menu = $$('#tx-ks-sitemgr-menu #toolbar-item-menu-dynamic')[0];
+			Event.observe($$('#tx-sitemgr-menu .toolbar-item')[0], 'click', this.toggleMenu);
+			this.menu = $$('#tx-sitemgr-menu #toolbar-item-menu-dynamic')[0];
 			
 			form = new Ext.form.TextField({
-				renderTo:Ext.get('ks_sitemgr_form'),
-				id:'ks_sitemgr_form_customer',
+				renderTo:Ext.get('sitemgr_form'),
+				id:'sitemgr_form_customer',
 				xtype:'textfield',
 				width:190,
 				margin:10,
@@ -74,10 +74,10 @@ var ksSitemgr = Class.create({
 	 */
 	positionMenu: function() {
 		var calculatedOffset = 0;
-		var parentWidth      = $('tx-ks-sitemgr-menu').getWidth();
-		var currentToolbarItemLayer = $$('#tx-ks-sitemgr-menu .toolbar-item-menu')[0];
+		var parentWidth      = $('tx-sitemgr-menu').getWidth();
+		var currentToolbarItemLayer = $$('#tx-sitemgr-menu .toolbar-item-menu')[0];
 		var ownWidth         = currentToolbarItemLayer.getWidth();
-		var parentSiblings   = $('tx-ks-sitemgr-menu').previousSiblings();
+		var parentSiblings   = $('tx-sitemgr-menu').previousSiblings();
 
 		parentSiblings.each(function(toolbarItem) {
 			calculatedOffset += toolbarItem.getWidth() - 1;
@@ -95,7 +95,7 @@ var ksSitemgr = Class.create({
 			calculatedOffset += 2;
 		}
 
-		$$('#tx-ks-sitemgr-menu .toolbar-item-menu')[0].setStyle({
+		$$('#tx-sitemgr-menu .toolbar-item-menu')[0].setStyle({
 			left: calculatedOffset + 'px'
 		});
 	},
@@ -104,8 +104,8 @@ var ksSitemgr = Class.create({
 	 * toggles the visibility of the menu and places it under the toolbar icon
 	 */
 	toggleMenu: function(event) {
-		var toolbarItem = $$('#tx-ks-sitemgr-menu > a')[0];
-		var menu        = $$('#tx-ks-sitemgr-menu .toolbar-item-menu')[0];
+		var toolbarItem = $$('#tx-sitemgr-menu > a')[0];
+		var menu        = $$('#tx-sitemgr-menu .toolbar-item-menu')[0];
 		toolbarItem.blur();
 
 		if(!toolbarItem.hasClassName('toolbar-item-active')) {
@@ -113,7 +113,7 @@ var ksSitemgr = Class.create({
 			Effect.Appear(menu, {duration: 0.2});
 			TYPO3BackendToolbarManager.hideOthers(toolbarItem);
 			new Ext.util.DelayedTask(function() {
-				Ext.getCmp('ks_sitemgr_form_customer').focus(true,true);
+				Ext.getCmp('sitemgr_form_customer').focus(true,true);
 			}).delay(100);
 		} else {
 			toolbarItem.removeClassName('toolbar-item-active');
@@ -134,8 +134,8 @@ var ksSitemgr = Class.create({
 			this.menu,
 			this.ajaxScript, {
 				parameters: {
-					ajaxID:  'tx_ks_sitemgr::searchCustomer',
-					customer:Ext.getCmp('ks_sitemgr_form_customer').getValue()
+					ajaxID:  'tx_sitemgr::searchCustomer',
+					customer:Ext.getCmp('sitemgr_form_customer').getValue()
 				},
 				onComplete: function(xhr) {
 					this.toolbarItemIcon.src = this.origToolbarItemIcon;
@@ -152,20 +152,25 @@ var ksSitemgr = Class.create({
 				}
 			}).delay(500);
 		} else {
+			TYPO3.Backend.ModuleMenu.App.showModule('tx_templavoila_cm1');
 			TYPO3.Backend.NavigationContainer.PageTree.select(uid);
 			TYPO3.Backend.NavigationContainer.PageTree.getTree().getSelectionModel().getSelectedNode().fireEvent('click');
 		}
 	},
 	openManagement:function(uid) {
-		jump('mod.php?M=web_txkssitemgrM1&id='+uid,'web_txkssitemgrM1','web');
+		jump('mod.php?M=web_txsitemgrM1&id='+uid,'web_txsitemgrM1','web');
 		if(!Ext.getCmp('typo3-pagetree-tree')) {
 			new Ext.util.DelayedTask(function() {
 				if (top.content.nav_frame) {
 					top.content.nav_frame.location.href = 'alt_db_navframe.php?setTempDBmount='+uid;
 				}
 			}).delay(500);
+		} else {
+			TYPO3.Backend.ModuleMenu.App.showModule('web_txsitemgrM1');
+			TYPO3.Backend.NavigationContainer.PageTree.select(uid);
+			//TYPO3.Backend.NavigationContainer.PageTree.getTree().getSelectionModel().getSelectedNode().fireEvent('click');
 		}
 	}
 });
 
-var TYPO3BackendKsSitemgr = new ksSitemgr();
+var TYPO3BackendSitemgr = new sitemgrCustomerSelector();

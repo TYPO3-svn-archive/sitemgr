@@ -2,7 +2,7 @@
 # Table structure for table 'be_users'
 #
 CREATE TABLE be_users (
-	tx_kssitemgr_manager_for_be_groups text
+	tx_sitemgr_manager_for_be_groups text
 );
 
 
@@ -11,7 +11,7 @@ CREATE TABLE be_users (
 # Table structure for table 'be_users'
 #
 CREATE TABLE tx_templavoila_tmplobj (
-	tx_kssitemgr_manager_allowed_for_customer tinyint(4) DEFAULT '0' NOT NULL
+	tx_sitemgr_manager_allowed_for_customer tinyint(4) DEFAULT '0' NOT NULL
 );
 
 
@@ -19,7 +19,7 @@ CREATE TABLE tx_templavoila_tmplobj (
 #
 # Table structure for table 'tx_kssitemgr_customer'
 #
-CREATE TABLE tx_kssitemgr_customer (
+CREATE TABLE tx_sitemgr_customer (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,

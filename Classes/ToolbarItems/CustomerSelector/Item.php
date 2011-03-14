@@ -2,14 +2,14 @@
 
 require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
 
-class tx_ks_sitemgr_toolbaritem implements backend_toolbarItem {
+class Tx_Sitemgr_ToolbarItems_CustomerSelector_Item  implements backend_toolbarItem  {
 	/**
 	 * reference back to the backend object
 	 *
 	 * @var	TYPO3backend
 	 */
 	protected $backendReference;
-	protected $EXTKEY = 'ks_sitemgr';
+	protected $EXTKEY = 'sitemgr';
 	/**
 	 * constructor, loads the documents from the user control
 	 *
@@ -34,23 +34,23 @@ class tx_ks_sitemgr_toolbaritem implements backend_toolbarItem {
 	public function render() {
 		$this->addJavascriptToBackend();
 		$this->addCssToBackend();
-		$buffer = '<a href="#" class="toolbar-item"><img src="'.t3lib_extMgm::extRelPath('ks_sitemgr').'icon_tx_kssitemgr_customer.gif" class="t3-icon" style="background-image:none;"></a>';
+		$buffer = '<a href="#" class="toolbar-item"><img src="'.t3lib_extMgm::extRelPath('sitemgr').'icon_tx_sitemgr_customer.gif" class="t3-icon" style="background-image:none;"></a>';
 		$buffer.= '<div class="toolbar-item-menu" style="display: none;">';
-		$buffer.= '<div id="ks_sitemgr_form"></div>';
+		$buffer.= '<div id="sitemgr_form"></div>';
 		$buffer.= '<div id="toolbar-item-menu-dynamic">'.$this->renderMenu().'</div>';
 		$buffer.= '</div>';
 		return $buffer;
 	}
 	function renderMenu() {
 		if(t3lib_div::_POST('customer')) {
-			include_once(t3lib_extMgm::extPath('ks_sitemgr').'lib/class.tx_ks_sitemgr_customer.php');
+			include_once(t3lib_extMgm::extPath('ks_sitemgr').'lib/class.tx_sitemgr_customer.php');
 			$entries = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'title,uid,pid',
-				'tx_kssitemgr_customer',
+				'tx_sitemgr_customer',
 				$GLOBALS['TYPO3_DB']->searchQuery(
 					array(t3lib_div::_POST('customer')),
 					array('title'),
-					'tx_kssitemgr_customer').' AND deleted=0',
+					'tx_sitemgr_customer').' AND deleted=0',
 					'',
 					'',
 					'0,10'
@@ -60,12 +60,12 @@ class tx_ks_sitemgr_toolbaritem implements backend_toolbarItem {
 			foreach($entries as $entry) {
 				//show customer
 				$buffer.='<tr><td>';
-				$buffer.='<img src="'.t3lib_extMgm::extRelPath('ks_sitemgr').'icon_tx_kssitemgr_customer.gif">';
+				$buffer.='<img src="'.t3lib_extMgm::extRelPath('sitemgr').'icon_tx_sitemgr_customer.gif">';
 				$buffer.='</td><td>';
 				$buffer.=htmlspecialchars($entry['title']);
 				$buffer.='</td><td>';
-				$buffer.='<img src="'.t3lib_extMgm::extRelPath('templavoila').'mod1/moduleicon.gif" onClick="TYPO3BackendKsSitemgr.openSite('.$entry['pid'].');">';
-				$buffer.='<img src="'.t3lib_extMgm::extRelPath('ks_sitemgr').'mod1/moduleicon.gif" onClick="TYPO3BackendKsSitemgr.openManagement('.$entry['pid'].');">';
+				$buffer.='<img src="'.t3lib_extMgm::extRelPath('templavoila').'mod1/moduleicon.gif" onClick="TYPO3BackendSitemgr.openSite('.$entry['pid'].');">';
+				$buffer.='<img src="'.t3lib_extMgm::extRelPath('sitemgr').'mod1/moduleicon.gif" onClick="TYPO3BackendSitemgr.openManagement('.$entry['pid'].');">';
 				$buffer.='</td></tr>';
 				//show users
 				$customer = new tx_ks_sitemgr_customer($entry['uid']);
@@ -73,7 +73,7 @@ class tx_ks_sitemgr_toolbaritem implements backend_toolbarItem {
 				foreach($customer->getAllUsers() as $user) {
 					$buffer.='<tr><td>';
 					$buffer.='</td><td>';
-					$buffer.='<img src="'.t3lib_extMgm::extRelPath('t3skin').'icons/gfx/i/be_users.gif" onClick="TYPO3BackendKsSitemgr.openSite('.$entry['pid'].');">';
+					$buffer.='<img src="'.t3lib_extMgm::extRelPath('t3skin').'icons/gfx/i/be_users.gif" onClick="TYPO3BackendSitemgr.openSite('.$entry['pid'].');">';
 					$buffer.=$user['username'];
 					$buffer.='</td><td>';
 					$buffer.='<a href="mod.php?M=tools_beuser&SwitchUser='.$user['uid'].'&switchBackUser=1">';
@@ -94,7 +94,7 @@ class tx_ks_sitemgr_toolbaritem implements backend_toolbarItem {
 	 * @return	string		list item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
-		return ' id="tx-ks-sitemgr-menu"';
+		return ' id="tx-sitemgr-menu"';
 	}
 	/**
 	 * adds the neccessary javascript to the backend
@@ -102,7 +102,7 @@ class tx_ks_sitemgr_toolbaritem implements backend_toolbarItem {
 	 * @return	void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(t3lib_extMgm::extRelPath($this->EXTKEY) . 'toolbar/ks_sitemgr.js');
+		$this->backendReference->addJavascriptFile(t3lib_extMgm::extRelPath($this->EXTKEY) . 'Resources/Public/JavaScripts/ToolbarItems/CustomerSelector.js');
 	}
 
 	/**
@@ -111,7 +111,7 @@ class tx_ks_sitemgr_toolbaritem implements backend_toolbarItem {
 	 * @return	void
 	 */
 	protected function addCssToBackend() {
-		$this->backendReference->addCssFile('ks_sitemgr', t3lib_extMgm::extRelPath($this->EXTKEY) . 'toolbar/ks_sitemgr.css');
+		$this->backendReference->addCssFile('sitemgr', t3lib_extMgm::extRelPath($this->EXTKEY) . 'Resources/Public/Stylesheets/ToolbarItems/CustomerSelector.css');
 	}
 	
 	//==========================================================================
@@ -138,4 +138,3 @@ class tx_ks_sitemgr_toolbaritem implements backend_toolbarItem {
 		$this->renderAjax($params, $ajaxObj);
 	}
 }
-?>

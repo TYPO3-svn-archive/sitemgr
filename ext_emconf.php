@@ -32,13 +32,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '0.8.1',
 	'constraints' => array(
 		'depends' => array(
-			'be_acl' => '1.3.0-1.3.99',
+			'be_acl' => '1.4.1-1.4.2',
 		),
 		'conflicts' => array(
 			'be_acl' => '1.4.0',
 		),
 		'suggests' => array(
-			'templavoila' => '1.4.0-1.5.0',
+			'templavoila' => '1.4.0-1.5.99',			
 		),
 	),
 	'suggests' => array(

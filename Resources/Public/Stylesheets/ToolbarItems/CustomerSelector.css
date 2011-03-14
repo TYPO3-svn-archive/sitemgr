@@ -1,12 +1,12 @@
-#tx-ks-sitemgr-menu .toolbar-item {
+#tx-sitemgr-menu .toolbar-item {
 	padding-left: 8px;
 	padding-right: 7px;
 }
 
-#tx-ks-sitemgr-menu .toolbar-item-active {
+#tx-sitemgr-menu .toolbar-item-active {
 	/*background-image: url('toolbar_item_active_bg.png');*/
 }
-#tx-ks-sitemgr-menu .toolbar-item-menu {
+#tx-sitemgr-menu .toolbar-item-menu {
 	position: absolute;
 	list-style: none;
 	padding: 2px 0px 0px;
@@ -16,6 +16,6 @@
 	border-top: none;
 	width: 200px;
 }
-#ks_sitemgr_form {
+#sitemgr_form {
 	margin:5px;
 }
