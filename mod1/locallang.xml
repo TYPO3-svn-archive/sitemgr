@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for module &quot;web_txkssitemgrM1&quot; - header, description</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="warning">Warning</label>
+			<label index="error.browser">If the page does not show the Sitemgr after some seconds, your Browser is unsupported.</label>
+			<label index="error.configuration">Please refer to the manual - you did not set up "mod.web_txkssitemgrM1.createUser.group" in PageTS. Module can`t start.'</label>
+			<label index="error.pageSelect">Please choose a page to activate the module.</label>
+			<label index="error.beaclmissing">Extension be_acl is missing.</label>
+			
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="warning">Warnung</label>
+			<label index="error.browser">Wenn der Sitemgr nach einigen Sekunden nich lädt, wird Ihr Browser wird nicht unterstützt.</label>
+			<label index="error.configuration">Bitte schauen sie ins Handbuch - Sie müssen "mod.web_txkssitemgrM1.createUser.group" im PageTS konfigurieren, sonst kann das Modul nicht starten.</label>
+			<label index="error.pageSelect">Bitte wählen Sie eine Seite aus dem Seitenbaum, um das Modul zu Starten.</label>
+			<label index="error.beaclmissing">Extension be_acl nicht installiert?</label>
+		</languageKey>
+	</data>
+</T3locallang>
