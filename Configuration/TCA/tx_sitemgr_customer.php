@@ -105,15 +105,9 @@ $TCA['tx_sitemgr_customer'] = array (
 			'label' => 'LLL:EXT:sitemgr/Resources/Private/Language/locallang_db.xml:tx_sitemgr_customer.tt_address_records',		
 			'config' => array (
 				'type'          => 'inline',
-				'maxitems'      => 10,
 				'foreign_table' => 'tt_address',
-				'appearance'    => array(
-					'collapseAll'           => true,
-					'expandSingle'          => true,
-					'useSortable'           => true,
-					'newRecordLinkPosition' => 'both',
-				),
-			),
+				'maxitems'      => 10	
+			)
 		),
 	),
 	'types' => array (

@@ -59,7 +59,7 @@ var sitemgrCustomerSelector = Class.create({
 					valid:{
 						buffer:1,
 						fn:function() {
-							top.TYPO3BackendKsSitemgr.updateMenu();
+							top.TYPO3BackendSitemgr.updateMenu();
 						}
 					}
 				}

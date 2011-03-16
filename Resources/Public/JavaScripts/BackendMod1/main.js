@@ -32,17 +32,6 @@
  *
  * @author Kay Strobach <typo3@kay-strobach.de>
  */
-
-var ksSitemgrTools = {
-	customerId       : ###CID###,
-	customerSelected : ###CS?###,
-	customerName     : '###CIDNAME###',
-	customerRootPid  : ###CIDROOTPID###,
-	customerRootName : '###CIDROOTNAME###',
-	beUserAdmin      : ###ADMIN?###,
-	uid              : ###UID###,
-	version          : '###ExtVersion###'
-};
  
 //create components
 pagedGrid = Ext.extend(Ext.grid.GridPanel, {
@@ -74,14 +63,6 @@ Ext.reg('pagedgrid',pagedGrid);
 
 //Load Ext.Direct API ...
 Ext.onReady(function (){
-	//remove old style divs
-	Ext.get('typo3-docbody').remove();
-	//add ext.direct
-	//Ext.Direct.addProvider(Ext.app.ExtDirectAPI['TYPO3.ks_sitemgr']);
-	
-	//TYPO3.ks_sitemgr.tabs.dispatch('ks_sitemgr_customer','add',[],function(response,options) {
-	//	window.alert(response);
-	//});
 	Ext.QuickTips.init();
 	Ext.apply(Ext.QuickTips.getQuickTip(), {
 	    maxWidth: 200,
@@ -127,7 +108,7 @@ Ext.onReady(function (){
 			border:false
 		},{
 			title:'Blub',
-			id:'ks_sitemgr_tabs',
+			id:'sitemgr_tabs',
 			region:'center',
 			xtype:'tabpanel',
 			activeTab: 0,
@@ -155,7 +136,7 @@ Ext.onReady(function (){
 		}]
 	});
 	//placeholder for more js
-	###AdditionalJs###
+	//###AdditionalJs###
 	//Acitvate first tab
-	Ext.getCmp('ks_sitemgr_tabs').activate(0);
+	//Ext.getCmp('sitemgr_tabs').activate(0);
 });

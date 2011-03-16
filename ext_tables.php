@@ -27,7 +27,7 @@ if (!defined ('TYPO3_MODE')) {
 	$tempColumns = array (
 		'tx_sitemgr_manager_for_be_groups' => array (		
 			'exclude' => 1,		
-			'label' => 'LLL:EXT:sitemgr/locallang_db.xml:be_users.tx_sitemgr_manager_for_be_groups',		
+			'label' => 'LLL:EXT:sitemgr/Resources/Private/Language/locallang_db.xml:be_users.tx_sitemgr_manager_for_be_groups',		
 			'config' => array (
 				'type' => 'select',	
 				'foreign_table' => 'be_groups',	
@@ -48,7 +48,7 @@ if (!defined ('TYPO3_MODE')) {
 	$tempColumns = array (
 		'tx_sitemgr_manager_allowed_for_customer' => array (		
 			'exclude' => 1,		
-			'label' => 'LLL:EXT:sitemgr/locallang_db.xml:tx_templavoila_tmplobj.tx_sitemgr_manager_allowed_for_customer',		
+			'label' => 'LLL:EXT:sitemgr/Resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.tx_sitemgr_manager_allowed_for_customer',		
 			'config' => array (
 				'type'    => 'check',
 				'default' => 0	
@@ -64,22 +64,9 @@ if (!defined ('TYPO3_MODE')) {
  * tx_sitemgr_customer
  */ 
 	t3lib_extMgm::allowTableOnStandardPages('tx_sitemgr_customer');
-	/*
-	$TCA['tx_kssitemgr_customer']['columns']['rows']['wizards']=array(
-		 '_PADDING' => 1,
-		  '_VERTICAL' => 1,
-		   'edit' => Array(
-				'type' => 'popup',
-				'title' => 'Edit filemount',
-				'script' => 'wizard_edit.php',
-				'icon' => 'edit2.gif',
-				'popup_onlyOpenIfSelected' => 1,
-				'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
-			),
-	);*/
 	$TCA['tx_sitemgr_customer'] = array (
 		'ctrl' => array (
-			'title'     => 'LLL:EXT:sitemgr/locallang_db.xml:tx_sitemgr_customer',		
+			'title'     => 'LLL:EXT:sitemgr/Resources/Private/Language/locallang_db.xml:tx_sitemgr_customer',		
 			'label'     => 'title',	
 			'tstamp'    => 'tstamp',
 			'crdate'    => 'crdate',
@@ -91,8 +78,40 @@ if (!defined ('TYPO3_MODE')) {
 			'dividers2tabs'=>1,
 			'adminOnly'=>1,
 			'canNotCollapse'=>1,
-			'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+			'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'Configuration/TCA/tx_sitemgr_customer.php',
 			'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_sitemgr_customer.gif',
 		),
 	);
+/**
+ * Add Type icon for customer: 
+ */ 
+	if (TYPO3_MODE == 'BE') {
+		t3lib_div::loadTCA('pages');
+		$TCA['pages']['columns']['module']['config']['items'][] = array(
+			'LLL:EXT:sitemgr/Resources/Private/Language/locallang_db.xml:tx_sitemgr_customer',
+			'sitemgr'
+		);
+		t3lib_SpriteManager::addTcaTypeIcon('pages', 'contains-sitemgr', t3lib_extMgm::extRelPath($_EXTKEY).'ext_icon.gif');
+		#$ICON_TYPES['sitemgr'] = array('icon' => t3lib_extMgm::extRelPath($_EXTKEY).'ext_icon.gif');
+	}
+		
+/**
+ * Add extbase Module 
+ */ 
+	if (TYPO3_MODE == 'BE') {
+		Tx_Extbase_Utility_Extension::registerModule(
+			$_EXTKEY,
+			'web',		//Mainmodule
+			'mod1',		//Name
+			'',			//Position
+			array(		//Controller
+				'SiteManager' => 'index' 
+			),
+			array(		//additional config
+				'access' => 'user,group',
+				'icon'   => 'EXT:sitemgr/Resources/Public/Images/Backend/mod1/moduleicon.gif', 
+				'labels' => 'LLL:EXT:sitemgr/Resources/Private/Language/locallang_mod1.xml',
+			)
+		);
+	}
 ?>

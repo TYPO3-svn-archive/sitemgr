@@ -2,17 +2,19 @@
 if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
-require_once(t3lib_extMgm::extPath('ks_sitemgr').'lib/class.tx_ks_sitemgr_tab.php');
-require_once(t3lib_extMgm::extPath('ks_sitemgr').'lib/class.tx_ks_sitemgr_customer.php');
-require_once(t3lib_extMgm::extPath('ks_sitemgr').'lib/class.tx_ks_sitemgr_div.php');
-class tx_ks_sitemgr_direct { 	 	
+require_once(t3lib_extMgm::extPath('sitemgr').'lib/class.tx_ks_sitemgr_tab.php');
+require_once(t3lib_extMgm::extPath('sitemgr').'lib/class.tx_ks_sitemgr_customer.php');
+require_once(t3lib_extMgm::extPath('sitemgr').'lib/class.tx_ks_sitemgr_div.php');
+
+
+class Tx_Sitemgr_ExtDirect_Dispatcher{ 	 	
 	public function test() {
 		return 'test';
 	}
 	public function dispatch($module,$function,$args) {
 		try {
-			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ks_sitemgr']['hook'][$module])) {
-				$_classRef = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ks_sitemgr']['hook'][$module];
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr']['hook'][$module])) {
+				$_classRef = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr']['hook'][$module];
 				$_procObj = &t3lib_div::getUserObj($_classRef);
 				if(method_exists($_procObj, $function)) {
 					#if($_procObj->checkAccess($function,$args['uid'])) {

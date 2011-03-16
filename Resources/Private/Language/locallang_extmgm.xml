@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'ks_sitemgr'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="methodNotFound">method not found</label>
+			<label index="message">Please think before running these scripts ;)</label>
+			<label index="button.DoIt">Do it!</label>
+			<label index="header.installation">installation</label>
+			<label index="header.configuration">configuration</label>
+			<label index="header.ks_sitemgr">migration from ks_sitemgr</label>
+			<label index="action.importFromKsSitemgr">Migrate Data from ks_sitemgr</label>
+			<label index="desc.importFromKsSitemgr">Import data from ks_sitemgr - please verify, that ks_sitemgr is disabled - tables and fields will be simply renamed - though tables / fields of sitemgr will be deleted before.</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+
+
+		</languageKey>
+	</data>
+</T3locallang>

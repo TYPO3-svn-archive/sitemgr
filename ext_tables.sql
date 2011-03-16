@@ -40,6 +40,7 @@ CREATE TABLE tx_sitemgr_customer (
 	admin_be_users text,
 	normal_be_users text,
 	be_groups text,
+	tt_address_records text,
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid)

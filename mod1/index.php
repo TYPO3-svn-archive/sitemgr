@@ -35,12 +35,12 @@
  */
 
 
-$LANG->includeLLFile('EXT:ks_sitemgr/mod1/locallang.xml');
+$LANG->includeLLFile('EXT:sitemgr/mod1/locallang.xml');
 require_once(PATH_t3lib . 'class.t3lib_scbase.php');
 require_once(PATH_t3lib . 'class.t3lib_page.php');
 $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
-require_once(t3lib_extMgm::extPath('ks_sitemgr').'lib/class.tx_ks_sitemgr_tab.php');
-require_once(t3lib_extMgm::extPath('ks_sitemgr').'lib/class.tx_ks_sitemgr_customer.php');
+require_once(t3lib_extMgm::extPath('sitemgr').'lib/class.tx_ks_sitemgr_tab.php');
+require_once(t3lib_extMgm::extPath('sitemgr').'lib/class.tx_ks_sitemgr_customer.php');
 // DEFAULT initialization of a module [END]
 
 
@@ -99,10 +99,10 @@ require_once(t3lib_extMgm::extPath('ks_sitemgr').'lib/class.tx_ks_sitemgr_custom
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->getPageRenderer()->loadExtJS();
 			$set = t3lib_div::_GP('SET');
-			$this->doc->setModuleTemplate(t3lib_extMgm::extPath('ks_sitemgr') . 'mod1/mod_template.html');
+			$this->doc->setModuleTemplate(t3lib_extMgm::extPath('sitemgr') . 'mod1/mod_template.html');
 			$this->doc->getPageRenderer()->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.ks_sitemgr','text/javascript',NULL,FALSE);
 			$this->doc->getPageRenderer()->addCssInlineBlock('TYPO3ThemeFix','.x-tab-panel-body .x-panel-body {padding:0px;} .item-wrap{margin:5px; background-color:#DCDCDC} .item-wrap .x-view-selected{background-color:#AEAEAE}');
-			$this->doc->getPageRenderer()->addCssFile(t3lib_extMgm::extRelPath('ks_sitemgr') . 'mod1/ext-icons.css');
+			$this->doc->getPageRenderer()->addCssFile(t3lib_extMgm::extRelPath('sitemgr') . 'mod1/ext-icons.css');
 			
 			$tgroup = $GLOBALS["BE_USER"]->getTSConfig(
 			  	'mod.web_txkssitemgrM1.createUser.group',
@@ -138,7 +138,7 @@ require_once(t3lib_extMgm::extPath('ks_sitemgr').'lib/class.tx_ks_sitemgr_custom
 				if(version_compare ($GLOBALS['TYPO_VERSION'],'4.4.0','>=')) {
 					$this->content = '';
 					
-					$js =  file_get_contents(t3lib_extMgm::extPath('ks_sitemgr') . 'mod1/extjs.js');
+					$js =  file_get_contents(t3lib_extMgm::extPath('sitemgr') . 'mod1/extjs.js');
 					$markers['###AdditionalJs###']    = $this->getModules();
 					try{
 						$customer = new tx_ks_sitemgr_customer();

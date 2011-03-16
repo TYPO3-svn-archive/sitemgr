@@ -43,7 +43,7 @@ class Tx_Sitemgr_ToolbarItems_CustomerSelector_Item  implements backend_toolbarI
 	}
 	function renderMenu() {
 		if(t3lib_div::_POST('customer')) {
-			include_once(t3lib_extMgm::extPath('ks_sitemgr').'lib/class.tx_sitemgr_customer.php');
+			include_once(t3lib_extMgm::extPath('sitemgr').'lib/class.tx_sitemgr_customer.php');
 			$entries = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'title,uid,pid',
 				'tx_sitemgr_customer',

@@ -1,0 +1,38 @@
+<f:be.security.ifAuthenticated>
+	<f:then>
+		<f:be.container
+			pageTitle="foo"
+			enableJumpToUrl="false"
+			enableClickMenu="false"
+			loadPrototype="false"
+			loadScriptaculous="false"
+			scriptaculousModule="someModule,someOtherModule"
+			loadExtJs="true"
+			loadExtJsTheme="true"
+			enableExtJsDebug="true"
+			addCssFile="{f:uri.resource(path:'Stylesheets/BackendMod1/main.css')}"
+			addJsFile="{f:uri.resource(path:'JavaScripts/BackendMod1/main.js')}">
+				<script language="JavaScript" type="text/javascript">
+					var ksSitemgrTools = {
+						customerId       : 1, // ###CID###,
+						customerSelected : 1, //###CS?###,
+						customerName     : '###CIDNAME###',
+						customerRootPid  : 1, //###CIDROOTPID###,
+						customerRootName : '###CIDROOTNAME###',
+						beUserAdmin      : 1,//###ADMIN?###,
+						uid              : 1, //###UID###,
+						version          : '###ExtVersion###'
+					};
+				</script>		
+					
+						
+						
+						
+						
+						<f:be.pagePath />
+		</f:be.container>
+	</f:then>
+	<f:else>
+		This is being displayed in case you do not have access.
+	</f:else>
+</f:be.security.ifAuthenticated>
