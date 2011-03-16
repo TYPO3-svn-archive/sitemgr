@@ -1,3 +1,5 @@
+{namespace sitemgr=Tx_Sitemgr_ViewHelpers}
+
 <f:be.security.ifAuthenticated>
 	<f:then>
 		<f:be.container
@@ -12,6 +14,7 @@
 			enableExtJsDebug="true"
 			addCssFile="{f:uri.resource(path:'Stylesheets/BackendMod1/main.css')}"
 			addJsFile="{f:uri.resource(path:'JavaScripts/BackendMod1/main.js')}">
+				<sitemgr:Be.Doc.AddInlineLanguageLabelFile addInlineLanguageLabelFile="EXT:sitemgr/Resources/Private/Language/locallang_mod1.xml"/>
 				<script language="JavaScript" type="text/javascript">
 					var ksSitemgrTools = {
 						customerId       : 1, // ###CID###,
