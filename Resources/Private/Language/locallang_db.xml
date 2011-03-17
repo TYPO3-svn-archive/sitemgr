@@ -17,6 +17,8 @@
 			<label index="tx_sitemgr_customer.div_required">Required Information</label>
 			<label index="tx_sitemgr_customer.div_more">Extended Data</label>
 			<label index="tx_sitemgr_customer.div_contact">Contactdata</label>
+			<label index="tx_sitemgr_customer.be_groups">backend user groups</label>
+			<label index="tx_sitemgr_customer.tt_address_records">contact details</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="be_users.tx_kssitemgr_manager_for_be_groups">Verwalter für BE Gruppen</label>
@@ -30,6 +32,8 @@
 			<label index="tx_sitemgr_customer.div_required">Benötigte Informationen</label>
 			<label index="tx_sitemgr_customer.div_more">Erweiterte Daten</label>
 			<label index="tx_sitemgr_customer.div_contact">Kontaktdaten</label>
+			<label index="tx_sitemgr_customer.be_groups">Backendbenutzergruppen</label>
+			<label index="tx_sitemgr_customer.tt_address_records">Kontaktdaten</label>
 		</languageKey>
 	</data>
 </T3locallang>

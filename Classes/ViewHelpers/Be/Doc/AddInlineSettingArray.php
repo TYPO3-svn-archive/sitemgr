@@ -35,21 +35,22 @@
  * @author Kay Strobach <typo3@kay-strobach.de>
  * @license http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Sitemgr_ViewHelpers_Be_Doc_AddInlineLanguageLabelFileViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
+class Tx_Sitemgr_ViewHelpers_Be_Doc_AddInlineSettingArrayViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 	/**
 	 * add additional file
 	 *
-	 * @param string $addJsFile Custom JavaScript file to be loaded
+	 * @param string $namespace Namespace use in JS
+	 * @param array  $settings  Array of settings
 	 * @return string
 	 * @see template
 	 * @see t3lib_PageRenderer
 	 */
-	 public function render($addInlineLanguageLabelFile = NULL) {
+	 public function render($namespace = NULL, $settings = NULL) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 
-		if($addInlineLanguageLabelFile !== NULL) {
-			$pageRenderer->addInlineLanguageLabelFile($addInlineLanguageLabelFile);
+		if ($settings !== NULL && $namespace !== NULL) {
+			$pageRenderer->addInlineSettingArray($namespace,$settings);
 		}
 	 }
 }

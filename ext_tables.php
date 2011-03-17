@@ -101,10 +101,10 @@ if (!defined ('TYPO3_MODE')) {
 	if (TYPO3_MODE == 'BE') {
 		Tx_Extbase_Utility_Extension::registerModule(
 			$_EXTKEY,
-			'web',		//Mainmodule
-			'mod1',		//Name
-			'',			//Position
-			array(		//Controller
+			'web',		 			//Mainmodule
+			'tx_sitemgr_mod1',		//Name
+			'',						//Position
+			array(					//Controller
 				'SiteManager' => 'index' 
 			),
 			array(		//additional config
@@ -114,4 +114,12 @@ if (!defined ('TYPO3_MODE')) {
 			)
 		);
 	}
+/**
+ * add context sensitive help
+ */ 
+ 
+	t3lib_extMgm::addLLrefForTCAdescr(
+	   'tx_sitemgr_customer',
+	   'EXT:sitemgr/Resources/Private/Language/locallang_csh_tx_sitemgr_customer.xml'
+	);
 ?>

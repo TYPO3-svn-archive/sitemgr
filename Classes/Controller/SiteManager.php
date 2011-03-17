@@ -46,8 +46,47 @@
 	 * @return string The rendered list view
 	 */
 	public function indexAction() {
-		//$this->view->assign('rooms', $rooms);
+		$this->view->assign('modules', $this->getModules());
+		$this->view->assign('settings', $this->getSettings());
 	}
 	
-	
+	protected function getSettings() {
+		$customer       = new Tx_Sitemgr_Utilities_CustomerUtilities();
+		$currentRequest = $this->controllerContext->getRequest();
+		$pageId         = intval($currentRequest->id);
+		try {
+			$settings = array(
+				'customerId'       => $customer->getCustomerForPage($pageId), // ###CID###,
+				'customerSelected' => true,                                   // ###CS?###,
+				'customerName'     => addslashes($customer->getName()),
+				'customerRootPid'  => $customer->getPage(),                   // ###CIDROOTPID###,
+				'customerRootName' => addslashes($customer->getName()),
+				'beUserAdmin'      => $GLOBALS['BE_USER']->user['admin'],
+				'uid'              => $pageId,                                // ###UID###,
+				'version'          => t3lib_extMgm::getExtensionVersion('sitemgr'),
+			);
+		} catch(Exception $e) {
+			$settings = array(
+				'customerId'       => 0,                                      // ###CID###,
+				'customerSelected' => false,                                  // ###CS?###,
+				'customerName'     => '-',
+				'customerRootPid'  => 0,                                      //###CIDROOTPID###,
+				'customerRootName' => 'ROOT - unknown',
+				'beUserAdmin'      => $GLOBALS['BE_USER']->user['admin'],
+				'uid'              => $pageId,                                //###UID###,
+				'version'          => t3lib_extMgm::getExtensionVersion('sitemgr'),
+			);
+		}
+		return $settings;
+	}
+	protected function getModules() {
+		$settings = array();
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr']['hook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['hook'] as $_classRef) {
+		      #$_procObj = &t3lib_div::getUserObj($_classRef);
+		      #$_procObj->getModuleJavascript($js,$this->pageinfo['uid']);
+		   }
+		}
+		return $settings;
+	} 
 }

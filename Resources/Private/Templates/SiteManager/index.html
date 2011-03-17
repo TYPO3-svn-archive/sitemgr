@@ -3,36 +3,52 @@
 <f:be.security.ifAuthenticated>
 	<f:then>
 		<f:be.container
-			pageTitle="foo"
+			pageTitle="Sitemgr"
 			enableJumpToUrl="false"
 			enableClickMenu="false"
 			loadPrototype="false"
-			loadScriptaculous="false"
-			scriptaculousModule="someModule,someOtherModule"
 			loadExtJs="true"
 			loadExtJsTheme="true"
 			enableExtJsDebug="true"
 			addCssFile="{f:uri.resource(path:'Stylesheets/BackendMod1/main.css')}"
 			addJsFile="{f:uri.resource(path:'JavaScripts/BackendMod1/main.js')}">
-				<sitemgr:Be.Doc.AddInlineLanguageLabelFile addInlineLanguageLabelFile="EXT:sitemgr/Resources/Private/Language/locallang_mod1.xml"/>
-				<script language="JavaScript" type="text/javascript">
-					var ksSitemgrTools = {
-						customerId       : 1, // ###CID###,
-						customerSelected : 1, //###CS?###,
-						customerName     : '###CIDNAME###',
-						customerRootPid  : 1, //###CIDROOTPID###,
-						customerRootName : '###CIDROOTNAME###',
-						beUserAdmin      : 1,//###ADMIN?###,
-						uid              : 1, //###UID###,
-						version          : '###ExtVersion###'
-					};
-				</script>		
-					
-						
-						
-						
-						
-						<f:be.pagePath />
+				<!-- add some basic html -->
+					<div class="typo3-fullDoc">
+						<!-- Page header with buttons, path details and csh -->
+						<div id="typo3-docheader">
+							<div id="typo3-docheader-row1">
+								<div class="buttonsleft">
+								
+								</div>
+								<div class="buttonsright">
+									<f:be.Buttons.Shortcut />
+								</div>
+							</div>
+							<div id="typo3-docheader-row2">
+								<div class="docheader-row2-left">
+									<f:be.Buttons.Csh table="_MOD_tx_sitemgr_mod1" field="module"/>
+								</div>
+								<div class="docheader-row2-right">
+									<f:be.pagePath />
+								</strong></div>
+							</div>
+						</div>
+					</div>
+				
+				<!-- include settings-->
+					<sitemgr:Be.Doc.AddInlineSettingArray      namespace="sitemgr"  settings="{settings}" />
+				<!-- include language files -->
+					<sitemgr:Be.Doc.AddInlineLanguageLabelFile addInlineLanguageLabelFile="EXT:sitemgr/Resources/Private/Language/locallang_mod1.xml"/>
+				<!-- add some vars which are neede in be -->
+					<script language="JavaScript" type="text/javascript">
+						var ksSitemgrTools = TYPO3.settings.sitemgr;
+					</script>
+				<!-- include hooked in be modules -->
+					<f:for each="{modules}" as="module" key="moduleKey">
+						<sitemgr:Be.Doc.AddInlineLanguageLabelFile addInlineLanguageLabelFile="{module.localizationFile}"/>
+						<sitemgr:Be.Doc.AddCssFile                 addCssFile="{module.cssFile}"/>
+						<sitemgr:Be.Doc.AddJsFile                  addJsFile="{module.jsFile}"/>
+					</f:for>
 		</f:be.container>
 	</f:then>
 	<f:else>

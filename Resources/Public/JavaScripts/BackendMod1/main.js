@@ -121,7 +121,7 @@ Ext.onReady(function (){
 			bbar:[
 				{
 					xtype:'panel',
-					html:'Customer: <b>'+ksSitemgrTools.customerName+'</b> [<b>'+ksSitemgrTools.customerId+'</b>]'
+					html:'Customer: <b>'+TYPO3.settings.sitemgr.customerName+'</b> [<b>'+TYPO3.settings.sitemgr.customerId+'</b>]'
 				},'->',{
 					xtype:'panel',
 					html:'<a onClick="window.open(\'http://www.sn.schule.de\');">Sponsored by SBS</a>'
@@ -130,7 +130,7 @@ Ext.onReady(function (){
 					html:'<a onClick="window.open(\'http://www.kay-strobach.de\');">&copy;KS</a>'
 				},'-',{
 					xtype:'panel',
-					html:'<a onClick="window.open(\'http://typo3.org/extensions/repository/view/sitemgr/current/\');">Powered by sitemgr Version '+ksSitemgrTools.version+'</a>'
+					html:'<a onClick="window.open(\'http://typo3.org/extensions/repository/view/sitemgr/current/\');">Powered by sitemgr Version '+TYPO3.settings.sitemgr.version+'</a>'
 				}	
 			]
 		}]

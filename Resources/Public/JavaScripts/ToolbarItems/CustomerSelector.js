@@ -158,7 +158,7 @@ var sitemgrCustomerSelector = Class.create({
 		}
 	},
 	openManagement:function(uid) {
-		jump('mod.php?M=web_txsitemgrM1&id='+uid,'web_txsitemgrM1','web');
+		jump('mod.php?M=tx_sitemgr_mod1&id='+uid,'tx_sitemgr_mod1','web');
 		if(!Ext.getCmp('typo3-pagetree-tree')) {
 			new Ext.util.DelayedTask(function() {
 				if (top.content.nav_frame) {
@@ -166,7 +166,7 @@ var sitemgrCustomerSelector = Class.create({
 				}
 			}).delay(500);
 		} else {
-			TYPO3.Backend.ModuleMenu.App.showModule('web_txsitemgrM1');
+			TYPO3.Backend.ModuleMenu.App.showModule('tx_sitemgr_mod1');
 			TYPO3.Backend.NavigationContainer.PageTree.select(uid);
 			//TYPO3.Backend.NavigationContainer.PageTree.getTree().getSelectionModel().getSelectedNode().fireEvent('click');
 		}
