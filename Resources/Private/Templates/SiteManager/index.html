@@ -1,4 +1,4 @@
-{namespace sitemgr=Tx_Sitemgr_ViewHelpers}
+{namespace sitemgr=Tx_Sitemgr_ViewHelper}
 
 <f:be.security.ifAuthenticated>
 	<f:then>
@@ -34,18 +34,14 @@
 							</div>
 						</div>
 					</div>
-				
 				<!-- include settings-->
 					<sitemgr:Be.Doc.AddInlineSettingArray      namespace="sitemgr"  settings="{settings}" />
 				<!-- include language files -->
 					<sitemgr:Be.Doc.AddInlineLanguageLabelFile addInlineLanguageLabelFile="EXT:sitemgr/Resources/Private/Language/locallang_mod1.xml"/>
-				<!-- add some vars which are neede in be -->
-					<script language="JavaScript" type="text/javascript">
-						var ksSitemgrTools = TYPO3.settings.sitemgr;
-					</script>
 				<!-- include hooked in be modules -->
 					<f:for each="{modules}" as="module" key="moduleKey">
-						<sitemgr:Be.Doc.AddInlineLanguageLabelFile addInlineLanguageLabelFile="{module.localizationFile}"/>
+						Module:{moduleKey} - {module.llFile}
+						<sitemgr:Be.Doc.AddInlineLanguageLabelFile addInlineLanguageLabelFile="{module.llFile}"/>
 						<sitemgr:Be.Doc.AddCssFile                 addCssFile="{module.cssFile}"/>
 						<sitemgr:Be.Doc.AddJsFile                  addJsFile="{module.jsFile}"/>
 					</f:for>

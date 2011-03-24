@@ -32,111 +32,118 @@
  *
  * @author Kay Strobach <typo3@kay-strobach.de>
  */
- 
-//create components
-pagedGrid = Ext.extend(Ext.grid.GridPanel, {
-	constructor: function(config) {
-		config = Ext.apply({
-			stripeRows:true,
-			border:false,
-            bbar:new Ext.PagingToolbar({
-				store: config.store,
-				displayInfo: true,
-				pageSize: config.store.baseParams.limit,
-				prependButtons: true
-			}),
-			listeners:{
-				bodyresize:{
-					scope:this,
-					fn:function() {
-						this.getStore().baseParams.limit = Math.floor(this.getInnerHeight()/24)-1;
-						this.getBottomToolbar().pageSize = Math.floor(this.getInnerHeight()/24)-1;
-						this.getBottomToolbar().changePage(1);
+/*******************************************************************************
+ * Register Namespace
+ * Initialize some vars 
+ ******************************************************************************/ 	
+	Ext.ns('TYPO3.Sitemgr.App');                           //main Application
+	Ext.ns('TYPO3.Sitemgr.Components');	                   //extended components
+	Ext.ns('TYPO3.Sitemgr.AdditionalApplicationItems');	   //additional tabs
+	Ext.ns('TYPO3.Sitemgr.AdditionalWindows');	           //additional windows
+	TYPO3.Sitemgr.AdditionalApplicationItems = [];         //init ns
+	TYPO3.Sitemgr.AdditionalWindows          = [];         //init ns
+/*******************************************************************************
+ * created modified components
+ ******************************************************************************/
+	TYPO3.Sitemgr.Components.PagedGrid = Ext.extend(Ext.grid.GridPanel, {
+		constructor: function(config) {
+			config = Ext.apply({
+				stripeRows:true,
+				border:false,
+	            bbar:new Ext.PagingToolbar({
+					store: config.store,
+					displayInfo: true,
+					pageSize: config.store.baseParams.limit,
+					prependButtons: true
+				}),
+				listeners:{
+					bodyresize:{
+						scope:this,
+						fn:function() {
+							this.getStore().baseParams.limit = Math.floor(this.getInnerHeight()/24)-1;
+							this.getBottomToolbar().pageSize = Math.floor(this.getInnerHeight()/24)-1;
+							this.getBottomToolbar().changePage(1);
+						}
 					}
 				}
-			}
-        }, config);
-		pagedGrid.superclass.constructor.call(this, config);
-	}
-});
-Ext.reg('pagedgrid',pagedGrid);
-
-//Load Ext.Direct API ...
-Ext.onReady(function (){
-	Ext.QuickTips.init();
-	Ext.apply(Ext.QuickTips.getQuickTip(), {
-	    maxWidth: 200,
-	    minWidth: 100,
-	    showDelay: 50      // Show 50ms after entering target
-	    //trackMouse: true
-	    //qclass:'quicktips'
-	});
-
-	
-	Ext.Direct.on('event',function(e,provider) {
-		if(e.result) {
-			if(e.result.errorMessage) {
-				Ext.Msg.alert('',e.result.errorMessage);
-			}
-		} else {
-			if(e.type == 'exception') {
-				Ext.Msg.alert('Server Exception:',e.xhr.responseText);
-			}
+	        }, config);
+			TYPO3.Sitemgr.Components.PagedGrid.superclass.constructor.call(this, config);
 		}
-		
 	});
-	
-	var loadingMask = new Ext.LoadMask(Ext.getBody());
-	//loadingMask.enable();
-	//Ext.Ajax.on('beforerequest',    loadingMask.show, this);
-	//Ext.Ajax.on('requestcomplete',  loadingMask.hide, this);
-	//Ext.Ajax.on('requestexception', loadingMask.hide, this);
-	
+	Ext.reg('pagedgrid',TYPO3.Sitemgr.Components.PagedGrid);
 
-	var sitemgrViewport = new Ext.Viewport({
-		layout:'border',
-		renderTo:Ext.getBody(),
-		defaults:{
-			padding:0,
-			autoScroll:true
-		},
-		items:[{
-			region:'north',
-			xtype:'panel',
-			contentEl:'typo3-docheader',
-			height:50,
-			border:false
-		},{
-			title:'Blub',
-			id:'sitemgr_tabs',
-			region:'center',
-			xtype:'tabpanel',
-			activeTab: 0,
-			border:false,
-			items:[]
-		},{
-			region:'south',
-			height:15,
-			border:false,
-			bbar:[
-				{
-					xtype:'panel',
-					html:'Customer: <b>'+TYPO3.settings.sitemgr.customerName+'</b> [<b>'+TYPO3.settings.sitemgr.customerId+'</b>]'
-				},'->',{
-					xtype:'panel',
-					html:'<a onClick="window.open(\'http://www.sn.schule.de\');">Sponsored by SBS</a>'
-				},'-',{
-					xtype:'panel',
-					html:'<a onClick="window.open(\'http://www.kay-strobach.de\');">&copy;KS</a>'
-				},'-',{
-					xtype:'panel',
-					html:'<a onClick="window.open(\'http://typo3.org/extensions/repository/view/sitemgr/current/\');">Powered by sitemgr Version '+TYPO3.settings.sitemgr.version+'</a>'
-				}	
-			]
-		}]
+/*******************************************************************************
+ * initialization script - executed, after dom ready
+ ******************************************************************************/
+	Ext.onReady(function (){		
+		/*Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
+			key: 'moduleData.tools_sitemgr.States',
+			autoRead: false
+		}));
+		if (Ext.isObject(TYPO3.settings.EM.States)) {
+			Ext.state.Manager.getProvider().initState(TYPO3.settings.EM.States);
+		}*/
+		Ext.QuickTips.init();
+		Ext.Direct.on('event',function(e,provider) {
+			if(e.result) {
+				if(e.result.errorMessage) {
+					Ext.Msg.alert('',e.result.errorMessage);
+				}
+			} else {
+				if(e.type == 'exception') {
+					Ext.Msg.alert('Server Exception:',e.xhr.responseText);
+				}
+			}
+		});
+		//var loadingMask = new Ext.LoadMask(Ext.getBody());
+		var Sitemgr = new TYPO3.Sitemgr.App.init();
 	});
-	//placeholder for more js
-	//###AdditionalJs###
-	//Acitvate first tab
-	//Ext.getCmp('sitemgr_tabs').activate(0);
-});
+/*******************************************************************************
+ * Application object
+ ******************************************************************************/
+	TYPO3.Sitemgr.App = {
+		init: function() {
+			this.sitemgrViewport = new Ext.Viewport({
+				layout:'border',
+				renderTo:Ext.getBody(),
+				defaults:{
+					padding:0,
+					autoScroll:true
+				},
+				items:[{
+					region:'north',
+					xtype:'panel',
+					contentEl:'typo3-docheader',
+					height:50,
+					border:false
+				},{
+					title:'Blub',
+					id:'Sitemgr_App_Tabs',
+					region:'center',
+					xtype:'tabpanel',
+					activeTab: 0,
+					border:false,
+					items:TYPO3.Sitemgr.AdditionalApplicationItems
+				},{
+					region:'south',
+					height:15,
+					border:false,
+					bbar:[
+						{
+							xtype:'panel',
+							html:'Customer: <b>'+TYPO3.settings.sitemgr.customerName+'</b> [<b>'+TYPO3.settings.sitemgr.customerId+'</b>]'
+						},'->',{
+							xtype:'panel',
+							html:'<a onClick="window.open(\'http://www.sn.schule.de\');">Sponsored by SBS</a>'
+						},'-',{
+							xtype:'panel',
+							html:'<a onClick="window.open(\'http://www.kay-strobach.de\');">&copy;KS</a>'
+						},'-',{
+							xtype:'panel',
+							html:'<a onClick="window.open(\'http://typo3.org/extensions/repository/view/sitemgr/current/\');">Powered by sitemgr Version '+TYPO3.settings.sitemgr.version+'</a>'
+						}	
+					]
+				}]
+			});
+		}
+	};

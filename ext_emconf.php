@@ -33,9 +33,9 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'be_acl'  => '1.4.1-1.4.2',
-			'cms' => '',
+			'cms'     => '',
 			'extbase' => '',
-			'fluid' => '',
+			'fluid'   => '',
 		),
 		'conflicts' => array(
 			'be_acl' => '1.4.0',

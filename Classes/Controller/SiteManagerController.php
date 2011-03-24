@@ -80,13 +80,22 @@
 		return $settings;
 	}
 	protected function getModules() {
-		$settings = array();
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr']['hook'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['hook'] as $_classRef) {
-		      #$_procObj = &t3lib_div::getUserObj($_classRef);
-		      #$_procObj->getModuleJavascript($js,$this->pageinfo['uid']);
+		$modules = array();
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr']['modules'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr']['modules'] as $_classRef) {
+		      //should be done with API &t3lib_div::getUserObj($_classRef);
+			  $procObj = new $_classRef();
+			  if(is_a($procObj, 'Tx_Sitemgr_Modules_Abstract_AbstractController')) {
+			  	$modules[]  = array(
+					'jsFile'  => $procObj->getModuleJsFile(),
+			  		'cssFile' => $procObj->getModuleCssFile(),
+			  		'llFile'  => $procObj->getModuleLLFile(),
+			  	);
+			  } else {
+			  	throw new Exception('The supplied controller must extend Tx_Sitemgr_Modules_Abstract_AbstractController');
+			  }
 		   }
 		}
-		return $settings;
+		return $modules;
 	} 
 }
