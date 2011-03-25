@@ -39,7 +39,10 @@ class Tx_Sitemgr_ViewHelper_Be_Doc_AddCssFileViewHelper extends Tx_Fluid_ViewHel
 	/**
 	 * add additional file
 	 *
-	 * @param string $addJsFile Custom JavaScript file to be loaded
+	 * 25.03.2011 - Thanks to Björn Haverland
+	 *              for reporting a typo with $addCssFile
+	 *	 	 
+	 * @param string $addCssFile Custom Css file to be loaded
 	 * @return string
 	 * @see template
 	 * @see t3lib_PageRenderer
@@ -49,7 +52,7 @@ class Tx_Sitemgr_ViewHelper_Be_Doc_AddCssFileViewHelper extends Tx_Fluid_ViewHel
 		$pageRenderer = $doc->getPageRenderer();
 
 		if ($addCssFile !== NULL) {
-			$pageRenderer->addCssFile($addJsFile);
+			$pageRenderer->addCssFile($addCssFile);
 		}
 	 }
 }
