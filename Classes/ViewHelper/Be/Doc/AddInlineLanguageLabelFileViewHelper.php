@@ -25,7 +25,7 @@
  * = Examples =
  *
  * <code title="Simple">
- * todo
+ *   <sitemgr:Be.Doc.AddInlineLanguageLabelFile addInlineLanguageLabelFile="EXT:sitemgr/Resources/Private/Language/locallang_mod1.xml"/>
  * </code>
  * <output>
  * add js to header with the pagerenderer

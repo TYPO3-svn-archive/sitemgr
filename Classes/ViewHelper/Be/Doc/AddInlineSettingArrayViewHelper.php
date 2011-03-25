@@ -25,7 +25,7 @@
  * = Examples =
  *
  * <code title="Simple">
- * todo
+ *   <sitemgr:Be.Doc.AddInlineSettingArray namespace="sitemgr"  settings="{settings}" />
  * </code>
  * <output>
  * add js to header with the pagerenderer

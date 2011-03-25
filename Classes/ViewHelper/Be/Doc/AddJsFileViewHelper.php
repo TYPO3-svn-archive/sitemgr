@@ -25,7 +25,7 @@
  * = Examples =
  *
  * <code title="Simple">
- * todo
+ * 	 <sitemgr:Be.Doc.AddJsFile addJsFile="{module.jsFile}"/>
  * </code>
  * <output>
  * add js to header with the pagerenderer
