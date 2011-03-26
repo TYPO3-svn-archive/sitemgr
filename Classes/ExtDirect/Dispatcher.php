@@ -13,9 +13,11 @@ class Tx_Sitemgr_ExtDirect_Dispatcher{
 	}
 	public function dispatch($module,$function,$args) {
 		try {
-			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr']['hook'][$module])) {
-				$_classRef = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr']['hook'][$module];
-				$_procObj = &t3lib_div::getUserObj($_classRef);
+			$this->initializeClassLoader();
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr']['modules'][$module])) {
+				$_classRef = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr']['modules'][$module];
+				//$_procObj = &t3lib_div::getUserObj($_classRef);
+				$_procObj   = new $_classRef();
 				if(method_exists($_procObj, $function)) {
 					#if($_procObj->checkAccess($function,$args['uid'])) {
 						return $_procObj->$function($args);
@@ -67,5 +69,21 @@ class Tx_Sitemgr_ExtDirect_Dispatcher{
 			);
 		}
 		return array_values($buffer);
+	}
+	/**
+	 * Initializes the autoload mechanism of Extbase. This is supplement to the core autoloader.
+	 *
+	 * copied from EXT:extbase/Classes/Core/Bootstrap.php
+	 *	 	 
+	 * @return void
+	 * @see initialize()
+	 */
+	protected function initializeClassLoader() {
+		if (!class_exists('Tx_Extbase_Utility_ClassLoader', FALSE)) {
+			require(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
+		}
+
+		$classLoader = new Tx_Extbase_Utility_ClassLoader();
+		spl_autoload_register(array($classLoader, 'loadClass'));
 	}
 }

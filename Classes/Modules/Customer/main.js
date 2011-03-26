@@ -67,7 +67,7 @@
 			    ],
 			    listeners    : {
 					load     : function() {
-						if(ksSitemgrTools.customerId!=0) {
+						if(TYPO3.settings.sitemgr.customerId!=0) {
 							records = [Ext.getCmp('customerGrid').getStore().getById(ksSitemgrTools.customerId)];
 							Ext.getCmp('customerGrid').getSelectionModel().selectRecords(records,false)
 						}
@@ -257,8 +257,8 @@
 									buttons: Ext.Msg.YESNO,
 									fn: function(btn) {
 										if(btn=='yes') {
-											TYPO3.ks_sitemgr.tabs.dispatch(
-												'ks_sitemgr_customer',
+											TYPO3.sitemgr.tabs.dispatch(
+												'sitemgr_customer',
 												'deleteCustomer',
 												sel.data.uid,
 												function() {

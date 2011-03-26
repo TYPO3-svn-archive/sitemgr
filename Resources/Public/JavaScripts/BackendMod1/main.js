@@ -91,7 +91,7 @@
 				}
 			} else {
 				if(e.type == 'exception') {
-					Ext.Msg.alert('Server Exception:',e.xhr.responseText);
+					Ext.Msg.alert('Server Exception:','<div style="width:100px;overflow:auto">'+e.xhr.responseText+'</div>');
 				}
 			}
 		});

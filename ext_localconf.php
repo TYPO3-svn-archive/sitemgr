@@ -16,8 +16,8 @@
 	'Tx_Sitemgr_Modules_Customer_CustomerController';
  	
 	//load user module
-	#$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr']['modules']['sitemgr_beuser'] =
-	#'Tx_Sitemgr_Modules_BeUser_BeUserController';
+	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr']['modules']['sitemgr_beuser'] =
+	'Tx_Sitemgr_Modules_BeUser_BeUserController';
 	
 	//load userrights module
 	//$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ks_sitemgr']['hook']['ks_sitemgr_beuserrights'] =

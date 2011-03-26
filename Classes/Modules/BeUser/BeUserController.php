@@ -70,7 +70,6 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 			);
 	}
 	function getUser($arg) {
-		$this->loadLangFileIntoArray();
 		if($arg->uid == 0) {
 			return array(
 				'success' => true,
@@ -128,7 +127,6 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 		);
 	}
 	function deleteUser($arg) {
-		$this->loadLangFileIntoArray();
 		list($uid,$cid) = explode(':',$arg);
 		$customer = new tx_ks_sitemgr_customer($cid);
 		$customer->init();
@@ -154,7 +152,6 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 		return array('errorMessage' => $arg);
 	}
 	function addOrUpdateUser($arg) {
-		$this->loadLangFileIntoArray();
 		//check access
 			if($arg['cid']) {
 				$customer = new tx_ks_sitemgr_customer($arg['cid']);
@@ -276,7 +273,6 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 	 * @todo
 	 */	 	
 	function deleteGrant($args) {
-		$this->loadLangFileIntoArray();
 		//check uid
 			if($GLOBALS['BE_USER']->user['uid'] == $args->user) {
 				return array(
@@ -357,7 +353,7 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 			'success' => true
 		);
 	}
-		function getUsersRights($cid) {
+	function getUsersRights($cid) {
 		include_once(t3lib_extMgm::extPath('ks_sitemgr').'tabs/beuser/class.tx_ks_sitemgr_tab_beuser.php');
 		$beUser       = new tx_ks_sitemgr_tab_beuser();
 		$customer     = new tx_ks_sitemgr_customer($cid);
