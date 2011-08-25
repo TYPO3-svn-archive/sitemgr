@@ -3,7 +3,7 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-class Tx_Sitemgr_Modules_Template_TemplateController extends Tx_Sitemgr_Modules_Abstract_AbstractController{
+class Tx_SitemgrArchive_Modules_Template_TemplateController extends Tx_Sitemgr_Modules_Abstract_AbstractController{
 	protected $file = __FILE__;
 	protected $access = array(
 		'general' => 'customerAdmin'
