@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for module &quot;web_txkssitemgrM1&quot; - header, description</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="title">Template</label>
+			<label index="emptytext">No records</label>
+			<label index="updateData">Please wait fetching data.</label>
+			
+			<label index="structure.title">structure</label>
+			<label index="baseLayout.title">base layout</label>
+			<label index="colorTheme.title">color theme</label>
+			<label index="templateOptions.title">template options</label>
+			<label index="action.saveTemplate">Save Options</label>
+			<label index="action.getDescriptionAndHints">description and Hint for template</label>
+			<label index="field.templateHint">This script will create a file called layout/screen.css in your customer administrator main dir. Please take a look in this file to make additional changes</label> 
+
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="title">Vorlage / Layout</label>
+			<label index="emptytext">Keine Einträge</label>
+			<label index="updateData">Bitte warten, lade Daten.</label>
+			
+			<label index="structure.title">Vorlage</label>
+			<label index="baseLayout.title">Basislayout</label>
+			<label index="colorTheme.title">Farbthema</label>
+			<label index="templateOptions.title">Template Optionen</label>
+			<label index="action.saveTemplate">Einstellungen speichern</label>
+			<label index="action.getDescriptionAndHints">Beschreibung und Hinweise zur gewählten Vorlage</label>
+			<label index="field.templateHint">Dieses Formular wird eine Datei namens layout/screen.css in ihrem Mandanten Hauptverzeichnis erstellen. Bitte werfen Sie einen Blick in die Datei um Hinweise zu weitergehenden Änderungen zu erhalten.</label>
+		</languageKey>
+	</data>
+</T3locallang>
