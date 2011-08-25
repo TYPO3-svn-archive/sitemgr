@@ -634,7 +634,11 @@
 								width: 150
 							},{
 								header: TYPO3.lang.SitemgrBeUser_grid_path,
-								dataIndex: 'path'
+								dataIndex: 'path',
+								renderer: function(val, metaData, record, rowIndex, colIndex, store) {
+									metaData.attr = 'ext:qtip="' + TYPO3.lang.SitemgrBeUser_grid_path + ':' + val + '"';
+									return val;
+								}
 							},{
 								header: TYPO3.lang.SitemgrBeUser_grid_right,
 								dataIndex: 'right',
