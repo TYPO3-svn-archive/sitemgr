@@ -95,7 +95,6 @@
 				}
 			}
 		});
-		//var loadingMask = new Ext.LoadMask(Ext.getBody());
 		var Sitemgr = new TYPO3.Sitemgr.App.init();
 	});
 /*******************************************************************************
@@ -117,7 +116,6 @@
 					height:50,
 					border:false
 				},{
-					title:'Blub',
 					id:'Sitemgr_App_Tabs',
 					region:'center',
 					xtype:'tabpanel',
@@ -145,5 +143,8 @@
 					]
 				}]
 			});
+			new Ext.util.DelayedTask(function() {
+				this.sitemgrViewport.get('Sitemgr_App_Tabs').setActiveTab(0);
+			}, this).delay(100);
 		}
 	};
