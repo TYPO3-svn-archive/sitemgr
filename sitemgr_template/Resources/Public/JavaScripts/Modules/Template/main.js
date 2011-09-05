@@ -101,11 +101,11 @@
 									selectionchange: {
 										scope:this,
 										fn: function(dv,nodes){
-											record =  dv.getSelectedRecords()[0].data;
+											var record    =  dv.getSelectedRecords()[0].data;
 											Ext.Msg.wait(
 												'<h3>' + record.title + '</h3>'
 												+ '<center><img src="' + record.icon + '"></center>'
-												+ '<p>' + record.description + '</p>'
+												+ '<small>' + record.description + '</small>'
 												,
 												TYPO3.lang.SitemgrTemplates_loadingForm
 											);
@@ -115,48 +115,72 @@
 												record,
 												function(provider,response) {
 													Ext.Msg.hide();
-													win = new Ext.Window({
-														title:'###LANG.templateOptions.title###',
+													var formItems = [
+														{
+															title: TYPO3.lang.SitemgrTemplates_templateProperties,
+															xtype: 'panel',
+															html: record.title + '<p><br>test</p>'
+																   + '<p><img src="' + record.icon + '" height="200"></p>'
+														},{
+															title: 'second',
+															html : '<p>Lorem ipsum dolor sit amet consectetuer urna aliquet lorem fermentum Aliquam. Leo lacus facilisi Sed et Quisque risus Vivamus eget In Fusce. Sit felis amet consequat justo hendrerit sem tristique egestas et leo. Maecenas faucibus semper ut sit leo ipsum quis a.</p>'
+														}
+													];
+													formItems = formItems.concat(response.result.form);
+													var win = new Ext.Window({
+														title:TYPO3.lang.SitemgrTemplates_settings,
 														id   :'templateWindow',
 														modal:true,
 														closeAction: 'close',
 														border:false,
+														height:400,
+														width:550,
+														resizeable:false,
+														layout: 'fit',
+														bbar: [
+															'->',
+															{
+																text:TYPO3.lang.SitemgrBeUser_action_saveRight,
+																iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
+																handler:function() {
+																	form = Ext.getCmp('templateWindow').get(0).getForm();
+																	form.submit({
+																		waitMsg: TYPO3.lang.SitemgrBeUser_action_addRight,
+																		params: {
+																			module:'sitemgr_template',
+																			fn    :'setTemplateAndOptions',
+																			args  :TYPO3.settings.sitemgr.uid
+																		},
+																		success: function(f,a){
+																			Ext.getCmp('templateWindow').close();
+																			Ext.getCmp('templateSelector').getStore().reload();
+																		},
+																	});
+																}
+															}
+														],
 														items:[
 															{
 																xtype:'form',
 																id:'templateForm',
-																autoHeight: true,
 																api:{
 																	submit:TYPO3.sitemgr.tabs.handleForm
 																},
 																border:false,
 																paramOrder: 'module,fn,args',
-																viewConfig : {
-														    		forceFit: true,
-																},
 																fileUpload:true,
-																labelWidth:260,
-																width:520,
-																defaults:{
-																	style:'margin:5px;',
-																	width:510
-																},items:[
+																items: [
 																	{
-																		xtype:'displayfield',
-																		html:'###LANG.field.templateHint###',
-																		hideLabel:true,
-																		cls:'typo3-message message-information'
-																	},{
-																		title:'Titel',
-																		xtype:'fieldset',
-																		defaultType:'textfield',
+																		border: false,
+																		activeTab:0,
+																		xtype: 'tabpanel',
+																		anchor:'100% 100%',
+																		deferredRender:false,
 																		defaults: {
-																			xtype:'textfield',
-																			width:200,
-																			msgTarget: 'side',
-																			style:'margin:5px;'
+																			autoScroll: true
 																		},
-																		items:response.result.form
+																		enableTabScroll: true,
+																		items: formItems
 																	}
 																]
 															}
