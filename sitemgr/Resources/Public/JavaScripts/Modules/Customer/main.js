@@ -82,16 +82,41 @@
 					handler:function() {
 						win = new Ext.Window({
 							//title:'###LANG.action.newCustomer###',
-							width:400,
-							height:500,
+							width:800,
+							height:300,
 							modal:true,
 							layout:'form',
 							id:'newCustomerForm',
 							border:false,
+							tbar:[
+								{
+									tooltip:TYPO3.lang.SitemgrCustomer_action_saveCustomer,
+									iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
+									handler:function() {
+										form = Ext.getCmp('newCustomerForm').get(0).getForm();
+										form.submit({
+											waitMsg: TYPO3.lang.SitemgrCustomer_action_newCustomer,
+											params: {
+												module:'sitemgr_customer',
+												fn    :'addCustomer',
+												args  :TYPO3.settings.sitemgr.uid
+											},
+											success: function(f,a){
+												Ext.getCmp('newCustomerForm').hide();
+												Ext.getCmp('newCustomerForm').destroy();
+												//Ext.Msg.alert('Success', 'It worked');
+												Ext.getCmp('customerGrid').getStore().reload();
+												Ext.getCmp('userGrid').getStore().reload();
+											},
+										});
+									}
+								}
+							],
 							items:[
 								{
 									xtype:'form',
 									border:false,
+									layout:'hbox',
 									api:{
 										submit:TYPO3.sitemgr.tabs.handleForm
 									},
@@ -198,30 +223,6 @@
 									],
 									success:function() {
 										Ext.getCmp('newCustomerForm').close();
-									}
-								}
-							],
-							buttons:[
-								{
-									text:TYPO3.lang.SitemgrCustomer_action_saveCustomer,
-									iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
-									handler:function() {
-										form = Ext.getCmp('newCustomerForm').get(0).getForm();
-										form.submit({
-											waitMsg: TYPO3.lang.SitemgrCustomer_action_newCustomer,
-											params: {
-												module:'ks_sitemgr_customer',
-												fn    :'addCustomer',
-												args  :TYPO3.settings.sitemgr.uid
-											},
-											success: function(f,a){
-												Ext.getCmp('newCustomerForm').hide();
-												Ext.getCmp('newCustomerForm').destroy();
-												//Ext.Msg.alert('Success', 'It worked');
-												Ext.getCmp('customerGrid').getStore().reload();
-												Ext.getCmp('userGrid').getStore().reload();
-											},
-										});
 									}
 								}
 							]

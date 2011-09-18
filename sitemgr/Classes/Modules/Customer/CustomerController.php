@@ -50,7 +50,7 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 		);
 	}
 	function addCustomer($arg) {
-		$this->loadLangFileIntoArray();
+		#$this->loadLangFileIntoArray();
 		/**
 		 * check if customer already exists
 		 */		 

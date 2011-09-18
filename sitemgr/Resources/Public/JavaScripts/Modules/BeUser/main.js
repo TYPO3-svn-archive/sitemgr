@@ -43,6 +43,31 @@
 			border:false,
 			width:400,
 			height:400,
+			tbar:[
+				{
+					tooltip:TYPO3.lang.SitemgrBeUser_action_saveUser,
+					iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
+					handler:function() {
+						form = Ext.getCmp('newUserForm').get(0).getForm();
+						form.submit({
+							waitMsg: TYPO3.lang.SitemgrBeUser_action_newUser,
+							params: {
+								module:'sitemgr_beuser',
+								fn    :'addOrUpdateUser',
+								args  :{
+									uid:TYPO3.settings.sitemgr.uid,
+									cid:TYPO3.settings.sitemgr.customerId
+								}
+							},
+							success: function(f,a){
+								Ext.getCmp('newUserForm').hide();
+								//Ext.Msg.alert('Success', 'It worked');
+								Ext.getCmp('userGrid').getStore().reload();
+							}
+						});
+					}
+				}
+			],
 			items:[
 				{
 					xtype:'form',
@@ -52,7 +77,7 @@
 						submit:TYPO3.sitemgr.tabs.handleForm
 					},
 					defaults:{
-						style:'margin:5px;',
+						style:'margin:5px;'
 					},
 					paramOrder: 'module,fn,args',
 					items:[
@@ -121,31 +146,6 @@
 					],
 					success:function() {
 						Ext.getCmp('newUserForm').hide();
-					}
-				}
-			],
-			buttons:[
-				{
-					text:TYPO3.lang.SitemgrBeUser_action_saveUser,
-					iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
-					handler:function() {
-						form = Ext.getCmp('newUserForm').get(0).getForm();
-						form.submit({
-							waitMsg: TYPO3.lang.SitemgrBeUser_action_newUser,
-							params: {
-								module:'sitemgr_beuser',
-								fn    :'addOrUpdateUser',
-								args  :{
-									uid:TYPO3.settings.sitemgr.uid,
-									cid:TYPO3.settings.sitemgr.customerId
-								}
-							},
-							success: function(f,a){
-								Ext.getCmp('newUserForm').hide();
-								//Ext.Msg.alert('Success', 'It worked');
-								Ext.getCmp('userGrid').getStore().reload();
-							}
-						});
 					}
 				}
 			]
@@ -295,7 +295,7 @@
 											id: 'title',
 											header: TYPO3.lang.SitemgrBeUser_field_title,
 											dataIndex:'title',
-											width:400,
+											width:400
 										}
 									);
 									fields  = new Array(
@@ -323,11 +323,12 @@
 										id        : 'beUserRightsWindow',
 										title     : TYPO3.lang.SitemgrBeUser_action_usersRightsOverview,
 										modal     : true,
+										border    : false,
 										closeAction : 'close', 
 										maximized:true,
 										layout:'fit',
 										layoutConfig: {
-											margin: '5',
+											margin: 5
 										},
 										margin:10,
 										items:[
@@ -431,10 +432,10 @@
 							{header: TYPO3.lang.SitemgrBeUser_grid_email       , dataIndex: 'email'},
 							{header: TYPO3.lang.SitemgrBeUser_grid_customerName, dataIndex: 'customerName'}
 							
-						],
+						]
 					}),
 					viewConfig: {
-						forceFit: true,
+						forceFit: true
 					}
 				},{
 					xtype:'grid',
@@ -480,6 +481,28 @@
 									layout:'form',
 									id:'addRightForm',
 									width    : 400,
+									tbar:[
+										{
+											tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
+											iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
+											handler:function() {
+												form = Ext.getCmp('addRightForm').get(0).getForm();
+												form.submit({
+													waitMsg: TYPO3.lang.SitemgrBeUser_action_addRight,
+													params: {
+														module:'sitemgr_beuser',
+														fn    :'addGrant',
+														args  :TYPO3.settings.sitemgr.uid
+													},
+													success: function(f,a){
+														Ext.getCmp('addRightForm').hide();
+														Ext.getCmp('addRightForm').destroy();
+														Ext.getCmp('userGrantsGrid').getStore().reload();
+													}
+												});
+											}
+										}
+									],
 									items:[
 										{
 											xtype:'form',
@@ -500,7 +523,7 @@
 															xtype:'hidden',
 															value:TYPO3.settings.sitemgr.uid,
 															name:'uid',
-															fieldLabel :'uid',
+															fieldLabel :'uid'
 														},{
 															xtype:'hidden',
 															value:sel.data.uid,
@@ -537,28 +560,6 @@
 													]
 												}
 											],
-											buttons:[
-												{
-													text:TYPO3.lang.SitemgrBeUser_action_saveRight,
-													iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
-													handler:function() {
-														form = Ext.getCmp('addRightForm').get(0).getForm();
-														form.submit({
-															waitMsg: TYPO3.lang.SitemgrBeUser_action_addRight,
-															params: {
-																module:'sitemgr_beuser',
-																fn    :'addGrant',
-																args  :TYPO3.settings.sitemgr.uid
-															},
-															success: function(f,a){
-																Ext.getCmp('addRightForm').hide();
-																Ext.getCmp('addRightForm').destroy();
-																Ext.getCmp('userGrantsGrid').getStore().reload();
-															},
-														});
-													}
-												}
-											],
 											success:function() {
 												Ext.getCmp('newCustomerForm').close();
 											}
@@ -587,7 +588,7 @@
 														'deleteGrant',
 														{
 															pid :sel.data.pid,
-															user:Ext.getCmp('userGrid').getSelectionModel().getSelected().data.uid,
+															user:Ext.getCmp('userGrid').getSelectionModel().getSelected().data.uid
 														},
 														function() {
 															Ext.getCmp('userGrantsGrid').getStore().reload();

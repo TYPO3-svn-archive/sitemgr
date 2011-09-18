@@ -44,10 +44,16 @@ require_once(PATH_t3lib.'/class.t3lib_page.php');
 		var $customer   = array();
 		var $cache      = array();
 		
-		
+		/**
+		 * @param int $customerId
+		 */
 		function __construct($customerId=null) {
 			$this->customerId = $customerId;
 		}
+		/**
+		 * @throws Exception
+		 * @return array
+		 */
 		function init() {
 			if($this->customerId === null) {
 				throw new Exception ('no customer id set');
@@ -55,6 +61,11 @@ require_once(PATH_t3lib.'/class.t3lib_page.php');
 				return $this->customer = t3lib_BEfunc::getRecord('tx_sitemgr_customer',$this->customerId);
 			}
 		}
+		/**
+		 * @throws Exception
+		 * @param int $pageId
+		 * @return int
+		 */
 		function getCustomerForPage($pageId) {
 			if($this->customerId != null) {
 				return $this->customerId;

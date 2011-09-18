@@ -7,7 +7,7 @@ if (!defined ('TYPO3_MODE')) {
 #require_once(t3lib_extMgm::extPath('sitemgr').'lib/class.tx_ks_sitemgr_div.php');
 
 
-class Tx_Sitemgr_Controller_ExtDirectDispatcherController{ 	 	
+class Tx_Sitemgr_Controller_ExtDirectDispatcherController{
 	public function test() {
 		return 'test';
 	}
@@ -17,14 +17,9 @@ class Tx_Sitemgr_Controller_ExtDirectDispatcherController{
 			if (Tx_Sitemgr_Utilities_CustomerModuleUtilities::isModuleRegistered($module)) {
 				$_classRef = Tx_Sitemgr_Utilities_CustomerModuleUtilities::getModuleConfig($module);
 				$_classRef = $_classRef['class'];
-				//$_procObj = &t3lib_div::getUserObj($_classRef);
 				$_procObj   = new $_classRef();
 				if(method_exists($_procObj, $function)) {
-					#if($_procObj->checkAccess($function,$args['uid'])) {
-						return $_procObj->$function($args);
-					#} else {
-					#	return 'Access denied '.$function.' in module'.$module;
-					#}
+					return $_procObj->$function($args);
 				} else {
 					//unknown action');
 					throw new Exception('Unknown function '.$function.' in module'.$module);
@@ -81,7 +76,7 @@ class Tx_Sitemgr_Controller_ExtDirectDispatcherController{
 	 */
 	protected function initializeClassLoader() {
 		if (!class_exists('Tx_Extbase_Utility_ClassLoader', FALSE)) {
-			require(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
+			include(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
 		}
 
 		$classLoader = new Tx_Extbase_Utility_ClassLoader();
