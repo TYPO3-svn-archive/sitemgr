@@ -8,4 +8,11 @@ class Tx_SitemgrTemplate_Domain_Repository_TemplateAbstractRepository {
 	function getAllTemplates() {
 		return $this->templates;
 	}
+	function get($identifier) {
+		foreach($this->templates as $template) {
+				if($template->getIdentifier() == $identifier) {
+					return $template;
+				}
+		}
+	}
 }

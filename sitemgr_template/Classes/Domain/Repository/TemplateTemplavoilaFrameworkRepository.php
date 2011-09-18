@@ -7,9 +7,9 @@ class Tx_SitemgrTemplate_Domain_Repository_TemplateTemplavoilaFrameworkRepositor
 		$standardSkins = tx_templavoilaframework_lib::getStandardSkinKeys();
 		if(count($customSkins) && count($standardSkins)) {
 			$skins = array_merge($customSkins,$standardSkins);
-		} elseif($count($standardSkins)) {
+		} elseif(count($standardSkins)) {
 			$skins = $standardSkins;
-		} elseif($count($customSkins)) {
+		} elseif(count($customSkins)) {
 			$skins = $customSkins;
 		} else {
 			return;
