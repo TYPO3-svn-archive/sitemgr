@@ -632,7 +632,8 @@
 							},{
 								header: TYPO3.lang.SitemgrBeUser_grid_username,
 								dataIndex: 'username',
-								width: 150
+								width: 250,
+								fixed:true
 							},{
 								header: TYPO3.lang.SitemgrBeUser_grid_path,
 								dataIndex: 'path',
@@ -643,7 +644,8 @@
 							},{
 								header: TYPO3.lang.SitemgrBeUser_grid_right,
 								dataIndex: 'right',
-								width: 25
+								width: 75,
+								fixed:true
 							}
 						]
 					}),

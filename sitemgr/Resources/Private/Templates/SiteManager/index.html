@@ -37,13 +37,13 @@
 				<!-- include settings-->
 					<sitemgr:Be.Doc.AddInlineSettingArray      namespace="sitemgr"  settings="{settings}" />
 				<!-- include language files -->
-					<sitemgr:Be.Doc.AddInlineLanguageLabelFile addInlineLanguageLabelFile="EXT:sitemgr/Resources/Private/Language/locallang_mod1.xml"/>
+					<sitemgr:Be.Doc.AddInlineLanguageLabelFile     file="EXT:sitemgr/Resources/Private/Language/locallang_mod1.xml"/>
 				<!-- include hooked in be modules -->
 					<f:for each="{modules}" as="module" key="moduleKey">
 						Module:{moduleKey} - {module.llFile}
-						<sitemgr:Be.Doc.AddInlineLanguageLabelFile addInlineLanguageLabelFile="{module.llFile}"/>
-						<sitemgr:Be.Doc.AddCssFile                 addCssFile="{module.cssFile}"/>
-						<sitemgr:Be.Doc.AddJsFile                  addJsFile="{module.jsFile}"/>
+						<sitemgr:Be.Doc.AddInlineLanguageLabelFile file="{module.llFile}"/>
+						<sitemgr:Be.Doc.AddCssFile                 file="{module.cssFile}"/>
+						<sitemgr:Be.Doc.AddJsFile                  file="{module.jsFile}"/>
 					</f:for>
 		</f:be.container>
 	</f:then>

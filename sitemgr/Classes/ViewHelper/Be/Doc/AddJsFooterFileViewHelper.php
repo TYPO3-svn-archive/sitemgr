@@ -25,7 +25,7 @@
  * = Examples =
  *
  * <code title="Simple">
- * 	 <sitemgr:Be.Doc.AddJsFooterFile addJsFile="{module.jsFile}"/>
+ * 	 <sitemgr:Be.Doc.AddJsFooterFile file="{module.jsFile}"/>
  * </code>
  * <output>
  * add js to header with the pagerenderer
@@ -39,17 +39,23 @@ class Tx_Sitemgr_ViewHelper_Be_Doc_AddJsFooterFileViewHelper extends Tx_Fluid_Vi
 	/**
 	 * add additional file
 	 *
-	 * @param string $addJsFile Custom JavaScript file to be loaded
-	 * @return string
+	 * @param mixed $file Custom JavaScript file to be loaded
+	 * @return void
 	 * @see template
 	 * @see t3lib_PageRenderer
 	 */
-	 public function render($addJsFile = NULL) {
+	 public function render($file = NULL) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 
-		if ($addJsFile !== NULL) {
-			$pageRenderer->addJsFooterFile($addJsFile);
+		if ($file !== NULL) {
+			if(is_array($file)) {
+				foreach($file as $singleFile) {
+					$pageRenderer->addJsFooterFile($singleFile);
+				}
+			} else {
+				$pageRenderer->addJsFooterFile($file);
+			}
 		}
 	 }
 }

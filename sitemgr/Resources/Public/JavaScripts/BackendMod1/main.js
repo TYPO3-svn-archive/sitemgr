@@ -109,39 +109,41 @@
 					padding:0,
 					autoScroll:true
 				},
-				items:[{
-					region:'north',
-					xtype:'panel',
-					contentEl:'typo3-docheader',
-					height:50,
-					border:false
-				},{
-					id:'Sitemgr_App_Tabs',
-					region:'center',
-					xtype:'tabpanel',
-					activeTab: 0,
-					border:false,
-					items:TYPO3.Sitemgr.AdditionalApplicationItems
-				},{
-					region:'south',
-					height:15,
-					border:false,
-					bbar:[
-						{
-							xtype:'panel',
-							html:'Customer: <b>'+TYPO3.settings.sitemgr.customerName+'</b> [<b>'+TYPO3.settings.sitemgr.customerId+'</b>]'
-						},'->',{
-							xtype:'panel',
-							html:'<a onClick="window.open(\'http://www.sn.schule.de\');">Sponsored by SBS</a>'
-						},'-',{
-							xtype:'panel',
-							html:'<a onClick="window.open(\'http://www.kay-strobach.de\');">&copy;KS</a>'
-						},'-',{
-							xtype:'panel',
-							html:'<a onClick="window.open(\'http://typo3.org/extensions/repository/view/sitemgr/current/\');">Powered by sitemgr Version '+TYPO3.settings.sitemgr.version+'</a>'
-						}	
-					]
-				}]
+				items:[
+					{
+						region:'north',
+						xtype:'panel',
+						contentEl:'typo3-docheader',
+						height:50,
+						border:false
+					},{
+						id:'Sitemgr_App_Tabs',
+						region:'center',
+						xtype:'tabpanel',
+						activeTab: 0,
+						border:false,
+						items:TYPO3.Sitemgr.AdditionalApplicationItems
+					},{
+						region:'south',
+						height:15,
+						border:false,
+						bbar:[
+							{
+								xtype:'panel',
+								html:'Customer: <b>'+TYPO3.settings.sitemgr.customerName+'</b> [<b>'+TYPO3.settings.sitemgr.customerId+'</b>]'
+							},'->',{
+								xtype:'panel',
+								html:'<a onClick="window.open(\'http://www.sn.schule.de\');">Sponsored by SBS</a>'
+							},'-',{
+								xtype:'panel',
+								html:'<a onClick="window.open(\'http://www.kay-strobach.de\');">&copy;KS</a>'
+							},'-',{
+								xtype:'panel',
+								html:'<a onClick="window.open(\'http://typo3.org/extensions/repository/view/sitemgr/current/\');">Powered by sitemgr Version '+TYPO3.settings.sitemgr.version+'</a>'
+							}
+						]
+					}
+				]
 			});
 			new Ext.util.DelayedTask(function() {
 				this.sitemgrViewport.get('Sitemgr_App_Tabs').setActiveTab(0);

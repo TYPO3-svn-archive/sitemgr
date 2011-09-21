@@ -4,19 +4,44 @@ if (!defined ('TYPO3_MODE')) {
 }
 
 class Tx_Sitemgr_Modules_Abstract_AbstractController{
-	private function calculatePathToModule() {
+	/**
+	 * @var array
+	 */
+	protected $jsFiles = array();
+	/**
+	 * @var array
+	 */
+	protected $cssFiles = array();
+	/**
+	 * @throws Exception
+	 * @return void
+	 */
+	protected function calculatePathToModule() {
 		throw new Exception('deprecated function');
 	}
-	private function getModuleJsPath() {
+	/**
+	 * @return string
+	 */
+	protected function getModuleJsPath() {
 		return str_replace('Classes/Modules', 'Resources/Public/JavaScripts/Modules', $this->getModuleGenericPath()).'/';
 	}
-	private function getModuleCssPath() {
+	/**
+	 * @return string
+	 */
+	protected function getModuleCssPath() {
 		return str_replace('Classes/Modules', 'Resources/Public/Stylesheets/Modules', $this->getModuleGenericPath()).'/';
 	}
-	private function getModuleLangPath() {
+	/**
+	 * @return string
+	 */
+	protected function getModuleLangPath() {
 		return str_replace('Classes/Modules', 'Resources/Private/Language/Modules', $this->getModuleGenericPath()).'/';
 	}
-	private function getModuleGenericPath() {
+	/**
+	 * @throws Exception
+	 * @return string
+	 */
+	protected function getModuleGenericPath() {
 		$className = get_class($this);
 		$classNameParts = explode('_', $className, 3);
 		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($classNameParts[1]);
@@ -27,17 +52,36 @@ class Tx_Sitemgr_Modules_Abstract_AbstractController{
 		}
 		return dirname($classFilePathAndName);
 	}
+	/**
+	 * @return array
+	 */
 	function getModuleJsFile() {
-		return $this->getModuleJsPath().'main.js';
+		$return   = $this->jsFiles;
+		$return[] = $this->getModuleJsPath().'main.js';
+		return $return;
 	}
+	/**
+	 * @return string
+	 */
 	function getModuleCssFile() {
-		return $this->getModuleCssPath().'main.css';
+		$return   = $this->cssFiles;
+		$return[] = $this->getModuleCssPath().'main.css';
+		return $return;
 	}
+	/**
+	 * @return string
+	 */
 	function getModuleLLFile() {
 		$file = $this->getModuleLangPath().'locallang.xml';
 		$file = substr($file,17);
 		return 'EXT:'.$file;
 	}
+	/**
+	 * @param $field
+	 * @param $message
+	 * @param null $value
+	 * @return array
+	 */
 	protected function addErrorForForm($field,$message,$value=NULL) {
 		if($this->form == null) {
 			$this->form = array(
@@ -52,6 +96,9 @@ class Tx_Sitemgr_Modules_Abstract_AbstractController{
 		}
 		return $this->form;
 	}
+	/**
+	 * @return array
+	 */
 	protected function getReturnForForm() {
 		if($this->form == null) {
 			$this->form = array(

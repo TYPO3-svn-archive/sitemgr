@@ -132,6 +132,9 @@ require_once(PATH_t3lib.'/class.t3lib_page.php');
 			$this->init();
 			return $this->customer['pid'];
 		}
+		function getRootPage() {
+			return $this->getPage();
+		}
 		function getName() {
 			if($this->customerId == null) {
 				throw new Exception('No Customer ID set, please call getCustomerPerPage before ...');

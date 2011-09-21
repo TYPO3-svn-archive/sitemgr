@@ -25,7 +25,7 @@
  * = Examples =
  *
  * <code title="Simple">
- * 	 <sitemgr:Be.Doc.AddJsFile addJsFile="{module.jsFile}"/>
+ * 	 <sitemgr:Be.Doc.AddJsFile file="{module.jsFile}"/>
  * </code>
  * <output>
  * add js to header with the pagerenderer
@@ -39,17 +39,23 @@ class Tx_Sitemgr_ViewHelper_Be_Doc_AddJsFileViewHelper extends Tx_Fluid_ViewHelp
 	/**
 	 * add additional file
 	 *
-	 * @param string $addJsFile Custom JavaScript file to be loaded
-	 * @return string
+	 * @param mixed $file Custom JavaScript file to be loaded
+	 * @return void
 	 * @see template
 	 * @see t3lib_PageRenderer
 	 */
-	 public function render($addJsFile = NULL) {
+	 public function render($file = NULL) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 
-		if ($addJsFile !== NULL) {
-			$pageRenderer->addJsFile($addJsFile);
+		if ($file !== NULL) {
+			if(is_array($file)) {
+				foreach($file as $singleFile) {
+					$pageRenderer->addJsFile($singleFile);
+				}
+			} else {
+				$pageRenderer->addJsFile($file);
+			}
 		}
 	 }
 }

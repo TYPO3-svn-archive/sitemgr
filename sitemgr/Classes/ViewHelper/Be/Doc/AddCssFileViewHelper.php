@@ -25,7 +25,7 @@
  * = Examples =
  *
  * <code title="Simple">
- *   <sitemgr:Be.Doc.AddCssFile addCssFile="{module.cssFile}"/>
+ *   <sitemgr:Be.Doc.AddCssFile file="{module.cssFile}"/>
  * </code>
  * <output>
  * add js to header with the pagerenderer
@@ -42,17 +42,23 @@ class Tx_Sitemgr_ViewHelper_Be_Doc_AddCssFileViewHelper extends Tx_Fluid_ViewHel
 	 * 25.03.2011 - Thanks to Björn Haverland
 	 *              for reporting a typo with $addCssFile
 	 *	 	 
-	 * @param string $addCssFile Custom Css file to be loaded
-	 * @return string
+	 * @param mixed $file Custom Css file to be loaded
+	 * @return void
 	 * @see template
 	 * @see t3lib_PageRenderer
 	 */
-	 public function render($addCssFile = NULL) {
+	 public function render($file = NULL) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 
-		if ($addCssFile !== NULL) {
-			$pageRenderer->addCssFile($addCssFile);
+		if ($file !== NULL) {
+			if(is_array($file)) {
+				foreach($file as $singleFile) {
+					$pageRenderer->addCssFile($singleFile);
+				}
+			} else {
+				$pageRenderer->addCssFile($file);
+			}
 		}
-	 }
+	}
 }

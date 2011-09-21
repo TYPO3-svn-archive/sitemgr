@@ -25,7 +25,7 @@
  * = Examples =
  *
  * <code title="Simple">
- *   <sitemgr:Be.Doc.AddInlineLanguageLabelFile addInlineLanguageLabelFile="EXT:sitemgr/Resources/Private/Language/locallang_mod1.xml"/>
+ *   <sitemgr:Be.Doc.AddInlineLanguageLabelFile file="EXT:sitemgr/Resources/Private/Language/locallang_mod1.xml"/>
  * </code>
  * <output>
  * add js to header with the pagerenderer
@@ -39,17 +39,23 @@ class Tx_Sitemgr_ViewHelper_Be_Doc_AddInlineLanguageLabelFileViewHelper extends 
 	/**
 	 * add additional file
 	 *
-	 * @param string $addJsFile Custom JavaScript file to be loaded
-	 * @return string
+	 * @param mixed $file Custom JavaScript file to be loaded
+	 * @return void
 	 * @see template
 	 * @see t3lib_PageRenderer
 	 */
-	 public function render($addInlineLanguageLabelFile = NULL) {
+	 public function render($file = NULL) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 
-		if($addInlineLanguageLabelFile !== NULL) {
-			$pageRenderer->addInlineLanguageLabelFile($addInlineLanguageLabelFile);
+		if ($file !== NULL) {
+			if(is_array($file)) {
+				foreach($file as $singleFile) {
+					$pageRenderer->addInlineLanguageLabelFile($singleFile);
+				}
+			} else {
+				$pageRenderer->addInlineLanguageLabelFile($file);
+			}
 		}
 	 }
 }
