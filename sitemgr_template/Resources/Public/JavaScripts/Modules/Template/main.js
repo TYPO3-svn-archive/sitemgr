@@ -40,7 +40,8 @@
 	TYPO3.Sitemgr.TemplateApp = {
 		tpl: new Ext.XTemplate(
 			'<tpl for=".">',
-				'<div class="template-item-wrap" id="structure{uid}">',
+				'<tpl if="isInUse==0"><div class="template-item-wrap" id="structure{uid}"></tpl>',
+				'<tpl if="isInUse==1"><div class="template-item-wrap template-item-selected" id="structure{uid}"></tpl>',
 						'<div class="thumb">',
 						'<img src="{icon}">',
 						'<small>{title}</small>',
@@ -82,7 +83,7 @@
 									baseParams:{
 										module:'sitemgr_template',
 										fn    :'getTemplates',
-										args  :''
+										args  :TYPO3.settings.sitemgr.uid
 									},
 									idProperty: 'uid',
 									fields: [
@@ -92,7 +93,8 @@
 										'description',
 										'title',
 										'copyright',
-										'version'
+										'version',
+										'isInUse'
 									]
 								}),
 								tpl: this.tpl,
@@ -106,6 +108,7 @@
 											+ '<center><img src="' + record.icon + '"></center>',
 											TYPO3.lang.SitemgrTemplates_loadingForm
 										);
+										record.uid = TYPO3.settings.sitemgr.uid
 										TYPO3.sitemgr.tabs.dispatch(
 											'sitemgr_template',
 											'getTemplateOptions',
@@ -120,26 +123,22 @@
 															   + '<center><img src="' + record.icon + '" width="450"></center>',
 														items: [
 															{
-																xtype:'hidden',
-																name:'customer',
-																value:5
+																xtype: 'hidden',
+																name:  'customer',
+																value: 5
+															},{
+																xtype: 'hidden',
+																name:  'pid',
+																value:  TYPO3.settings.sitemgr.uid
+															},{
+																xtype: 'hidden',
+																name:  'recordname',
+																value: record.id
 															}
 														]
 													}
 												];
-												var formItemsPost = [
-													{
-														title: TYPO3.lang.SitemgrTemplates_templateCopyright,
-														xtype: 'panel',
-														html: '<h2>' + record.title + '</h2>'
-															   + '<table>'
-																 + '<tr><th>Title:</th><td>' + record.title + '</td></tr>'
-																 + '<tr><th>Version:</th><td>' + record.version + '</td></tr>'
-																 + '<tr><th>Description:</th><td>' + record.description + '</td></tr>'
-																 + '<tr><th>Copyright:</th><td>' + record.copyright + '</td></tr>'
-															   + '</table>'
-													}
-												];
+												var formItemsPost = [];
 												formItems = formItemsPre.concat(response.result.form, formItemsPost);
 												var win = new Ext.Window({
 													title:TYPO3.lang.SitemgrTemplates_settings,
@@ -162,14 +161,9 @@
 																	params: {
 																		module:'sitemgr_template',
 																		fn    :'setTemplateAndOptions',
-																		args  : {
-																			uid:TYPO3.settings.sitemgr.uid,
-																			cid:TYPO3.settings.sitemgr.customerId
-																		}
+																		args  : record.id + ';' + TYPO3.settings.sitemgr.uid
 																	},
 																	success: function(f,a){
-																		console.log(f);
-																		console.log(a);
 																		Ext.getCmp('templateWindow').close();
 																		//Ext.getCmp('templateSelector').getStore().reload();
 																	}

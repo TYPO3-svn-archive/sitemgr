@@ -12,11 +12,4 @@ class Tx_SitemgrTemplate_Domain_Repository_TemplateRepository
 			$this->templates = array_merge($this->templates, $repository->getAllTemplates());
 		}
 	}
-	function getAllTemplatesAsArray() {
-		$output = array();
-		foreach($this->templates as $template) {
-			$output[] = $template->getConfig();
-		}
-		return $output;
-	}
 }
