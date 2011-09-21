@@ -26,9 +26,11 @@ Ext.ux.sitemgrMultiField = Ext.extend(Ext.Panel,  {
 								field = checkbox.findParentByType('panel');
 								if(checkbox.getValue()) {
 									field.get(1).show();
+									field.get(1).enable();
 									field.get(2).hide();
 								} else {
 									field.get(1).hide();
+									field.get(1).disable();
 									field.get(1).setValue(field.get(1).defaultValue);
 									field.get(2).show();
 								}

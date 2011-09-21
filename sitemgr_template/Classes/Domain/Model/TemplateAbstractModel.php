@@ -4,10 +4,10 @@ abstract class Tx_SitemgrTemplate_Domain_Model_TemplateAbstractModel {
 	/**
 	 * @var t3lib_tsparser_ext
 	 */
-	private $tsParser;
-	private $tsParserTplRow;
-	private $tsParserConstants;
-	private $tsParserInitialized;
+	protected $tsParser;
+	protected $tsParserTplRow;
+	protected $tsParserConstants;
+	protected $tsParserInitialized;
 	/**
 	 * $config = array(
 	 *    'id'         => $name,
@@ -98,11 +98,11 @@ abstract class Tx_SitemgrTemplate_Domain_Model_TemplateAbstractModel {
 	 * @param array $isSetConstants
 	 * @return void
 	 */
-	function applyToPid($pid,array $constants, $isSetConstants = array()) {
+	function applyToPid($pid,array $constants, $isSetConstants = array(), $options = array()) {
 		$this->setConstants($pid, $constants, $isSetConstants);
 		$this->setPageTS($pid, $constants);
 		$this->setTemplateTS($pid, $constants);
-		$this->setEnvironment($pid, $constants);
+		$this->setEnvironment($pid, $constants, $options);
 	}
 	/**
 	 * @todo access check!
@@ -156,20 +156,11 @@ abstract class Tx_SitemgrTemplate_Domain_Model_TemplateAbstractModel {
 	function setTemplateTS($pid, $constants) {
 	
 	}
-	function setEnvironment($pid, $constants) {
-		list($templateClass, $templateUID) = explode('|', $this->config['id']);
-		//throw new Exception($templateUID);
-		$saveId = $this->tsParserTplRow['uid'];
-		$recData['sys_template'][$saveId]['skin_selector'] = $templateUID;
-		$recData['sys_template'][$saveId]['root']          = 1;
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-		$tce->stripslashes_values = 0;
-		// Initialize
-		$tce->start($recData, Array());
-		// Saved the stuff
-		$tce->process_datamap();
-		// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
-		$tce->clear_cacheCmd('all');
+	function setEnvironment($pid, $constants, $options) {
+	}
+	
+	function getEnvironmentOptions($pid) {
+		return null;
 	}
 	/**
 	 * @todo use dynamic pageID!
