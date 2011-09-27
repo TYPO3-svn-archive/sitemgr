@@ -145,9 +145,8 @@
 													id   :'templateWindow',
 													modal:true,
 													closeAction: 'close',
-													border:false,
-													height:400,
-													width:550,
+													height:450,
+													width:500,
 													resizeable:false,
 													layout: 'fit',
 													tbar: [
@@ -187,7 +186,7 @@
 																	activeTab:0,
 																	xtype: 'tabpanel',
 																	anchor:'100% 100%',
-																	deferredRender:false,
+																	//deferredRender:false,
 																	defaults: {
 																		autoScroll: true
 																	},
