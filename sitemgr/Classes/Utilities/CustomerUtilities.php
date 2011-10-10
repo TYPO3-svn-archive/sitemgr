@@ -43,7 +43,7 @@ require_once(PATH_t3lib.'/class.t3lib_page.php');
 		var $customerId = null;
 		var $customer   = array();
 		var $cache      = array();
-		
+		private $throwException = false;
 		/**
 		 * @param int $customerId
 		 */
@@ -60,6 +60,12 @@ require_once(PATH_t3lib.'/class.t3lib_page.php');
 			} else {
 				return $this->customer = t3lib_BEfunc::getRecord('tx_sitemgr_customer',$this->customerId);
 			}
+		}
+		function enableExceptions() {
+			$this->throwException = true;
+		}
+		function disableExceptions() {
+			$this->throwException = false;
 		}
 		/**
 		 * @throws Exception
@@ -260,12 +266,39 @@ require_once(PATH_t3lib.'/class.t3lib_page.php');
 			#print_r($this->$this->getAllUsersUids());
 			#die();
 			if(in_array($GLOBALS['BE_USER']->user['uid'],$this->getAdminUsersUids())) {
-				
 				if(in_array($uid,$this->getAllUsersUids())) {
 					return true;
 				}
 			}
 			return false;
+		}
+		/**
+		 * @throws Exception
+		 * @param integer|null $beUserId
+		 * @return bool
+		 */
+		function isAdministratorForCustomer($beUserId = null) {
+			if($beUserId === null) {
+				$beUserId = $GLOBALS['BE_USER']->user['uid'];
+				if($GLOBALS['BE_USER']->user['admin'] == 1) {
+					return true;
+				}
+			} else {
+				$t = t3lib_BEfunc::getRecord('be_users',$beUserId);
+				if(is_array($t)) {
+					if($t['admin'] === 1) {
+						return true;
+					}
+				}
+			}
+			if(in_array($beUserId,$this->getAdminUsersUids())) {
+				return true;
+			} else {
+				if($this->throwException) {
+					throw new Exception('Access Denied');
+				}
+				return false;
+			}
 		}
 		//----------------------------------------------------------------------
 		function addUserById($uid) {

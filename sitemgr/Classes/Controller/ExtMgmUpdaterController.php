@@ -34,7 +34,7 @@
  * @author Kay Strobach <typo3@kay-strobach.de>
  */
 
-class Tx_Sitemgr_Controller_ExtMgmUpdater extends Tx_Sitemgr_Controller_Abstract_ExtMgmUpdaterAbstract{
+class Tx_Sitemgr_Controller_ExtMgmUpdaterController extends Tx_Sitemgr_Controller_Abstract_ExtMgmUpdaterAbstract{
 	function main() {
 		global $LANG;
 		$LANG->includeLLFile('EXT:sitemgr/Resources/Private/Language/locallang_extmgm.xml');
