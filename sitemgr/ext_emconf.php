@@ -38,10 +38,10 @@ $EM_CONF[$_EXTKEY] = array(
 			'fluid'   => '',
 		),
 		'conflicts' => array(
-			'be_acl' => '1.4.0',
+			'be_acl' => '1.4.0-1.4.0',
 		),
 		'suggests' => array(
-			'templavoila' => '1.4.0-1.5.99',			
+			'templavoila' => '1.4.0-1.5.99',
 		),
 	),
 	'suggests' => array(
