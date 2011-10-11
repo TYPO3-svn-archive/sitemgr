@@ -142,6 +142,7 @@ abstract class Tx_SitemgrTemplate_Domain_Model_TemplateAbstractModel {
 			// Create new  tce-object
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values = 0;
+			#$tce->admin = 1;
 			// Initialize
 			$tce->start($recData, Array());
 			// Saved the stuff

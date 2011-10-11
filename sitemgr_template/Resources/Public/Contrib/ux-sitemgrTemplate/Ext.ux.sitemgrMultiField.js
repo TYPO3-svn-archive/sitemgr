@@ -3,9 +3,11 @@ Ext.ns('Ext.ux.sitemgrMultiField');
 Ext.ux.sitemgrMultiField = Ext.extend(Ext.Panel,  {
 		constructor: function(config) {
 				// settings for the value field
-			config.fieldConfig.width  = 200;
-			config.fieldConfig.name   = 'data[' + config.subname + ']';
-			config.fieldConfig.hidden = !config.checkState;
+			config.fieldConfig.width     = 200;
+			config.fieldConfig.name      = 'data[' + config.subname + ']';
+			config.fieldConfig.hidden    = !config.checkState;
+			config.fieldConfig.disabled  = !config.checkState;
+			config.fieldConfig.msgTarget = 'side';
 				//unset unused settings
 			fieldConfig = config.fieldConfig;
 			config.fieldConfig = undefined;
@@ -29,6 +31,7 @@ Ext.ux.sitemgrMultiField = Ext.extend(Ext.Panel,  {
 						autoShow: true,
 						iconCls: 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open',
 						hidden: config.checkState,
+						disabled: config.checkState,
 						handler: function(button, event) {
 							panel = button.findParentByType('panel');
 							panel.get(4).setValue(true);
@@ -37,10 +40,14 @@ Ext.ux.sitemgrMultiField = Ext.extend(Ext.Panel,  {
 					fieldConfig,
 					{
 						hidden: config.checkState,
-						xtype: 'displayfield',
+						xtype: 'textfield',
+						readOnly: true,
 						cls:   'sitemgr_template-constdisplayfield',
 						value: fieldConfig.defaultValue,
-						width: 200
+						width: 200,
+						fieldClass: 'x-form-field x-form-field-readonly',
+						name: 'data[' + config.subname + ']',
+						disabled: config.checkState
 					},{
 						xtype: 'checkbox',
 						name : 'check[' + config.subname + ']',
@@ -55,12 +62,18 @@ Ext.ux.sitemgrMultiField = Ext.extend(Ext.Panel,  {
 									field.get(1).hide();
 									field.get(2).show();
 									field.get(3).hide();
+										// Ensure, validation
+									field.get(2).enable();
+									field.get(3).disable();
 								} else {
 									field.get(0).hide();
 									field.get(1).show();
 									field.get(2).hide();
 									field.get(3).show();
-									field.get(2).setValue(field.get(2).defaultValue);
+									field.get(2).setRawValue(field.get(2).defaultValue);
+										// Suppress validation
+									field.get(2).disable();
+									field.get(3).enable();
 								}
 								field.doLayout();
 							}
@@ -73,4 +86,4 @@ Ext.ux.sitemgrMultiField = Ext.extend(Ext.Panel,  {
 	}
 );
 
-Ext.reg('sitemgrMultiField', Ext.ux.sitemgrMultiField);
+Ext.reg('sitemgrmultifield', Ext.ux.sitemgrMultiField);

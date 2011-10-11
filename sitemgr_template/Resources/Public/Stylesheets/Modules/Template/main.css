@@ -40,3 +40,11 @@ div.template-item-selected small{
 	margin:      5px;
 	margin-top:  4px;
 }
+
+.x-form-field-readonly {
+	background-color: transparent;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: none;
+}

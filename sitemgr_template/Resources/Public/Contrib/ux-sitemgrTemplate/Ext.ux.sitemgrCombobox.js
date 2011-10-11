@@ -35,4 +35,4 @@ Ext.ux.sitemgrCombobox= Ext.extend(Ext.form.ComboBox,
 	}
 );
 
-Ext.reg('sitemgrCombobox', Ext.ux.sitemgrCombobox);
+Ext.reg('sitemgrcombobox', Ext.ux.sitemgrCombobox);

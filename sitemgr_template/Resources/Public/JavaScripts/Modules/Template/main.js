@@ -33,6 +33,19 @@
 /*******************************************************************************
  * Application object
  ******************************************************************************/
+	Ext.ComponentMgr.create = Ext.ComponentMgr.create.createInterceptor(function(config, defaultType) {
+		var type = config.xtype || defaultType;
+		if ( !Ext.ComponentMgr.isRegistered(type))  {
+			throw 'xtype ""'+type+'"" is not a registered component';
+		}
+		return true;
+	});
+	
+	/**
+	  * recreate the alias 
+	  */
+	Ext.create  =  Ext.ComponentMgr.create;
+	
 	Ext.onReady(function (){
 		TYPO3.Sitemgr.TemplateApp.init();
 	});
