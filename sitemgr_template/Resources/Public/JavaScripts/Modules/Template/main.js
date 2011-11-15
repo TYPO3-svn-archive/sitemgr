@@ -63,6 +63,112 @@
 				'</tpl>',
 			'<div class="x-clear"></div>'
 		),
+		/**
+		 * show the preview window of the given template record
+		 * @param record extjs record of template
+		 */
+		showTemplatePreview: function(record) {
+			Ext.Msg.wait(
+				'<h3>' + record.title + '</h3>'
+				+ '<center><img src="' + record.icon + '"></center>',
+				TYPO3.lang.SitemgrTemplates_loadingForm
+			);
+			record.uid = TYPO3.settings.sitemgr.uid
+			TYPO3.sitemgr.tabs.dispatch(
+				'sitemgr_template',
+				'getTemplateOptions',
+				record,
+				function(provider,response) {
+					Ext.Msg.hide();
+					var formItemsPre = [
+						{
+							title: TYPO3.lang.SitemgrTemplates_templatePreview,
+							xtype: 'panel',
+							html: '<h2>' + record.title + '</h2>'
+								   + '<center><img src="' + record.icon + '" width="450"></center>',
+							items: [
+								{
+									xtype: 'hidden',
+									name:  'customer',
+									value: 5
+								},{
+									xtype: 'hidden',
+									name:  'pid',
+									value:  TYPO3.settings.sitemgr.uid
+								},{
+									xtype: 'hidden',
+									name:  'recordname',
+									value: record.id
+								}
+							]
+						}
+					];
+					var formItemsPost = [];
+					formItems = formItemsPre.concat(response.result.form, formItemsPost);
+					var win = new Ext.Window({
+						title:TYPO3.lang.SitemgrTemplates_settings,
+						id   :'templateWindow',
+						modal:true,
+						closeAction: 'close',
+						height:450,
+						width:500,
+						resizeable:false,
+						layout: 'fit',
+						tbar: [
+							{
+								tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
+								iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
+								handler:function() {
+									form = Ext.getCmp('templateForm').getForm();
+									form.submit({
+										waitMsg: TYPO3.lang.SitemgrBeUser_action_addRight,
+										params: {
+											module:'sitemgr_template',
+											fn    :'setTemplateAndOptions',
+											args  : record.id + ';' + TYPO3.settings.sitemgr.uid
+										},
+										success: function(f,a){
+											Ext.getCmp('templateWindow').close();
+											//Ext.getCmp('templateSelector').getStore().reload();
+										}
+									});
+								}
+							}
+						],
+						items:[
+							{
+								xtype:'form',
+								id:'templateForm',
+								api:{
+									submit:TYPO3.sitemgr.tabs.handleForm
+								},
+								border:false,
+								paramOrder: 'module,fn,args',
+								//fileUpload:true, //needs to be enabled for uploades!
+								items: [
+									{
+										border: false,
+										activeTab:0,
+										xtype: 'tabpanel',
+										anchor:'100% 100%',
+										//deferredRender:false,
+										defaults: {
+											autoScroll: true
+										},
+										enableTabScroll: true,
+										items: formItems
+									}
+								]
+							}
+						]
+					});
+					win.show();
+				}
+			);
+		},
+		showTemplateOptions: function() {
+
+		},
 		init: function() {
 			this.tab = Ext.getCmp('Sitemgr_App_Tabs').add({
 				title:TYPO3.lang.SitemgrTemplates_title,
@@ -116,104 +222,9 @@
 								listeners: {
 									selectionchange: function(dv,nodes){
 										var record    =  dv.getSelectedRecords()[0].data;
-										Ext.Msg.wait(
-											'<h3>' + record.title + '</h3>'
-											+ '<center><img src="' + record.icon + '"></center>',
-											TYPO3.lang.SitemgrTemplates_loadingForm
-										);
-										record.uid = TYPO3.settings.sitemgr.uid
-										TYPO3.sitemgr.tabs.dispatch(
-											'sitemgr_template',
-											'getTemplateOptions',
-											record,
-											function(provider,response) {
-												Ext.Msg.hide();
-												var formItemsPre = [
-													{
-														title: TYPO3.lang.SitemgrTemplates_templatePreview,
-														xtype: 'panel',
-														html: '<h2>' + record.title + '</h2>'
-															   + '<center><img src="' + record.icon + '" width="450"></center>',
-														items: [
-															{
-																xtype: 'hidden',
-																name:  'customer',
-																value: 5
-															},{
-																xtype: 'hidden',
-																name:  'pid',
-																value:  TYPO3.settings.sitemgr.uid
-															},{
-																xtype: 'hidden',
-																name:  'recordname',
-																value: record.id
-															}
-														]
-													}
-												];
-												var formItemsPost = [];
-												formItems = formItemsPre.concat(response.result.form, formItemsPost);
-												var win = new Ext.Window({
-													title:TYPO3.lang.SitemgrTemplates_settings,
-													id   :'templateWindow',
-													modal:true,
-													closeAction: 'close',
-													height:450,
-													width:500,
-													resizeable:false,
-													layout: 'fit',
-													tbar: [
-														{
-															tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
-															iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
-															handler:function() {
-																form = Ext.getCmp('templateForm').getForm();
-																form.submit({
-																	waitMsg: TYPO3.lang.SitemgrBeUser_action_addRight,
-																	params: {
-																		module:'sitemgr_template',
-																		fn    :'setTemplateAndOptions',
-																		args  : record.id + ';' + TYPO3.settings.sitemgr.uid
-																	},
-																	success: function(f,a){
-																		Ext.getCmp('templateWindow').close();
-																		//Ext.getCmp('templateSelector').getStore().reload();
-																	}
-																});
-															}
-														}
-													],
-													items:[
-														{
-															xtype:'form',
-															id:'templateForm',
-															api:{
-																submit:TYPO3.sitemgr.tabs.handleForm
-															},
-															border:false,
-															paramOrder: 'module,fn,args',
-															//fileUpload:true, //needs to be enabled for uploades!
-															items: [
-																{
-																	border: false,
-																	activeTab:0,
-																	xtype: 'tabpanel',
-																	anchor:'100% 100%',
-																	//deferredRender:false,
-																	defaults: {
-																		autoScroll: true
-																	},
-																	enableTabScroll: true,
-																	items: formItems
-																}
-															]
-														}
-													]
-												});
-												win.show();
-											}
-										);
-									}
+										this.showTemplatePreview(record);
+									},
+									scope:this
 								}
 							}
 						]

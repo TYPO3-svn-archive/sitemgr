@@ -100,13 +100,13 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 					'value'      => $page['tx_templavoila_to'],
 					'name'       => 'options[tv_ts]',
 				),
-				/*array(
+				array(
 					'xtype'      => 'sitemgrcombobox',
 					'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:sitemgr_template/Resources/Private/Language/Modules/Template/locallang.xml:SitemgrTemplates_rootpageTvStructure_next'),
 					'staticData' => $options,
 					'value'      => $page['tx_templavoila_next_to'],
 					'name'       => 'options[tv_ts_next]',
-				),*/
+				),
 			),
 		);
 	}
