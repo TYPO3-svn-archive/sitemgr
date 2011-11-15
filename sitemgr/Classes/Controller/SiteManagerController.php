@@ -86,7 +86,8 @@
 	 */
 	protected function getModules() {
 		$modules = array();
-		$registry = Tx_Sitemgr_Utilities_CustomerModuleUtilities::getRegistry();
+		// $registry = Tx_Sitemgr_Utilities_CustomerModuleUtilities::getRegistry();
+		$registry = Tx_Sitemgr_Utilities_CustomerModuleUtilities::getRegistryOrdered();
 		foreach ($registry as $module) {
 			$_classRef = $module['class'];
 				//should be done with API &t3lib_div::getUserObj($_classRef);

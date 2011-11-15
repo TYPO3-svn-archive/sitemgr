@@ -48,17 +48,68 @@ class Tx_Sitemgr_Utilities_CustomerModuleUtilities {
 	 * 
 	 * @param $moduleName string class name of the module
 	 */
-	static function registerModule($moduleName, $class = NULL) {
+	static function registerModule($moduleName, $class = NULL, $position = NULL) {
 		if($class === NULL) {
 			$class = $moduleName;
 		}
 		self::$registry[$moduleName] = array(
-			'name'  => $moduleName,
-			'class' => $class
+			'name'     => $moduleName,
+			'class'    => $class,
+			'position' => $position
 		);
 	}
 	static function getRegistry() {
 		return self::$registry;
+	}
+	static function getRegistryOrdered() {
+			// Init Vars
+		$positionedArray = array();
+		$fieldList       = '';
+			// Iterate over array and push all non positioned elements
+		foreach(self::$registry as $module) {
+			if($module['position'] === NULL) {
+				$fieldList.= $module['name'] . ',';
+			} else {
+				$module['tries'] = 0;
+				$positionedArray[] = $module;
+			}
+		}
+			//position elements
+		while(count($positionedArray) !== 0) {
+			$module = array_shift($positionedArray);
+			list($position, $modPosName) = explode(':', $module['position']);
+			if(strpos($fieldList, $modPosName)) {
+				switch ($position) {
+					case 'after':
+						$fieldList = str_replace($modPosName, $modPosName . ',' . $module['name'], $fieldList);
+					break;
+					case 'before':
+						$fieldList = str_replace($modPosName, $module['name'] . ',' . $modPosName, $fieldList);
+					break;
+					case 'replace':
+						$fieldList = str_replace($modPosName, $module['name'], $fieldList);
+					break;
+					default:
+						$fieldList.= $module['name'] . ',';
+					break;
+				}
+			} elseif($module['tries'] < 4) {
+				$module['tries']++;
+				$positionedArray[] = $module;
+			} else {
+				$fieldList.= $module['name'] . ',';
+			}
+		}
+			// build array for output
+		$keys = explode(',', $fieldList);
+		$outputArray = array();
+		foreach($keys as $key) {
+			if(self::isModuleRegistered($key)) {
+				$outputArray[$key] = self::$registry[$key];
+			}
+		}
+		//t3lib_div::debug($outputArray);
+		return $outputArray;
 	}
 	static function isModuleRegistered($module) {
 		if(array_key_exists($module, self::$registry)) {
