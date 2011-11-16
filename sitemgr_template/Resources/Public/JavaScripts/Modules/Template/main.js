@@ -93,8 +93,9 @@
 						layout:'fit',
 						xtype: 'panel',
 						autoScroll: true,
+						padding:15,
 						html: new Ext.XTemplate(
-								'<table><tr><td>',
+								'<table width="100%"><tr><td>',
 									'<tpl for="copyright">',
 										'<p>{nameAdditional} - {version} - {state}<p>',
 										'<br></p><p>{parent.description}</p>',
