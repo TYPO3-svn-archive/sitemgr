@@ -26,7 +26,7 @@ abstract class Tx_SitemgrTemplate_Domain_Model_TemplateAbstractModel {
 	function getCopyrightInformation() {
 		return array();
 	}
-	private function initializeTSParser($pageId, $template_uid = 0) {
+	protected function initializeTSParser($pageId, $template_uid = 0) {
 		if(!$this->tsParserInitialized) {
 			$this->tsParserInitialized = TRUE;
 			$this->tsParser = t3lib_div::makeInstance('t3lib_tsparser_ext');
@@ -102,7 +102,7 @@ abstract class Tx_SitemgrTemplate_Domain_Model_TemplateAbstractModel {
 		$this->setConstants($pid, $constants, $isSetConstants);
 		$this->setPageTS($pid, $constants);
 		$this->setTemplateTS($pid, $constants);
-		$this->setEnvironment($pid, $constants, $options);
+		$this->setEnvironment($pid, $options);
 	}
 	/**
 	 * @todo access check!
@@ -157,7 +157,7 @@ abstract class Tx_SitemgrTemplate_Domain_Model_TemplateAbstractModel {
 	function setTemplateTS($pid, $constants) {
 	
 	}
-	function setEnvironment($pid, $constants, $options) {
+	function setEnvironment($pid, $options) {
 	}
 	
 	function getEnvironmentOptions($pid) {

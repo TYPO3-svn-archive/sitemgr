@@ -68,48 +68,68 @@
 		 * @param record extjs record of template
 		 */
 		showTemplatePreview: function(record) {
+			record.uid = TYPO3.settings.sitemgr.uid
+			var win = new Ext.Window({
+				title:TYPO3.lang.SitemgrTemplates_templatePreview + ': ' + record.title,
+				id   :'templatePreviewWindow',
+				modal:true,
+				closeAction: 'close',
+				resizeable:false,
+				layout: 'fit',
+				maximized: true,
+				tbar: [
+					{
+						tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
+						iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save',
+						handler:function() {
+							Ext.getCmp('templatePreviewWindow').close();
+							this.showTemplateOptions(record);
+						},
+						scope:this
+					}
+				],
+				items:[
+					{
+						layout:'fit',
+						xtype: 'panel',
+						autoScroll: true,
+						html: new Ext.XTemplate(
+								'<table><tr><td>',
+									'<tpl for="copyright">',
+										'<p>{nameAdditional} - {version} - {state}<p>',
+										'<br></p><p>{parent.description}</p>',
+										'<br><p>&copy;{license} by <a href="mailto:{authorEmail}">{authorName}</a> - {authorCompany}</small></p>',
+									'</tpl>',
+								'</td><td>',
+									'<tpl for="screens">',
+										'<img src="{.}">',
+									'</tpl>',
+								'</td></tr></table>'
+							  ).apply(record)
+					}
+						// @todo process copyright info of template
+				]
+			});
+			win.show();
+		},
+		showTemplateOptions: function(record) {
 			Ext.Msg.wait(
 				'<h3>' + record.title + '</h3>'
 				+ '<center><img src="' + record.icon + '"></center>',
 				TYPO3.lang.SitemgrTemplates_loadingForm
 			);
-			record.uid = TYPO3.settings.sitemgr.uid
 			TYPO3.sitemgr.tabs.dispatch(
 				'sitemgr_template',
-				'getTemplateOptions',
+				'setTemplateAndGetOptions',
 				record,
 				function(provider,response) {
 					Ext.Msg.hide();
-					var formItemsPre = [
-						{
-							title: TYPO3.lang.SitemgrTemplates_templatePreview,
-							xtype: 'panel',
-							html: '<h2>' + record.title + '</h2>'
-								   + '<center><img src="' + record.icon + '" width="450"></center>',
-							items: [
-								{
-									xtype: 'hidden',
-									name:  'customer',
-									value: 5
-								},{
-									xtype: 'hidden',
-									name:  'pid',
-									value:  TYPO3.settings.sitemgr.uid
-								},{
-									xtype: 'hidden',
-									name:  'recordname',
-									value: record.id
-								}
-							]
-						}
-					];
-					var formItemsPost = [];
-					formItems = formItemsPre.concat(response.result.form, formItemsPost);
 					var win = new Ext.Window({
 						title:TYPO3.lang.SitemgrTemplates_settings,
 						id   :'templateWindow',
 						modal:true,
 						closeAction: 'close',
+						maximized:true,
 						height:450,
 						width:500,
 						resizeable:false,
@@ -156,7 +176,7 @@
 											autoScroll: true
 										},
 										enableTabScroll: true,
-										items: formItems
+										items: response.result.form
 									}
 								]
 							}
@@ -165,9 +185,6 @@
 					win.show();
 				}
 			);
-		},
-		showTemplateOptions: function() {
-
 		},
 		init: function() {
 			this.tab = Ext.getCmp('Sitemgr_App_Tabs').add({

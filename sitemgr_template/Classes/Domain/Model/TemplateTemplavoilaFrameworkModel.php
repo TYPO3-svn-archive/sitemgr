@@ -20,9 +20,10 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 			),
 			'description'=> $skinInfo['description'],
 			'title'      => $skinInfo['title'],
-			'copyright'  => 'unsupported',
+			'copyright'  => null,
 			'version'    => t3lib_extMgm::getExtensionVersion($name),
 		);
+		$this->config['copyright'] = $this->getCopyrightInformation();
 	}
 	function isInUseOnPage($pid) {
 		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');
@@ -39,31 +40,21 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		if(substr($_EXTKEY,0,4) == 'EXT:') {
 			$_EXTKEY = substr($_EXTKEY,4);
 			include(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php');
-			//$EM_CONF[$_EXTKEY]
-			$copyTab = array(
-				'title'  => 'Copyright',
-				'layout' => 'fit',
-				'items'  => array(
-					array(
-						'xtype' => 'propertygrid',
-						'autoHeight' => true,
-						'source' => array(
-							'name'           => $this->config['title'],
-							'name additional'=> $EM_CONF[$_EXTKEY]['title'],
-							'version'        => $EM_CONF[$_EXTKEY]['version'],
-							'state'          => $EM_CONF[$_EXTKEY]['state'],
-							'author name'    => $EM_CONF[$_EXTKEY]['author'],
-							'author company' => $EM_CONF[$_EXTKEY]['author_company'],
-							'author email'   => $EM_CONF[$_EXTKEY]['author_email'],
-							'license'        => 'GPL'
-						),
-					)
-				)
+			$copyArray = array(
+				'name'           => $this->config['title'],
+				'nameAdditional'=> $EM_CONF[$_EXTKEY]['title'],
+				'version'        => $EM_CONF[$_EXTKEY]['version'],
+				'state'          => $EM_CONF[$_EXTKEY]['state'],
+				'authorName'    => $EM_CONF[$_EXTKEY]['author'],
+				'authorCompany' => $EM_CONF[$_EXTKEY]['author_company'],
+				'authorEmail'   => $EM_CONF[$_EXTKEY]['author_email'],
+				'license'        => 'GPL'
 			);
 		} else {
-			$copyTab = array();
+			$copyArray = array();
 		}
-		return $copyTab;
+		#throw new Exception($_EXTKEY . print_R($this->config, true) . print_r($copyArray, true));
+		return $copyArray;
 	}
 	/**
 	 * @todo discuss things like ts and ts_next
@@ -110,17 +101,23 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 			),
 		);
 	}
-	function setEnvironment($pid, $constants, $options) {
+	function setEnvironment($pid, $options) {
+		$this->initializeTSParser($pid);
 		list($templateClass, $templateUID) = explode('|', $this->config['id']);
 		//throw new Exception($templateUID);
 		$saveId = $this->tsParserTplRow['uid'];
 		$recData['sys_template'][$saveId]['skin_selector'] = $templateUID;
 		$recData['sys_template'][$saveId]['root']          = 1;
-
-		$recData['pages'][$pid]['tx_templavoila_to'] = $options['tv_ts'];
-		$recData['pages'][$pid]['tx_templavoila_ds'] = $this->getTvDs($options['tv_ts']);
-		$recData['pages'][$pid]['tx_templavoila_next_to'] = $options['tv_ts_next'];
-		$recData['pages'][$pid]['tx_templavoila_next_ds'] =$this->getTvDs($options['tv_ts_next']);
+		if($options !== null) {
+			if($options['tv_ts'] != 0) {
+				$recData['pages'][$pid]['tx_templavoila_to'] = $options['tv_ts'];
+				$recData['pages'][$pid]['tx_templavoila_ds'] = $this->getTvDs($options['tv_ts']);
+			}
+			if($options['tv_ts_next'] != 0) {
+				$recData['pages'][$pid]['tx_templavoila_next_to'] = $options['tv_ts_next'];
+				$recData['pages'][$pid]['tx_templavoila_next_ds'] =$this->getTvDs($options['tv_ts_next']);
+			}
+		}
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		// Initialize
