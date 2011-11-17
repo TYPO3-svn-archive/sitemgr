@@ -153,9 +153,8 @@
 		},
 		showTemplateOptions: function(record) {
 			Ext.Msg.wait(
-				'<h3>' + record.title + '</h3>'
-				+ '<center><img src="' + record.icon + '"></center>',
-				TYPO3.lang.SitemgrTemplates_loadingForm
+				'<center><img src="' + record.icon + '"></center>',
+				TYPO3.lang.SitemgrTemplates_loadingForm + ' ' + record.title
 			);
 			TYPO3.sitemgr.tabs.dispatch(
 				'sitemgr_template',
@@ -164,7 +163,7 @@
 				function(provider,response) {
 					Ext.Msg.hide();
 					var win = new Ext.Window({
-						title:TYPO3.lang.SitemgrTemplates_settings,
+						title:TYPO3.lang.SitemgrTemplates_settings + ' ' + record.title,
 						id   :'templateWindow',
 						modal:true,
 						closeAction: 'close',
