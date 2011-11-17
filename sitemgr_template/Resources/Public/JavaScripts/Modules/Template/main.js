@@ -56,6 +56,7 @@
 				'<tpl if="isInUse==0"><div class="template-item-wrap" id="structure{uid}"></tpl>',
 				'<tpl if="isInUse==1"><div class="template-item-wrap template-item-selected" id="structure{uid}"></tpl>',
 						'<div class="thumb">',
+						'<span class=""></span>',
 						'<img src="{icon}">',
 						'<small>{title}</small>',
 					'</div>',
@@ -69,49 +70,86 @@
 		 */
 		showTemplatePreview: function(record) {
 			record.uid = TYPO3.settings.sitemgr.uid
-			var win = new Ext.Window({
-				title:TYPO3.lang.SitemgrTemplates_templatePreview + ': ' + record.title,
-				id   :'templatePreviewWindow',
-				modal:true,
-				closeAction: 'close',
-				resizeable:false,
-				layout: 'fit',
-				maximized: true,
-				tbar: [
-					{
-						tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
-						iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save',
-						handler:function() {
-							Ext.getCmp('templatePreviewWindow').close();
-							this.showTemplateOptions(record);
-						},
-						scope:this
-					}
-				],
-				items:[
-					{
-						layout:'fit',
-						xtype: 'panel',
-						autoScroll: true,
-						padding:15,
-						html: new Ext.XTemplate(
-								'<table width="100%"><tr><td>',
-									'<tpl for="copyright">',
-										'<p>{nameAdditional} - {version} - {state}<p>',
-										'<br></p><p>{parent.description}</p>',
-										'<br><p>&copy;{license} by <a href="mailto:{authorEmail}">{authorName}</a> - {authorCompany}</small></p>',
-									'</tpl>',
-								'</td><td>',
-									'<tpl for="screens">',
-										'<img src="{.}">',
-									'</tpl>',
-								'</td></tr></table>'
-							  ).apply(record)
-					}
-						// @todo process copyright info of template
-				]
-			});
-			win.show();
+			if(record.isInUse) {
+				this.showTemplateOptions(record);
+			} else {
+				var win = new Ext.Window({
+					title: TYPO3.lang.SitemgrTemplates_templatePreview + ': ' + record.title,
+					id   : 'templatePreviewWindow',
+					modal:true,
+					closeAction: 'close',
+					resizeable:false,
+					layout: 'fit',
+					maximized: true,
+					tbar: [
+						{
+							iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-close',
+							handler:function() {
+								Ext.getCmp('templateSelector').getStore().reload();
+								Ext.getCmp('templatePreviewWindow').close();
+							}
+						}, '-', {
+							tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
+							iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save',
+							handler:function() {
+								Ext.getCmp('templatePreviewWindow').close();
+								this.showTemplateOptions(record);
+							},
+							scope:this
+						}
+					],
+					items:[
+						{
+							layout: 'table',
+							xtype: 'panel',
+							autoScroll: true,
+							layoutConfig: {
+								columns: 2
+							},
+							defaults: {
+								padding: 20
+							},
+							items: [
+								{
+									html: new Ext.XTemplate(
+											'<tpl for="copyright">',
+											'   <p>{nameAdditional} - {version} - {state}<p>',
+												'<br></p><p>{parent.description}</p>',
+												'<br><p>&copy;{license} by <a href="mailto:{authorEmail}">{authorName}</a> - {authorCompany}</small></p>',
+											'</tpl>'
+									).apply(record),
+									bbar: [
+										{
+											xtype: 'button',
+											text: '<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-undo"></span>' + TYPO3.lang.SitemgrTemplates_theme_cansel_apply,
+											handler: function() {
+												Ext.getCmp('templateSelector').getStore().reload();
+												Ext.getCmp('templatePreviewWindow').close();
+											},
+											scope: this
+										}, '->',{
+											xtype: 'button',
+											text: '<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-select"></span>' + TYPO3.lang.SitemgrTemplates_theme_apply,
+											handler: function() {
+												Ext.getCmp('templatePreviewWindow').close();
+												this.showTemplateOptions(record);
+											},
+											scope: this
+										}
+									]
+								}, {
+									html: new Ext.XTemplate(
+											'<tpl for="screens">',
+												'<div class="sitemgr-template-previewimage"><img src="{.}"></div>',
+											'</tpl>'
+									).apply(record)
+								}
+							]
+						}
+					]
+				});
+				win.show();
+			}
 		},
 		showTemplateOptions: function(record) {
 			Ext.Msg.wait(
@@ -137,6 +175,30 @@
 						layout: 'fit',
 						tbar: [
 							{
+								iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-close',
+								handler:function() {
+									Ext.getCmp('templateSelector').getStore().reload();
+									Ext.getCmp('templateWindow').close();
+								}
+							}, '-', {
+								tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
+								iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save',
+								handler:function() {
+									form = Ext.getCmp('templateForm').getForm();
+									form.submit({
+										waitMsg: TYPO3.lang.SitemgrBeUser_action_addRight,
+										params: {
+											module:'sitemgr_template',
+											fn    :'setTemplateAndOptions',
+											args  : record.id + ';' + TYPO3.settings.sitemgr.uid
+										},
+										success: function(f,a){
+											Ext.getCmp('templateSelector').getStore().reload();
+										}
+									});
+								},
+								scope:this
+							}, {
 								tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
 								iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
 								handler:function() {
@@ -150,9 +212,22 @@
 										},
 										success: function(f,a){
 											Ext.getCmp('templateWindow').close();
-											//Ext.getCmp('templateSelector').getStore().reload();
+											Ext.getCmp('templateSelector').getStore().reload();
 										}
 									});
+								}
+							}, '-', {
+								tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
+								iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-view',
+								handler:function() {
+									windowName = 'previewForId-' + TYPO3.settings.sitemgr.customerRootPid;
+									uri        = '../?id=' + TYPO3.settings.sitemgr.customerRootPid;
+									if(frames && frames[windowName]) {
+										frames[windowName].location.href = uri;
+										frames[windowName].focus();
+									} else {
+										window.open(uri, windowName);
+									}
 								}
 							}
 						],

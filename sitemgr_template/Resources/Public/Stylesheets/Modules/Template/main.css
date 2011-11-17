@@ -48,3 +48,14 @@ div.template-item-selected small{
 	border-right: none;
 	border-bottom: none;
 }
+
+
+.sitemgr-template-previewimage {
+	padding: 5px;
+	margin: 5px;
+	border: 1px solid gray;
+	float: left;
+}
+.sitemgr-template-previewimage img {
+	max-width: 156px;
+}

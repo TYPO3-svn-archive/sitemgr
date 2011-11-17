@@ -11,18 +11,27 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		} else {
 			$previewIconFilename = $GLOBALS['BACK_PATH'].'../'.t3lib_extMgm::siteRelPath('templavoila_framework').'/default_screenshot.gif';
 		}
-		
+			//fetch screenshots
+		if($name !== 'LOCAL:error') {
+			$additionalScreenshots = t3lib_div::getFilesInDir(t3lib_extMgm::extRelPath(substr($name,4)) . 'screenshots', '', TRUE);
+			$additionalScreenshots = array_values($additionalScreenshots);
+		}
+		if(count($additionalScreenshots) === 0) {
+			$additionalScreenshots = array(
+				$previewIconFilename,
+			);
+		}
+			//build config array
 		$this->config = array(
 			'id'         => get_class($this).'|'.$name,
 			'icon'       => $previewIconFilename,
-			'screens'    => array(
-				$previewIconFilename,
-			),
+			'screens'    => $additionalScreenshots,
 			'description'=> $skinInfo['description'],
 			'title'      => $skinInfo['title'],
 			'copyright'  => null,
 			'version'    => t3lib_extMgm::getExtensionVersion($name),
 		);
+			// get copy info
 		$this->config['copyright'] = $this->getCopyrightInformation();
 	}
 	function isInUseOnPage($pid) {
@@ -34,6 +43,7 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		} else {
 			$this->config['isInUse'] = FALSE;
 		}
+		// @todo checkhow to init the isInUse property
 	}
 	function getCopyrightInformation() {
 		list($class, $_EXTKEY) = explode('|', $this->config['id']);
@@ -53,7 +63,6 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		} else {
 			$copyArray = array();
 		}
-		#throw new Exception($_EXTKEY . print_R($this->config, true) . print_r($copyArray, true));
 		return $copyArray;
 	}
 	/**
@@ -104,10 +113,10 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 	function setEnvironment($pid, $options) {
 		$this->initializeTSParser($pid);
 		list($templateClass, $templateUID) = explode('|', $this->config['id']);
-		//throw new Exception($templateUID);
 		$saveId = $this->tsParserTplRow['uid'];
 		$recData['sys_template'][$saveId]['skin_selector'] = $templateUID;
 		$recData['sys_template'][$saveId]['root']          = 1;
+			// set tv setttings
 		if($options !== null) {
 			if($options['tv_ts'] != 0) {
 				$recData['pages'][$pid]['tx_templavoila_to'] = $options['tv_ts'];
@@ -118,6 +127,10 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 				$recData['pages'][$pid]['tx_templavoila_next_ds'] =$this->getTvDs($options['tv_ts_next']);
 			}
 		}
+			// set general record storage page
+		$tvFrameworkSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila_framework']);
+		$recData['pages'][$pid]['storage_pid'] = $tvFrameworkSettings['templateObjectPID'];
+			// store changes
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		// Initialize
