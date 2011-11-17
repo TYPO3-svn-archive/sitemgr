@@ -1,9 +1,9 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext "ks_sitemgr".
+# Extension Manager/Repository config file for ext "sitemgr".
 #
-# Auto generated 01-02-2011 06:13
+# Auto generated 17-11-2011 13:00
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -18,7 +18,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_email' => 'typo3@kay-strobach.de',
 	'shy' => '',
 	'dependencies' => 'be_acl,cms,extbase,fluid',
-	'conflicts' => '',
+	'conflicts' => 'be_acl',
 	'priority' => '',
 	'module' => '',
 	'state' => 'beta',
@@ -29,13 +29,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 1,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '2.0.0',
+	'version' => '2.0.1',
 	'constraints' => array(
 		'depends' => array(
-			'be_acl'  => '1.4.1-1.4.3',
-			'cms'     => '',
+			'be_acl' => '1.4.1-1.4.3',
+			'cms' => '',
 			'extbase' => '',
-			'fluid'   => '',
+			'fluid' => '',
 		),
 		'conflicts' => array(
 			'be_acl' => '1.4.0-1.4.0',
@@ -46,7 +46,7 @@ $EM_CONF[$_EXTKEY] = array(
 	),
 	'suggests' => array(
 	),
-	'_md5_values_when_last_written' => 'a:58:{s:13:"CHANGELOG.TXT";s:4:"b1f2";s:10:"README.txt";s:4:"ee2d";s:9:"Thumbs.db";s:4:"d6e4";s:21:"ext_conf_template.txt";s:4:"dd23";s:12:"ext_icon.gif";s:4:"4f5b";s:17:"ext_localconf.php";s:4:"8cd9";s:14:"ext_tables.php";s:4:"ae18";s:14:"ext_tables.sql";s:4:"f9b8";s:30:"icon_tx_sitemgr_customer.gif";s:4:"4f5b";s:16:"locallang_db.xml";s:4:"1154";s:7:"tca.php";s:4:"cf6f";s:14:"doc/manual.sxw";s:4:"33e9";s:19:"doc/wizard_form.dat";s:4:"6b36";s:20:"doc/wizard_form.html";s:4:"ecf1";s:36:"lib/class.tx_ks_sitemgr_customer.php";s:4:"3f86";s:34:"lib/class.tx_ks_sitemgr_direct.php";s:4:"413a";s:31:"lib/class.tx_ks_sitemgr_div.php";s:4:"1ab0";s:31:"lib/class.tx_ks_sitemgr_tab.php";s:4:"ed6d";s:39:"lib/class.tx_ks_sitemgr_toolbaritem.php";s:4:"3f02";s:39:"lib/class.tx_ks_sitemgr_userstylefe.php";s:4:"4f4f";s:13:"mod1/conf.php";s:4:"9c9e";s:18:"mod1/ext-icons.css";s:4:"6e9a";s:13:"mod1/extjs.js";s:4:"61c9";s:14:"mod1/index.php";s:4:"d71d";s:18:"mod1/locallang.xml";s:4:"7b5f";s:22:"mod1/locallang_mod.xml";s:4:"6855";s:22:"mod1/mod_template.html";s:4:"e74c";s:19:"mod1/moduleicon.gif";s:4:"dc56";s:31:"mod1/ext-icons/document-new.png";s:4:"b2a5";s:32:"mod1/ext-icons/document-open.png";s:4:"b986";s:38:"mod1/ext-icons/document-save-close.png";s:4:"20e7";s:32:"mod1/ext-icons/document-view.png";s:4:"a16f";s:27:"mod1/ext-icons/edit-add.png";s:4:"c577";s:30:"mod1/ext-icons/edit-delete.png";s:4:"33a3";s:40:"mod1/ext-icons/pagetree-backend-user.png";s:4:"6a47";s:46:"mod1/ext-icons/system-backend-user-emulate.png";s:4:"f7c6";s:35:"mod1/ext-icons/system-help-open.png";s:4:"c6fd";s:35:"mod1/ext-icons/system-list-open.png";s:4:"1817";s:28:"mod1/ext-icons/text-html.png";s:4:"5d86";s:46:"tabs/beuser/class.tx_ks_sitemgr_tab_beuser.php";s:4:"4fa6";s:20:"tabs/beuser/extjs.js";s:4:"ad4c";s:25:"tabs/beuser/locallang.xml";s:4:"de32";s:50:"tabs/customer/class.tx_ks_sitemgr_tab_customer.php";s:4:"637c";s:22:"tabs/customer/extjs.js";s:4:"50d8";s:27:"tabs/customer/locallang.xml";s:4:"7038";s:42:"tabs/help/class.tx_ks_sitemgr_tab_help.php";s:4:"71e6";s:18:"tabs/help/extjs.js";s:4:"99cc";s:23:"tabs/help/locallang.xml";s:4:"a161";s:66:"tabs/piwikintegration/class.tx_ks_sitemgr_tab_piwikintegration.php";s:4:"fa17";s:30:"tabs/piwikintegration/extjs.js";s:4:"4b15";s:35:"tabs/piwikintegration/locallang.xml";s:4:"2a37";s:50:"tabs/template/class.tx_ks_sitemgr_tab_template.php";s:4:"2b21";s:22:"tabs/template/extjs.js";s:4:"8e21";s:27:"tabs/template/locallang.xml";s:4:"b609";s:24:"tabs/template/screen.css";s:4:"eded";s:17:"toolbar/index.php";s:4:"dff9";s:22:"toolbar/ks_sitemgr.css";s:4:"b583";s:21:"toolbar/ks_sitemgr.js";s:4:"e0ae";}',
+	'_md5_values_when_last_written' => 'a:49:{s:13:"CHANGELOG.TXT";s:4:"b1f2";s:10:"README.txt";s:4:"d6d8";s:21:"_class.ext_update.php";s:4:"bf83";s:16:"ext_autoload.php";s:4:"da00";s:21:"ext_conf_template.txt";s:4:"dd23";s:12:"ext_icon.gif";s:4:"6759";s:17:"ext_localconf.php";s:4:"17e8";s:14:"ext_tables.php";s:4:"a629";s:14:"ext_tables.sql";s:4:"077e";s:28:"icon_tx_sitemgr_customer.gif";s:4:"4f5b";s:52:"Classes/Controller/ExtDirectDispatcherController.php";s:4:"e461";s:46:"Classes/Controller/ExtMgmUpdaterController.php";s:4:"6420";s:44:"Classes/Controller/SiteManagerController.php";s:4:"9f77";s:53:"Classes/Controller/Abstract/ExtMgmUpdaterAbstract.php";s:4:"5753";s:30:"Classes/Fe/ContentPostProc.php";s:4:"eb33";s:47:"Classes/Modules/Abstract/AbstractController.php";s:4:"df67";s:43:"Classes/Modules/BeUser/BeUserController.php";s:4:"7b1f";s:47:"Classes/Modules/Customer/CustomerController.php";s:4:"a761";s:39:"Classes/Modules/Help/HelpController.php";s:4:"1cde";s:46:"Classes/ToolbarItems/CustomerSelector/Hook.php";s:4:"48ca";s:46:"Classes/ToolbarItems/CustomerSelector/Item.php";s:4:"24ad";s:45:"Classes/Utilities/CustomerModuleUtilities.php";s:4:"84c3";s:39:"Classes/Utilities/CustomerUtilities.php";s:4:"e396";s:50:"Classes/ViewHelper/Be/Doc/AddCssFileViewHelper.php";s:4:"e961";s:66:"Classes/ViewHelper/Be/Doc/AddInlineLanguageLabelFileViewHelper.php";s:4:"91ec";s:61:"Classes/ViewHelper/Be/Doc/AddInlineSettingArrayViewHelper.php";s:4:"bd06";s:49:"Classes/ViewHelper/Be/Doc/AddJsFileViewHelper.php";s:4:"c4fc";s:55:"Classes/ViewHelper/Be/Doc/AddJsFooterFileViewHelper.php";s:4:"1a9a";s:41:"Configuration/TCA/tx_sitemgr_customer.php";s:4:"3a9e";s:45:"Documentation/Manual/OpenOffice/en/manual.sxw";s:4:"33e9";s:64:"Resources/Private/Language/locallang_csh_tx_sitemgr_customer.xml";s:4:"86c7";s:43:"Resources/Private/Language/locallang_db.xml";s:4:"cc42";s:47:"Resources/Private/Language/locallang_extmgm.xml";s:4:"0379";s:45:"Resources/Private/Language/locallang_mod1.xml";s:4:"6855";s:55:"Resources/Private/Language/Modules/BeUser/locallang.xml";s:4:"dab8";s:57:"Resources/Private/Language/Modules/Customer/locallang.xml";s:4:"384f";s:53:"Resources/Private/Language/Modules/Help/locallang.xml";s:4:"53ed";s:50:"Resources/Private/Templates/SiteManager/index.html";s:4:"4bcd";s:51:"Resources/Public/Images/Backend/mod1/moduleicon.gif";s:4:"dc56";s:48:"Resources/Public/JavaScripts/BackendMod1/main.js";s:4:"8f61";s:51:"Resources/Public/JavaScripts/Modules/BeUser/main.js";s:4:"8a97";s:53:"Resources/Public/JavaScripts/Modules/Customer/main.js";s:4:"b695";s:49:"Resources/Public/JavaScripts/Modules/Help/main.js";s:4:"c451";s:61:"Resources/Public/JavaScripts/ToolbarItems/CustomerSelector.js";s:4:"083d";s:49:"Resources/Public/Stylesheets/BackendMod1/main.css";s:4:"e0c2";s:52:"Resources/Public/Stylesheets/Modules/BeUser/main.css";s:4:"d41d";s:54:"Resources/Public/Stylesheets/Modules/Customer/main.css";s:4:"d41d";s:50:"Resources/Public/Stylesheets/Modules/Help/main.css";s:4:"d41d";s:62:"Resources/Public/Stylesheets/ToolbarItems/CustomerSelector.css";s:4:"fa74";}',
 );
 
 ?>
