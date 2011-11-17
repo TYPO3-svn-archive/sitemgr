@@ -265,62 +265,54 @@
 		init: function() {
 			this.tab = Ext.getCmp('Sitemgr_App_Tabs').add({
 				title:TYPO3.lang.SitemgrTemplates_title,
-				layout:'vbox',
 				disabled:!TYPO3.settings.sitemgr.customerSelected,
 				layoutConfig: {
 					//padding:'5',
 					border:false,
-					align:'stretch'
 				},
-				defaults: {
-					flex:1
-				},
-				items:[
+				autoScroll:true,
+				items: [
 					{
-						autoScroll:true,
-						items: [
-							{
-								xtype:'dataview',
-								loadingText: TYPO3.lang.SitemgrTemplates_loading,
-								emptyText: TYPO3.lang.SitemgrTemplates_norecords,
-								id:'templateSelector',
-								selectedClass:'template-item-selected',
-								itemSelector:'div.template-item-wrap',
-								store:new Ext.data.DirectStore({
-									storeId:'templateStructureStore',
-									autoLoad:true,
-									directFn:TYPO3.sitemgr.tabs.dispatch,
-									paramsAsHash: false,
-									paramOrder:'module,fn,args',
-									baseParams:{
-										module:'sitemgr_template',
-										fn    :'getTemplates',
-										args  :TYPO3.settings.sitemgr.uid
-									},
-									idProperty: 'uid',
-									fields: [
-										'id',
-										'icon',
-										'screens',
-										'description',
-										'title',
-										'copyright',
-										'version',
-										'isInUse'
-									]
-								}),
-								tpl: this.tpl,
-								multiSelect:false,
-								singleSelect:true,
-								listeners: {
-									selectionchange: function(dv,nodes){
-										var record    =  dv.getSelectedRecords()[0].data;
-										this.showTemplatePreview(record);
-									},
-									scope:this
-								}
-							}
-						]
+						xtype:'dataview',
+						layout: 'fit',
+						loadingText: TYPO3.lang.SitemgrTemplates_loading,
+						emptyText: TYPO3.lang.SitemgrTemplates_norecords,
+						id:'templateSelector',
+						selectedClass:'template-item-selected',
+						itemSelector:'div.template-item-wrap',
+						store:new Ext.data.DirectStore({
+							storeId:'templateStructureStore',
+							autoLoad:true,
+							directFn:TYPO3.sitemgr.tabs.dispatch,
+							paramsAsHash: false,
+							paramOrder:'module,fn,args',
+							baseParams:{
+								module:'sitemgr_template',
+								fn    :'getTemplates',
+								args  :TYPO3.settings.sitemgr.uid
+							},
+							idProperty: 'uid',
+							fields: [
+								'id',
+								'icon',
+								'screens',
+								'description',
+								'title',
+								'copyright',
+								'version',
+								'isInUse'
+							]
+						}),
+						tpl: this.tpl,
+						multiSelect:false,
+						singleSelect:true,
+						listeners: {
+							selectionchange: function(dv,nodes){
+								var record    =  dv.getSelectedRecords()[0].data;
+								this.showTemplatePreview(record);
+							},
+							scope:this
+						}
 					}
 				]
 			});
