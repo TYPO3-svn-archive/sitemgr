@@ -279,6 +279,7 @@
 								xtype:'dataview',
 								loadingText: TYPO3.lang.SitemgrTemplates_loading,
 								emptyText: TYPO3.lang.SitemgrTemplates_norecords,
+								deferEmptyText: false,
 								id:'templateSelector',
 								selectedClass:'template-item-selected',
 								itemSelector:'div.template-item-wrap',
