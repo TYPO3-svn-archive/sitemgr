@@ -9,7 +9,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="SitemgrTemplates_title">Template</label>
-			<label index="SitemgrTemplates_norecords">There no template records available</label>
+			<label index="SitemgrTemplates_norecords">There no template records available, perhaps it take a short time to load them ... </label>
 			<label index="SitemgrTemplates_loading">Loading Template records - please wait ...</label>
 			<label index="SitemgrTemplates_loadingForm">loading form for</label>
 			<label index="SitemgrTemplates_settings">Settings</label>
@@ -24,7 +24,7 @@
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="SitemgrTemplates_title">Gestaltung</label>
-			<label index="SitemgrTemplates_norecords">Keine Vorlagen verfügbar</label>
+			<label index="SitemgrTemplates_norecords">Keine Vorlagen verfügbar, vielleicht dauert es einen Moment länger sie zu laden ... </label>
 			<label index="SitemgrTemplates_loading">Lade Vorlagen - bitte Warten ...</label>
 			<label index="SitemgrTemplates_loadingForm">Lade Optionen für </label>
 			<label index="SitemgrTemplates_settings">Optionen für </label>

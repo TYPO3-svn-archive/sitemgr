@@ -185,7 +185,7 @@
 								handler:function() {
 									form = Ext.getCmp('templateForm').getForm();
 									form.submit({
-										waitMsg: TYPO3.lang.SitemgrBeUser_action_addRight,
+										waitMsg: TYPO3.lang.SitemgrTemplates_theme_apply,
 										params: {
 											module:'sitemgr_template',
 											fn    :'setTemplateAndOptions',
@@ -203,7 +203,7 @@
 								handler:function() {
 									form = Ext.getCmp('templateForm').getForm();
 									form.submit({
-										waitMsg: TYPO3.lang.SitemgrBeUser_action_addRight,
+										waitMsg: TYPO3.lang.SitemgrTemplates_theme_apply,
 										params: {
 											module:'sitemgr_template',
 											fn    :'setTemplateAndOptions',
@@ -277,8 +277,8 @@
 						items: [
 							{
 								xtype:'dataview',
-								loadingText: TYPO3.lang.SitemgrTemplates_loading,
-								emptyText: TYPO3.lang.SitemgrTemplates_norecords,
+								loadingText: '<div class="typo3-message message-information">' + TYPO3.lang.SitemgrTemplates_loading + '<div class="message-body"></div></div>',
+								emptyText:  '<div class="typo3-message message-information">' + TYPO3.lang.SitemgrTemplates_norecords + '<div class="message-body"></div></div>',
 								deferEmptyText: false,
 								id:'templateSelector',
 								selectedClass:'template-item-selected',
