@@ -4,3 +4,6 @@
 .x-grid3-row-over {
 	background-color:orange;
 }
+.x-tab-strip .x-tab-with-icon span.x-tab-strip-text {
+	padding-left: 20px!important;
+}

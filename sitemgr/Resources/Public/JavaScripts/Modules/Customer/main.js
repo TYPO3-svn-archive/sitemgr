@@ -37,6 +37,7 @@
 		Ext.getCmp('Sitemgr_App_Tabs').add({
 			title   :TYPO3.lang.SitemgrCustomer_title,
 			xtype   :'pagedgrid',
+			iconCls: 'customer-tab-icon',
 			loadMask:true,
 			id      :'customerGrid',
 			store   :new Ext.data.DirectStore({

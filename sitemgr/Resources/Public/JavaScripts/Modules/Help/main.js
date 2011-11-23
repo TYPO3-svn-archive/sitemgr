@@ -43,6 +43,7 @@
 		Ext.getCmp('Sitemgr_App_Tabs').add({
 			title:TYPO3.lang.SitemgrHelp_Title,
 			html :TYPO3.lang.SitemgrHelp_Description,
+			iconCls: 'help-tab-icon',
 			id   :'SitemgrHelp',
 			tbar :[{
 				text   :'TYPO3 SBS',

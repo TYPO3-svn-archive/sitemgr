@@ -155,6 +155,7 @@
 	Ext.onReady(function (){
 		Ext.getCmp('Sitemgr_App_Tabs').add({
 			title:TYPO3.lang.SitemgrBeUser_title,
+			iconCls: 'beuser-tab-icon',
 			layout:'vbox',
 			layoutConfig: {
 				padding:'0',
