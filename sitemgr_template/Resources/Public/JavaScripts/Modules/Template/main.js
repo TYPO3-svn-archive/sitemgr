@@ -269,6 +269,7 @@
 					//padding:'5',
 					border:false
 				},
+				iconCls: 'template-tab-icon',
 				autoScroll:true,
 				items: [
 					{

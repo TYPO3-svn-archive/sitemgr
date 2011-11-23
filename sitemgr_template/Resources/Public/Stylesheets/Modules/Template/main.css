@@ -1,3 +1,7 @@
+.template-tab-icon {
+	background-image:url(../../../Images/Modules/Template/tabIcon.gif);
+}
+
 div.template-item-wrap {
 	width:150px;
 	height:100px;

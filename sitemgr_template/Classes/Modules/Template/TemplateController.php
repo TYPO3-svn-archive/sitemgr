@@ -126,7 +126,11 @@ class Tx_SitemgrTemplate_Modules_Template_TemplateController extends Tx_Sitemgr_
 				$field['fieldConfig']['xtype'] = 'sitemgrcombobox';
 				$options = explode(',', substr($constant['type'],8,-1));
 				foreach($options as $option) {
-					$field['fieldConfig']['staticData'][] = array_reverse(explode('=',$option));
+					$t = array_reverse(explode('=',$option));
+					if(count($t) === 1) {
+						$t[] = $t[0]; //add value to displayfield!!!
+					}
+					$field['fieldConfig']['staticData'][] = $t;
 				}
 			break;
 			case 'color':
