@@ -41,7 +41,7 @@ $EM_CONF[$_EXTKEY] = array(
 			'be_acl' => '1.4.0-1.4.0',
 		),
 		'suggests' => array(
-			'templavoila' => '1.4.0-1.5.99',
+			'fluid' => 'sitemgr_template',
 		),
 	),
 	'suggests' => array(
