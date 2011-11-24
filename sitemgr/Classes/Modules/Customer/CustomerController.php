@@ -19,13 +19,25 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 		);
 	}
 	function getCustomers($args) {
+		if(intval($args['start'])<0) {
+			$args['start'] = 0;
+		}
+		if(intval($args['stop'])<1) {
+			$args['stop'] = 1;
+		}
+		if(($args['dir'] !== 'ASC') && ($args['dir']!== 'DESC')) {
+			$args['dir'] = 'ASC';
+		}
+		if(($args['sort'] !== 'title') && ($args['sort']!== 'uid') && ($args['sort']!== 'pid')) {
+			$args['sort'] = 'title';
+		}
 		$rows  =  array_values($GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 				'uid,pid,title',
 				'tx_sitemgr_customer',
 				'deleted=0',
 				'',
 				$args['sort'].' '.$args['dir'],
-				$args['start'].','.$args['stop']));
+				intval($args['start']).','.intval($args['stop'])));
 		$count =  $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 				'count(*) as count',
 				'tx_sitemgr_customer',
@@ -134,6 +146,7 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 				//drop *users*!!!
 				//drop group
 			);
+			$data = array();
 			$tcemain->start($data,$cmd);
 			$tcemain->process_cmdmap();
 		//drop file
@@ -218,7 +231,7 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 						'constants'              => '######################################################################'."\n".
 													'# EXT:ks_sitemgr'."\n".
 													'# createdate: '.date('r')."\n".
-													'# userfolder: '.$TYPO3_CONF_VARS['BE']['userHomePath'].$userId."\n".
+													'# userfolder: '.$GLOBALS['$TYPO3_CONF_VARS']['BE']['userHomePath'].$userId."\n".
 						                            '  usr_name                    = '.$userId."\n".
 													'  usr_root                    = '.$pageId."\n".
 													'  plugin.tx_sitemgr.username  = '.$arg['customerName']."\n".
