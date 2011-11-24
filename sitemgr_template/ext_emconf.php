@@ -41,6 +41,8 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'suggests' => array(
 			'templavoila' => '1.4.0-1.5.99',
+			'templavoila_framework' => '1.2.4-1.2.99',
+			'fluid_css' => '0.0.0-0.0.99',
 		),
 	),
 	'suggests' => array(
