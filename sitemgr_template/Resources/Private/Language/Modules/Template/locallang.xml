@@ -21,6 +21,8 @@
 			<label index="SitemgrTemplates_rootpageTvStructure_next">subpage data structure</label>
 			<label index="SitemgrTemplates_theme_apply">apply theme</label>
 			<label index="SitemgrTemplates_theme_cansel_apply">cancel</label>
+			<label index="SitemgrTemplates_applyTemplateHeader">Do you really want to apply this template?</label>
+			<label index="SitemgrTemplates_applyTemplateMessage">Applying this template, will immediately change the layout of your website. Based on the system settings, there may not be any way to revert your changes.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="SitemgrTemplates_title">Gestaltung</label>
@@ -36,6 +38,8 @@
 			<label index="SitemgrTemplates_rootpageTvStructure_next">Unterseitenstruktur</label>
 			<label index="SitemgrTemplates_theme_apply">Vorlage übernehmen</label>
 			<label index="SitemgrTemplates_theme_cansel_apply">Abbrechen</label>
+			<label index="SitemgrTemplates_applyTemplateHeader">Wollen Sie die Vorlage wirklich übernehmen?</label>
+			<label index="SitemgrTemplates_applyTemplateMessage">Mit dem Übernehmen der Vorlage ändern Sie sofort das Aussehen Ihrer Internetseite. Je nach Verfügbarkeit Ihrer alten Vorlage gibt es eventuell keine Möglichkeit zu Ihrer alten Vorlage zurückzukehren.</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -148,8 +148,8 @@
 											text: '<span class="t3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-ok"></span>' + TYPO3.lang.SitemgrTemplates_theme_apply,
 											handler: function() {
 												Ext.Msg.confirm(
-													'Wollen Sie die Vorlage wirklich übernehmen?',
-													'Mit dem Übernehmen der Vorlage ändern Sie sofort das Aussehen Ihrer Internetseite. Je nach Verfügbarkeit Ihrer alten Vorlage gibt es eventuell keine Möglichkeit zu Ihrer alten Vorlage zurückzukehren.',
+													TYPO3.lang.SitemgrTemplates_applyTemplateHeader,
+													TYPO3.lang.SitemgrTemplates_applyTemplateMessage,
 													function(button) {
 														if(button == 'yes') {
 															this.showTemplateOptions(record);
