@@ -81,6 +81,7 @@
 					resizeable:false,
 					layout: 'fit',
 					maximized: true,
+					closable: false,
 					tbar: [
 						{
 							iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-close',
@@ -100,22 +101,35 @@
 					],
 					items:[
 						{
-							layout: 'table',
 							xtype: 'panel',
 							autoScroll: true,
 							layoutConfig: {
-								columns: 2
+								columns: 1
 							},
 							defaults: {
-								padding: 20
+								padding: 10
 							},
 							items: [
 								{
 									html: new Ext.XTemplate(
+											'<h2>' +TYPO3.lang.SitemgrTemplates_templatePreview + ': ' + record.title + '</h2>',
+											'<tpl for="screens">',
+												'<div class="sitemgr-template-previewimage"><img src="{.}"></div>',
+											'</tpl>'
+									).apply(record)
+								}, {
+									html: new Ext.XTemplate(
 											'<tpl for="copyright">',
-											'   <p>{nameAdditional} - {version} - {state}<p>',
-												'<br></p><p>{parent.description}</p>',
-												'<br><p>&copy;{license} by <a href="mailto:{authorEmail}">{authorName}</a> - {authorCompany}</small></p>',
+												'<div class="typo3-message message-information">',
+													'<div class="header-container">',
+														'<div class="message-header">' + 'Informationen zur Vorlage' + '</div>',
+													'</div>',
+													'<div class="message-body">',
+														'<p>{nameAdditional} - {version} - {state}<p>',
+														'<br></p><p>{parent.description}</p>',
+														'<br><p>&copy;{license} by <a href="mailto:{authorEmail}">{authorName}</a> - {authorCompany}</small></p>',
+													'</div>',
+												'</div>',
 											'</tpl>'
 									).apply(record),
 									bbar: [
@@ -123,26 +137,34 @@
 											xtype: 'button',
 											text: '<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-undo"></span>' + TYPO3.lang.SitemgrTemplates_theme_cansel_apply,
 											handler: function() {
-												Ext.getCmp('templateSelector').getStore().reload();
 												Ext.getCmp('templatePreviewWindow').close();
+												if(this.templateStructureStore) {
+													this.templateStructureStore.reload();
+												}
 											},
 											scope: this
 										}, '->',{
 											xtype: 'button',
-											text: '<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-select"></span>' + TYPO3.lang.SitemgrTemplates_theme_apply,
+											text: '<span class="t3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-ok"></span>' + TYPO3.lang.SitemgrTemplates_theme_apply,
 											handler: function() {
+												Ext.Msg.confirm(
+													'Wollen Sie die Vorlage wirklich übernehmen?',
+													'Mit dem Übernehmen der Vorlage ändern Sie sofort das Aussehen Ihrer Internetseite. Je nach Verfügbarkeit Ihrer alten Vorlage gibt es eventuell keine Möglichkeit zu Ihrer alten Vorlage zurückzukehren.',
+													function(button) {
+														if(button == 'yes') {
+															this.showTemplateOptions(record);
+														}
+													},
+													this
+												);
 												Ext.getCmp('templatePreviewWindow').close();
-												this.showTemplateOptions(record);
+												if(this.templateStructureStore) {
+													this.templateStructureStore.reload();
+												}
 											},
 											scope: this
 										}
 									]
-								}, {
-									html: new Ext.XTemplate(
-											'<tpl for="screens">',
-												'<div class="sitemgr-template-previewimage"><img src="{.}"></div>',
-											'</tpl>'
-									).apply(record)
 								}
 							]
 						}
@@ -167,6 +189,7 @@
 						id   :'templateWindow',
 						modal:true,
 						closeAction: 'close',
+						closable: false,
 						maximized:true,
 						height:450,
 						width:500,
@@ -192,7 +215,7 @@
 											args  : record.id + ';' + TYPO3.settings.sitemgr.uid
 										},
 										success: function(f,a){
-											Ext.getCmp('templateSelector').getStore().reload();
+											this.templateStructureStore.reload();
 										}
 									});
 								},
@@ -211,7 +234,9 @@
 										},
 										success: function(f,a){
 											Ext.getCmp('templateWindow').close();
-											Ext.getCmp('templateSelector').getStore().reload();
+											if(this.templateStructureStore) {
+												this.templateStructureStore.reload();
+											}
 										}
 									});
 								}
@@ -262,6 +287,29 @@
 			);
 		},
 		init: function() {
+			this.templateStructureStore = new Ext.data.DirectStore({
+				storeId:'templateStructureStore',
+				autoLoad:true,
+				directFn:TYPO3.sitemgr.tabs.dispatch,
+				paramsAsHash: false,
+				paramOrder:'module,fn,args',
+				baseParams:{
+					module:'sitemgr_template',
+					fn    :'getTemplates',
+					args  :TYPO3.settings.sitemgr.uid
+				},
+				idProperty: 'uid',
+				fields: [
+					'id',
+					'icon',
+					'screens',
+					'description',
+					'title',
+					'copyright',
+					'version',
+					'isInUse'
+				]
+			});
 			this.tab = Ext.getCmp('Sitemgr_App_Tabs').add({
 				title:TYPO3.lang.SitemgrTemplates_title,
 				disabled:!TYPO3.settings.sitemgr.customerSelected,
@@ -284,29 +332,7 @@
 								id:'templateSelector',
 								selectedClass:'template-item-selected',
 								itemSelector:'div.template-item-wrap',
-								store:new Ext.data.DirectStore({
-									storeId:'templateStructureStore',
-									autoLoad:true,
-									directFn:TYPO3.sitemgr.tabs.dispatch,
-									paramsAsHash: false,
-									paramOrder:'module,fn,args',
-									baseParams:{
-										module:'sitemgr_template',
-										fn    :'getTemplates',
-										args  :TYPO3.settings.sitemgr.uid
-									},
-									idProperty: 'uid',
-									fields: [
-										'id',
-										'icon',
-										'screens',
-										'description',
-										'title',
-										'copyright',
-										'version',
-										'isInUse'
-									]
-								}),
+								store: this.templateStructureStore,
 								tpl: this.tpl,
 								multiSelect:false,
 								singleSelect:true,
