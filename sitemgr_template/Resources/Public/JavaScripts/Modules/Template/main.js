@@ -55,10 +55,9 @@
 			'<tpl for=".">',
 				'<tpl if="isInUse==0"><div class="template-item-wrap" id="structure{uid}"></tpl>',
 				'<tpl if="isInUse==1"><div class="template-item-wrap template-item-selected" id="structure{uid}"></tpl>',
-						'<div class="thumb">',
-						'<span class=""></span>',
-						'<img src="{icon}">',
-						'<small>{title}</small>',
+					'<div class="thumb" style="background-image: url({icon});">',
+						'<div class="template-selector"></div>',
+						'<div class="template-title">{title}</div>',
 					'</div>',
 				'</div>',
 				'</tpl>',
@@ -331,11 +330,12 @@
 								deferEmptyText: false,
 								id:'templateSelector',
 								selectedClass:'template-item-selected',
+								overClass: 'template-item-hover',
 								itemSelector:'div.template-item-wrap',
 								store: this.templateStructureStore,
 								tpl: this.tpl,
-								multiSelect:false,
-								singleSelect:true,
+								//multiSelect:false,
+								//singleSelect:true,
 								listeners: {
 									selectionchange: function(dv,nodes){
 										var record    =  dv.getSelectedRecords()[0].data;

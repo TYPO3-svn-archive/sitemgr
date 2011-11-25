@@ -15,6 +15,10 @@ class Tx_SitemgrTemplate_Domain_Repository_TemplateAbstractRepository {
 		}
 		return $output;
 	}
+	/**
+	 * @param $pid pageid
+	 * @return array
+	 */
 	function getAllTemplatesAsArrayMarkInUse($pid) {
 		foreach($this->templates as $key=>$template) {
 			$this->templates[$key]->isInUseOnPage($pid);

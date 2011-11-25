@@ -184,12 +184,24 @@ class Tx_SitemgrTemplate_Modules_Template_TemplateController extends Tx_Sitemgr_
 	 * @return array of array
 	 */
 	public function getTemplates($uid) {
+			// init customer
 		$cid           = Tx_Sitemgr_Utilities_CustomerUtilities::getCustomerForPage($uid);
 		$customer      = new Tx_Sitemgr_Utilities_CustomerUtilities($cid);
 		$customer->enableExceptions();
 		$customer->isAdministratorForCustomer();
 		$pid           = $customer->getRootPage();
+			// init repository
 		$TemplateRepository = new Tx_SitemgrTemplate_Domain_Repository_TemplateRepository();
+			// apply filters for customer
+		$allowed = $GLOBALS["BE_USER"]->getTSConfig(
+			'mod.web_txsitemgr.template.allowedList',
+			t3lib_BEfunc::getPagesTSconfig($pid)
+		);
+		$denied = $GLOBALS["BE_USER"]->getTSConfig(
+			'mod.web_txsitemgr.template.deniedList',
+			t3lib_BEfunc::getPagesTSconfig($pid)
+		);
+			// return
 		return $TemplateRepository->getAllTemplatesAsArrayMarkInUse($pid);
 	}
 	/**
