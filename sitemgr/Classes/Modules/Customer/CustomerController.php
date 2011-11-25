@@ -156,7 +156,7 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 		 * fetch needed options		 
 		 */
 	 		$tgroup = $GLOBALS["BE_USER"]->getTSConfig(
-			  	'mod.web_txkssitemgrM1.createUser.group',
+			  	'mod.web_txsitemgr.customer.createUser.group',
 				t3lib_BEfunc::getPagesTSconfig($arg['uid'])
 			);
 		/***********************************************************************
