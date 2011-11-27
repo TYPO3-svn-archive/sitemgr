@@ -201,6 +201,7 @@ class Tx_SitemgrTemplate_Modules_Template_TemplateController extends Tx_Sitemgr_
 			'mod.web_txsitemgr.template.deniedList',
 			t3lib_BEfunc::getPagesTSconfig($pid)
 		);
+		$TemplateRepository->setFilter($allowed['value'], $denied['value']);
 			// return
 		return $TemplateRepository->getAllTemplatesAsArrayMarkInUse($pid);
 	}

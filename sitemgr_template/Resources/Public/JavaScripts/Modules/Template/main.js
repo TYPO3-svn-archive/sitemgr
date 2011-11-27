@@ -96,6 +96,19 @@
 								this.showTemplateOptions(record);
 							},
 							scope:this
+						}, '->', {
+							tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
+							iconCls:'t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-typoscript-documentation-open',
+							handler:function() {
+								Ext.Msg.alert(
+									'Id of template',
+									new Ext.XTemplate(
+											'mod.web_txsitemgr.template.allowedList = {id}<br />',
+											'mod.web_txsitemgr.template.deniedList = {id}'
+									).apply(record)
+								);
+							},
+							scope:this
 						}
 					],
 					items:[
@@ -118,6 +131,7 @@
 									).apply(record)
 								}, {
 									html: new Ext.XTemplate(
+											'<span>{id}</span>',
 											'<tpl for="copyright">',
 												'<div class="typo3-message message-information">',
 													'<div class="header-container">',
@@ -334,8 +348,8 @@
 								itemSelector:'div.template-item-wrap',
 								store: this.templateStructureStore,
 								tpl: this.tpl,
-								//multiSelect:false,
-								//singleSelect:true,
+								multiSelect:false,
+								singleSelect:true,
 								listeners: {
 									selectionchange: function(dv,nodes){
 										var record    =  dv.getSelectedRecords()[0].data;
