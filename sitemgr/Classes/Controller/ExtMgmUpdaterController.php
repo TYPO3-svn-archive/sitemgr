@@ -34,6 +34,7 @@
  * @author Kay Strobach <typo3@kay-strobach.de>
  */
 
+require_once('Abstract/ExtMgmUpdaterAbstract.php');
 class Tx_Sitemgr_Controller_ExtMgmUpdaterController extends Tx_Sitemgr_Controller_Abstract_ExtMgmUpdaterAbstract{
 	function main() {
 		global $LANG;
