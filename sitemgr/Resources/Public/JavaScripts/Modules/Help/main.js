@@ -34,41 +34,71 @@
  * @author Kay Strobach <typo3@kay-strobach.de>
  */
 
-	function loadHelpTabFrame(url) {
-		buffer = '<iframe width="100%" height="100%" frameborder="0" src="'+url+'">';
-		Ext.getCmp('SitemgrHelp').update(buffer);
-	}
 
 	Ext.onReady(function (){
 		Ext.getCmp('Sitemgr_App_Tabs').add({
 			title:TYPO3.lang.SitemgrHelp_Title,
-			html :TYPO3.lang.SitemgrHelp_Description,
+			//html :TYPO3.lang.SitemgrHelp_Description,
+			layout: 'border',
 			iconCls: 'help-tab-icon',
 			id   :'SitemgrHelp',
-			tbar :[{
-				text   :'TYPO3 SBS',
-				iconCls:'t3-icon-text-html',
-				handler:function() {
-					loadHelpTabFrame('http://cms.sn.schule.de/admin/administrative-informationen/grundlagen/');
+			defaults: {
+				padding: 10
+			},
+			items: [
+				{
+					region: 'west',
+					width: 150,
+					collapseMode: 'mini',
+					split: true,
+					titleCollapse: false,
+					layout: 'fit',
+					items: [
+						{
+							xtype: 'treepanel',
+							useArrows: true,
+							animate: true,
+							root: new Ext.tree.AsyncTreeNode(TYPO3.settings.sitemgr_help.links),
+							rootVisible: false,
+							listeners: {
+								click: function(node, event) {
+									if(node.attributes.uri) {
+										buffer = '<iframe width="100%" height="100%" frameborder="0" src="' + node.attributes.uri + '">';
+									} else {
+										buffer = '<div class="typo3-message message-information"><div class="message-body">' + TYPO3.lang.SitemgrHelp_selectHint + '</div></div>'
+									}
+									Ext.getCmp('SitemgrHelp').get(1).update(buffer);
+								},
+								afterlayout: function (container) {
+									container.expandAll();
+								},
+								contextmenu: function(node) {
+									if(node.attributes.uri) {
+										node.select();
+										menu = new Ext.menu.Menu(
+											{
+												node: node,
+												items: [
+													{
+														iconCls: 't3-icon t3-icon-actions t3-icon-actions-window t3-icon-window-open',
+														text: TYPO3.lang.SitemgrHelp_openInNewWin,
+														handler: function() {
+															window.open(this.ownerCt.node.attributes.uri);
+														}
+													}
+												]
+											}
+										).show(node.ui.getAnchor());
+									}
+								}
+							}
+						}
+					]
+				}, {
+					region: 'center',
+					html: '<div class="typo3-message message-information"><div class="message-body">' + TYPO3.lang.SitemgrHelp_selectHint + '</div></div>'
 				}
-			},'-',{
-				text   :'TYPO3 Videos',
-				iconCls:'t3-icon-text-html',
-				handler:function() {
-					loadHelpTabFrame('http://typo3.org/documentation/videos/tutorials-v4-de/');
-				}
-			},{
-				text   :'TYPO3 Reference',
-				iconCls:'t3-icon-text-html',
-				handler:function() {
-					loadHelpTabFrame('http://typo3.org/documentation/videos/quick-reference-v4-de/');
-				}
-			},{
-				text   :'TYPO3 Wiki',
-				iconCls:'t3-icon-text-html',
-				handler:function() {
-					loadHelpTabFrame('http://wiki.typo3.org/Main_Page');
-				}
-			}]
+			]
 		});
-	});
+	}
+);

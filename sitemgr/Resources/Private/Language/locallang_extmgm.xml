@@ -11,9 +11,11 @@
 			<label index="button.DoIt">Do it!</label>
 			<label index="header.installation">installation</label>
 			<label index="header.configuration">configuration</label>
-			<label index="header.ks_sitemgr">migration from ks_sitemgr</label>
+			<label index="header.sitemgr">migration from ks_sitemgr</label>
 			<label index="action.importFromKsSitemgr">Migrate Data from ks_sitemgr</label>
-			<label index="desc.importFromKsSitemgr">Import data from ks_sitemgr - please verify, that ks_sitemgr is disabled - tables and fields will be simply renamed - though tables / fields of sitemgr will be deleted before.</label>
+			<label index="desc.importFromKsSitemgr">Import data from ks_sitemgr - ks_sitemgr needs to be installed during installation and will be disabled afterwards.</label>
+			<label index="action.cleanUpDatabase">Cleans Up Database - use with case.</label>
+			<label index="desc.cleanUpDatabase">Removes all occurences of ks_sitemgr data from your database!.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 

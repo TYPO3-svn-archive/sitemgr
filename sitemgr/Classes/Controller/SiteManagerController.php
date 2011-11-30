@@ -46,7 +46,9 @@
 	 * @return string The rendered list view
 	 */
 	public function indexAction() {
+			// get Modules
 		$this->view->assign('modules', $this->getModules());
+			// add inline settings
 		$this->view->assign('settings', $this->getSettings());
 	}
 	
@@ -94,9 +96,11 @@
 			$procObj = new $_classRef();
 			if(is_a($procObj, 'Tx_Sitemgr_Modules_Abstract_AbstractController')) {
 				$modules[]  = array(
-				'jsFile'  => $procObj->getModuleJsFile(),
-					'cssFile' => $procObj->getModuleCssFile(),
-					'llFile'  => $procObj->getModuleLLFile(),
+					'name'     => $module['name'],
+					'jsFile'   => $procObj->getModuleJsFile(),
+					'cssFile'  => $procObj->getModuleCssFile(),
+					'llFile'   => $procObj->getModuleLLFile(),
+					'settings' => $procObj->getModuleSettings(),
 				);
 			} else {
 				throw new Exception('The supplied controller must extend Tx_Sitemgr_Modules_Abstract_AbstractController');

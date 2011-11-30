@@ -34,7 +34,7 @@
  * @author Kay Strobach <typo3@kay-strobach.de>
  */
 
-require_once(t3lib_extMgm::extPatch('sitemgr').'Classes/Controller/ExtMgmUpdaterController.php');
+require_once(t3lib_extMgm::extPath('sitemgr').'Classes/Controller/ExtMgmUpdaterController.php');
 
 class ext_update extends Tx_Sitemgr_Controller_ExtMgmUpdaterController {
 

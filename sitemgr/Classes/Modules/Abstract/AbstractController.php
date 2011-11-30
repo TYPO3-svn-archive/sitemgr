@@ -13,6 +13,10 @@ class Tx_Sitemgr_Modules_Abstract_AbstractController{
 	 */
 	protected $cssFiles = array();
 	/**
+	 * @var null
+	 */
+	protected $settings = null;
+	/**
 	 * @throws Exception
 	 * @return void
 	 */
@@ -75,6 +79,12 @@ class Tx_Sitemgr_Modules_Abstract_AbstractController{
 		$file = $this->getModuleLangPath().'locallang.xml';
 		$file = substr($file,17);
 		return 'EXT:'.$file;
+	}
+	/**
+	 * @return array
+	 */
+	function getModuleSettings() {
+		return $this->settings;
 	}
 	/**
 	 * @param $field

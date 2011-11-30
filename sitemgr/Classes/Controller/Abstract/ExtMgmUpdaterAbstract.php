@@ -13,7 +13,7 @@ class Tx_sitemgr_Controller_Abstract_ExtMgmUpdaterAbstract {
 	function getFooter() {
 		return '</table>';
 	}
-	function getButton($func,$piwikNeeded=true) {
+	function getButton($func,$enable=true) {
 		global $LANG;
 		$params = array('do_update' => 1, 'func' => $func);
 		$onClick = "document.location='" . t3lib_div::linkThisScript($params) . "'; return false;";
@@ -24,10 +24,10 @@ class Tx_sitemgr_Controller_Abstract_ExtMgmUpdaterAbstract {
 		$button.= '<b style="float:left;">'.$LANG->getLL('action.'.$func).'</b><br>';
 		$button.= '<p>'.$LANG->getLL('desc.'.$func).'</p>';
 		$button.= '</td><td>';
-		if(method_exists($this, $func)) {
+		if(method_exists($this, $func) && $enable) {
 			$button.= '<input type="submit" value="' . $LANG->getLL('button.DoIt') . '" onclick="' . htmlspecialchars($onClick) . '">';
 		} else {
-			$button.='<input type="submit" value="' . $LANG->getLL('button.DoIt') . '" onclick="' . htmlspecialchars($onClick) . '" disabled="disabled" title="Method not implemented!">';
+			$button.='<input type="submit" value="' . $LANG->getLL('button.DoIt') . '" onclick="' . htmlspecialchars($onClick) . '" disabled="disabled" title="Method disabled!">';
 		}
 			
 		$button.='</td>';

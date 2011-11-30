@@ -47,7 +47,8 @@ if (!defined ('TYPO3_MODE')) {
 
 /*******************************************************************************
  * be_user table
- */ 
+ */
+	// @todo remove
 	$tempColumns = array (
 		'tx_sitemgr_manager_for_be_groups' => array (		
 			'exclude' => 1,		
@@ -68,7 +69,8 @@ if (!defined ('TYPO3_MODE')) {
 
 /*******************************************************************************
  * tx_templavoila_tmplobj table
- */ 
+ */
+	// @todo remove
 	$tempColumns = array (
 		'tx_sitemgr_manager_allowed_for_customer' => array (		
 			'exclude' => 1,		

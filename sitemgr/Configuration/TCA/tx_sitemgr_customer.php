@@ -100,15 +100,6 @@ $TCA['tx_sitemgr_customer'] = array (
 			    ),
 			)
 		),
-		'tt_address_records' => array(
-			'exclude' => 0,		
-			'label' => 'LLL:EXT:sitemgr/Resources/Private/Language/locallang_db.xml:tx_sitemgr_customer.tt_address_records',		
-			'config' => array (
-				'type'          => 'inline',
-				'foreign_table' => 'tt_address',
-				'maxitems'      => 10	
-			)
-		),
 	),
 	'types' => array (
 		'0' => array('showitem' => '--div--;LLL:EXT:sitemgr/Resources/Private/Language/locallang_db.xml:tx_sitemgr_customer.div_required,title;;;;2-2-2, main_be_user;;;;3-3-3,'.
@@ -119,4 +110,18 @@ $TCA['tx_sitemgr_customer'] = array (
 		'1' => array('showitem' => '')
 	)
 );
+
+if(t3lib_extMgm::isLoaded('tt_address', FALSE)) {
+	$TCA['tx_sitemgr_customer']['columns']['tt_address_records'] = array(
+		'exclude' => 0,
+		'label' => 'LLL:EXT:sitemgr/Resources/Private/Language/locallang_db.xml:tx_sitemgr_customer.tt_address_records',
+		'config' => array (
+			'type'          => 'inline',
+			'foreign_table' => 'tt_address',
+			'maxitems'      => 10
+		)
+	);
+
+}
+
 ?>

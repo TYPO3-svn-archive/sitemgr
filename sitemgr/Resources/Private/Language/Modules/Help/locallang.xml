@@ -8,10 +8,14 @@
 		<languageKey index="default" type="array">
 			<label index="SitemgrHelp_Title">Help</label>
 			<label index="SitemgrHelp_Description">Please select the manual you are interested in from the toolbar.</label>
+			<label index="SitemgrHelp_selectHint">Please select the help resource from the Tree.</label>
+			<label index="SitemgrHelp_openInNewWin">Open link in new window</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="SitemgrHelp_Title">Hilfe</label>
 			<label index="SitemgrHelp_Description">Bitte wählen Sie das Handbuch, dass Sie interessiert, aus der Symbolleiste.</label>
+			<label index="SitemgrHelp_selectHint">Bitte Hilferessource aus dem Baum wählen.</label>
+			<label index="SitemgrHelp_openInNewWin">Öffne Link in neuem Fenster</label>
 		</languageKey>
 	</data>
 </T3locallang>

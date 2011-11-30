@@ -39,6 +39,7 @@ class Tx_Sitemgr_Controller_ExtMgmUpdaterController extends Tx_Sitemgr_Controlle
 		global $LANG;
 		$LANG->includeLLFile('EXT:sitemgr/Resources/Private/Language/locallang_extmgm.xml');
 		$func = trim(t3lib_div::_GP('func'));
+		$buffer = '';
 		if(t3lib_div::_GP('do_update')) {
 			if (method_exists($this, $func)) {
 				$flashMessage = t3lib_div::makeInstance(
@@ -66,24 +67,32 @@ class Tx_Sitemgr_Controller_ExtMgmUpdaterController extends Tx_Sitemgr_Controlle
 		$buffer.= $this->getHeader($LANG->getLL('header.configuration'));
 		$buffer.= $this->getFooter();
 
-		$buffer.= $this->getHeader($LANG->getLL('header.ks_sitemgr'));
-		$buffer.= $this->getButton('importFromKsSitemgr');
+		$buffer.= $this->getHeader($LANG->getLL('header.sitemgr'));
+		$sitemgrEnabled = t3lib_extMgm::isLoaded('ks_sitemgr') || 1;
+		$buffer.= $this->getButton('importFromKsSitemgr', $sitemgrEnabled);
+		$buffer.= $this->getButton('cleanUpDatabase'    , $sitemgrEnabled);
 		$buffer.= $this->getFooter();
 		return $buffer;
 	}
-	function importFromKsSitemgr() {
+	function cleanUpDatabase() {
 		//touch be_users
 		$GLOBALS['TYPO3_DB']->admin_query('ALTER TABLE be_users DROP tx_sitemgr_manager_for_be_groups');
-		$GLOBALS['TYPO3_DB']->admin_query('ALTER TABLE be_users CHANGE COLUMN tx_sitemgr_manager_for_be_groups                        tx_kssitemgr_manager_for_be_groups');
+		//$GLOBALS['TYPO3_DB']->admin_query('ALTER TABLE be_users CHANGE COLUMN tx_sitemgr_manager_for_be_groups                        tx_kssitemgr_manager_for_be_groups');
 
 		//touch tv table
 		$GLOBALS['TYPO3_DB']->admin_query('ALTER TABLE tx_templavoila_tmplobj DROP tx_sitemgr_manager_allowed_for_customer');
-		$GLOBALS['TYPO3_DB']->admin_query('ALTER TABLE tx_templavoila_tmplobj CHANGE COLUMN tx_kssitemgr_manager_allowed_for_customer tx_sitemgr_manager_allowed_for_customer');
+		$GLOBALS['TYPO3_DB']->admin_query('ALTER TABLE tx_templavoila_tmplobj DROP tx_kssitemgr_manager_allowed_for_customer');
 
 		//migrate table
 		$GLOBALS['TYPO3_DB']->admin_query('DROP TABLE tx_sitemgr_customer');
 		$GLOBALS['TYPO3_DB']->admin_query('RENAME TABLE tx_kssitemgr_customer TO tx_sitemgr_customer');
-		
+
+		return 'If no errors are displayed, everything worked fine.';
+	}
+	function importFromKsSitemgr() {
+		$GLOBALS['TYPO3_DB']->admin_query('TRUNCATE tx_sitemgr_customer');
+		$GLOBALS['TYPO3_DB']->admin_query('INSERT IGNORE INTO tx_sitemgr_customer SELECT *, 0 FROM tx_kssitemgr_customer');
+
 		return 'If no errors are displayed, everything worked fine.';
 	}
 }

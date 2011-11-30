@@ -290,10 +290,10 @@
 					}},
 					{header: TYPO3.lang.SitemgrCustomer_grid_customer, dataIndex: 'title'},
 					{header: TYPO3.lang.SitemgrCustomer_grid_users   , dataIndex: 'users',sortable:false}
-				],
+				]
 			}),
 			viewConfig: {
-				forceFit: true,
+				forceFit: true
 			}
 		});
 	});

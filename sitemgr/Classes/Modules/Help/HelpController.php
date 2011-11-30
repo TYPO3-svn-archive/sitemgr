@@ -14,4 +14,71 @@ class Tx_Sitemgr_Modules_Help_HelpController extends Tx_Sitemgr_Modules_Abstract
 			$uid
 		);
 	}
+	function __construct() {
+		$this->settings = array(
+			'links' => array(
+				'text'=> 'Root',
+				'children'=>array(
+					array(
+						'text'=> 'English',
+						'iconCls' => 't3-icon t3-icon-flags t3-icon-flags-gb t3-icon-gb',
+						'children'=> array(
+							array(
+								'text'=> 'typo3.org',
+								'iconCls' => 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-documentation',
+								'children'=> array(
+									array(
+										'leaf'=> true,
+										'text'=> 'Wiki',
+										'uri'=>  'http://wiki.typo3.org/Main_Page'
+									),
+									array(
+										'leaf'=> true,
+										'text'=> 'Videos',
+										'uri'=>  'http://typo3.org/documentation/videos/tutorials-v4-de/'
+									),
+									array(
+										'leaf'=> true,
+										'text'=> 'Reference',
+										'uri'=>  'http://typo3.org/documentation/videos/quick-reference-v4-de/'
+									)
+								)
+							)
+						),
+					),
+					array(
+						'text'=> 'Deutsch',
+						'iconCls' => 't3-icon t3-icon-flags t3-icon-flags-de t3-icon-de',
+						'children'=> array(
+							array(
+								'text'=> 'SBS',
+								'children'=> array(
+									array(
+										'leaf'=> true,
+										'text'=> 'Hinweise',
+										'uri'=>  'http://cms.sn.schule.de/admin/administrative-informationen/grundlagen/'
+									),
+									array(
+										'leaf'=> true,
+										'text'=> 'Handbuch',
+										'uri'=>  'about:blank'
+									)
+								),
+							),
+							array(
+								'text'=> 'Mittwald',
+								'children'=> array(
+									array(
+										'leaf'=> true,
+										'text'=> 'Handbuch',
+										'uri'=>  'about:blank'
+									)
+								)
+							)
+						)
+					)
+				)
+			)
+		);
+	}
 }

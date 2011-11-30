@@ -9,7 +9,7 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 	function getModuleJavaScript(&$js,$uid) {
 		$extConfig       = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ks_sitemgr']);
 		$customerPidPage = $GLOBALS["BE_USER"]->getTSConfig(
-		  	'mod.web_txkssitemgrM1.customerPidPage',
+		  	'mod.web_txsitemgrM1.customerPidPage',
 			t3lib_BEfunc::getPagesTSconfig($uid)
 		);
 		if((!$extConfig['customerPidPageTS']) || ($extConfig['customerPidPageTS'] && $uid == $customerPidPage['value'] && $uid!=0))
