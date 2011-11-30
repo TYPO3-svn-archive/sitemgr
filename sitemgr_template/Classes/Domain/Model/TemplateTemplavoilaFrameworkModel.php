@@ -12,8 +12,9 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 			$previewIconFilename = $GLOBALS['BACK_PATH'].'../'.t3lib_extMgm::siteRelPath('templavoila_framework').'/default_screenshot.gif';
 		}
 			//fetch screenshots
-		if($name !== 'LOCAL:error') {
-			$additionalScreenshots = t3lib_div::getFilesInDir(t3lib_extMgm::extRelPath(substr($name,4)) . 'screenshots', '', TRUE);
+		$extName = substr($name,4);
+		if(($name !== 'LOCAL:error') && (t3lib_extMgm::isLoaded($extName, FALSE))){
+			$additionalScreenshots = t3lib_div::getFilesInDir(t3lib_extMgm::extRelPath($extName) . 'screenshots', '', TRUE);
 			$additionalScreenshots = array_values($additionalScreenshots);
 		}
 		if(count($additionalScreenshots) === 0) {

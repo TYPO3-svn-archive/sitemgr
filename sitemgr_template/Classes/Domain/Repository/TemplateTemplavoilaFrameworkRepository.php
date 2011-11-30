@@ -15,7 +15,9 @@ class Tx_SitemgrTemplate_Domain_Repository_TemplateTemplavoilaFrameworkRepositor
 			return;
 		}
 		foreach($skins as $skin) {
-			$this->templates[] = new Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel($skin);
+			if($skin !== 'LOCAL:error') {
+				$this->templates[] = new Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel($skin);
+			}
 		}
 	}
 }

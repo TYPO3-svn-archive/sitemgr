@@ -3,12 +3,16 @@
 class Tx_SitemgrTemplate_Domain_Repository_TemplateAbstractRepository {
 	/**
 	 * Holds a reference to all templates in this repository
+	 * @var array[Tx_SitemgrTemplate_Domain_Model_TemplateAbstractModel]
 	 */
 	protected $templates = array();
 	/**
 	 * @var null|array used to store information for the filter
 	 */
 	protected $filter = null;
+	/**
+	 * @return array[Tx_SitemgrTemplate_Domain_Model_TemplateAbstractModel]
+	 */
 	function getAllTemplates() {
 		return $this->templates;
 	}

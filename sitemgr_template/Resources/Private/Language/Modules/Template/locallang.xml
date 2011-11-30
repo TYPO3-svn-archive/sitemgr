@@ -38,8 +38,8 @@
 			<label index="SitemgrTemplates_rootpageTvStructure_next">Unterseitenstruktur</label>
 			<label index="SitemgrTemplates_theme_apply">Vorlage übernehmen</label>
 			<label index="SitemgrTemplates_theme_cansel_apply">Abbrechen</label>
-			<label index="SitemgrTemplates_applyTemplateHeader">Wollen Sie die Vorlage wirklich übernehmen?</label>
-			<label index="SitemgrTemplates_applyTemplateMessage">Mit dem Übernehmen der Vorlage ändern Sie sofort das Aussehen Ihrer Internetseite. Je nach Verfügbarkeit Ihrer alten Vorlage gibt es eventuell keine Möglichkeit zu Ihrer alten Vorlage zurückzukehren.</label>
+			<label index="SitemgrTemplates_applyTemplateHeader">Vorlage übernehmen?</label>
+			<label index="SitemgrTemplates_applyTemplateMessage">Die gewählte Vorlage wird sofort auf Ihre Seite angewendet. In den folgenden Schritten können Sie die Einstellungen für Ihre Seite anpassen.</label>
 		</languageKey>
 	</data>
 </T3locallang>

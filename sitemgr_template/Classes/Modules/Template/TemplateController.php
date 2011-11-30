@@ -21,9 +21,10 @@ class Tx_SitemgrTemplate_Modules_Template_TemplateController extends Tx_Sitemgr_
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.sitemgrMultiField.js',
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.sitemgrCombobox.js',
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.sitemgrWizardfield.js',
+			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.wizard.js',
 		);
 		$this->cssFiles = array(
-			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-ColorField-ryanpetrelo/Ext.ux.ColorField.css'
+			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-ColorField-ryanpetrelo/Ext.ux.ColorField.css',
 		);
 	}
 	function initRepository() {

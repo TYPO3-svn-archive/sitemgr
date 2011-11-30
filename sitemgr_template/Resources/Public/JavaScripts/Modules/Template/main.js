@@ -72,6 +72,18 @@
 			if(record.isInUse) {
 				this.showTemplateOptions(record);
 			} else {
+				var screenShots = [];
+				if(record.screens.length == 0) {
+					screenShots[0]  = {
+							html: '<img src="' + record.icon + '">'
+						};
+				} else {
+					for(i=0; i<record.screens.length; i++) {
+						screenShots[i] = {
+							html: '<img src="' + record.screens[i] + '">'
+						};
+					}
+				}
 				var win = new Ext.Window({
 					title: TYPO3.lang.SitemgrTemplates_templatePreview + ': ' + record.title,
 					id   : 'templatePreviewWindow',
@@ -123,15 +135,12 @@
 							},
 							items: [
 								{
-									html: new Ext.XTemplate(
-											'<h2>' +TYPO3.lang.SitemgrTemplates_templatePreview + ': ' + record.title + '</h2>',
-											'<tpl for="screens">',
-												'<div class="sitemgr-template-previewimage"><img src="{.}"></div>',
-											'</tpl>'
-									).apply(record)
+									xtype: 'wizard',
+									width: 400,
+									height: 320,
+									items: screenShots
 								}, {
 									html: new Ext.XTemplate(
-											'<span>{id}</span>',
 											'<tpl for="copyright">',
 												'<div class="typo3-message message-information">',
 													'<div class="header-container">',
