@@ -1,22 +1,4 @@
 #
-# Table structure for table 'be_users'
-#
-CREATE TABLE be_users (
-	tx_sitemgr_manager_for_be_groups text
-);
-
-
-
-#
-# Table structure for table 'be_users'
-#
-CREATE TABLE tx_templavoila_tmplobj (
-	tx_sitemgr_manager_allowed_for_customer tinyint(4) DEFAULT '0' NOT NULL
-);
-
-
-
-#
 # Table structure for table 'tx_kssitemgr_customer'
 #
 CREATE TABLE tx_sitemgr_customer (
