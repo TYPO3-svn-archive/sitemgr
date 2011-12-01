@@ -58,7 +58,7 @@ class Tx_Sitemgr_Modules_Help_HelpController extends Tx_Sitemgr_Modules_Abstract
 										'text'=> 'Hinweise',
 										'uri'=>  'http://cms.sn.schule.de'
 									),
-									array(#http://cms.sn.schule.de/admin/administrative-informationen/weitere-quellen/
+									array(
 										'leaf'=> true,
 										'text'=> 'Handbuch',
 										'uri'=>  'http://cms.sn.schule.de/admin/handbuch/'
