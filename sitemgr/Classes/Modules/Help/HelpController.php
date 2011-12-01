@@ -41,6 +41,21 @@ class Tx_Sitemgr_Modules_Help_HelpController extends Tx_Sitemgr_Modules_Abstract
 										'leaf'=> true,
 										'text'=> 'Reference',
 										'uri'=>  'http://typo3.org/documentation/videos/quick-reference-v4-de/'
+									),
+									array(
+										'leaf'=> true,
+										'text'=> 'Sitemgr Manual',
+										'uri'=>  'http://typo3.org/extensions/repository/view/sitemgr/current/'
+									),
+									array(
+										'leaf'=> true,
+										'text'=> 'Sitemgr Template Manual',
+										'uri'=>  'http://typo3.org/extensions/repository/view/sitemgr_template/current/'
+									),
+									array(
+										'leaf'=> true,
+										'text'=> 'Sitemgr on Forge',
+										'uri'=>  'http://forge.typo3.org/projects/extension-sitemgr'
 									)
 								)
 							)
@@ -68,6 +83,21 @@ class Tx_Sitemgr_Modules_Help_HelpController extends Tx_Sitemgr_Modules_Abstract
 										'text'=> 'Literatur',
 										'uri'=>  'http://cms.sn.schule.de/admin/administrative-informationen/weitere-quellen/'
 									)
+								),
+							),
+							array(
+								'text'=> 'Kay Strobach',
+								'children'=> array(
+									array(
+										'leaf'=> true,
+										'text'=> 'Erweiterungen',
+										'uri'=>  'http://www.kay-strobach.de/projekte/typo3-extensions/'
+									),
+									array(
+										'leaf'=> true,
+										'text'=> 'Präsentationen',
+										'uri'=>  'http://www.kay-strobach.de/projekte/typo3-praesentationen/fuer-redakteure/'
+									),
 								),
 							),
 							array(
