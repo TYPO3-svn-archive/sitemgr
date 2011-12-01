@@ -56,12 +56,17 @@ class Tx_Sitemgr_Modules_Help_HelpController extends Tx_Sitemgr_Modules_Abstract
 									array(
 										'leaf'=> true,
 										'text'=> 'Hinweise',
-										'uri'=>  'http://cms.sn.schule.de/admin/administrative-informationen/grundlagen/'
+										'uri'=>  'http://cms.sn.schule.de'
+									),
+									array(#http://cms.sn.schule.de/admin/administrative-informationen/weitere-quellen/
+										'leaf'=> true,
+										'text'=> 'Handbuch',
+										'uri'=>  'http://cms.sn.schule.de/admin/handbuch/'
 									),
 									array(
 										'leaf'=> true,
-										'text'=> 'Handbuch',
-										'uri'=>  'about:blank'
+										'text'=> 'Literatur',
+										'uri'=>  'http://cms.sn.schule.de/admin/administrative-informationen/weitere-quellen/'
 									)
 								),
 							),
@@ -71,7 +76,7 @@ class Tx_Sitemgr_Modules_Help_HelpController extends Tx_Sitemgr_Modules_Abstract
 									array(
 										'leaf'=> true,
 										'text'=> 'Handbuch',
-										'uri'=>  'about:blank'
+										'uri'=>  'http://www.mittwald.de/typo3-dokumentation/'
 									)
 								)
 							)
