@@ -92,7 +92,10 @@ class Tx_Sitemgr_Controller_ExtMgmUpdaterController extends Tx_Sitemgr_Controlle
 	}
 	function importFromKsSitemgr() {
 		$GLOBALS['TYPO3_DB']->admin_query('TRUNCATE tx_sitemgr_customer');
-		$GLOBALS['TYPO3_DB']->admin_query('INSERT IGNORE INTO tx_sitemgr_customer SELECT *, 0 FROM tx_kssitemgr_customer');
+		$GLOBALS['TYPO3_DB']->admin_query('
+			INSERT IGNORE INTO tx_sitemgr_customer (uid, pid, tstamp, crdate, cruser_id, t3ver_oid, t3ver_id, t3ver_wsid, t3ver_label, t3ver_state, t3ver_stage, t3ver_count, t3ver_tstamp, t3_origuid, deleted, title, main_be_user, admin_be_users, normal_be_users, be_groups, tt_address_records)
+			SELECT                                  uid, pid, tstamp, crdate, cruser_id, t3ver_oid, t3ver_id, t3ver_wsid, t3ver_label, t3ver_state, t3ver_stage, t3ver_count, t3ver_tstamp, t3_origuid, deleted, title, main_be_user, admin_be_users, normal_be_users, be_groups, 0 FROM tx_kssitemgr_customer
+		');
 
 		return 'If no errors are displayed, everything worked fine.';
 	}
