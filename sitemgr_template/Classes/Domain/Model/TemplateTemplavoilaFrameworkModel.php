@@ -47,18 +47,18 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		// @todo checkhow to init the isInUse property
 	}
 	function getCopyrightInformation() {
-		list($class, $_EXTKEY) = explode('|', $this->config['id']);
-		if(substr($_EXTKEY,0,4) == 'EXT:') {
-			$_EXTKEY = substr($_EXTKEY,4);
-			include(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php');
+		list($class, $extensionKey) = explode('|', $this->config['id']);
+		if(substr($extensionKey,0,4) == 'EXT:') {
+			$extensionKey = substr($extensionKey,4);
+			include(t3lib_extMgm::extPath($extensionKey) . 'ext_emconf.php');
 			$copyArray = array(
 				'name'           => $this->config['title'],
-				'nameAdditional'=> $EM_CONF[$_EXTKEY]['title'],
-				'version'        => $EM_CONF[$_EXTKEY]['version'],
-				'state'          => $EM_CONF[$_EXTKEY]['state'],
-				'authorName'    => $EM_CONF[$_EXTKEY]['author'],
-				'authorCompany' => $EM_CONF[$_EXTKEY]['author_company'],
-				'authorEmail'   => $EM_CONF[$_EXTKEY]['author_email'],
+				'nameAdditional' => $EM_CONF[$extensionKey]['title'],
+				'version'        => $EM_CONF[$extensionKey]['version'],
+				'state'          => $EM_CONF[$extensionKey]['state'],
+				'authorName'     => $EM_CONF[$extensionKey]['author'],
+				'authorCompany'  => $EM_CONF[$extensionKey]['author_company'],
+				'authorEmail'    => $EM_CONF[$extensionKey]['author_email'],
 				'license'        => 'GPL'
 			);
 		} else {
@@ -82,6 +82,7 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 			'',
 			'title'
 		);
+		$page                = t3lib_BEfunc::getRecord('pages',$pid);
 		$options = array();
 		foreach($templates as $option) {
 			$options[] = array(
@@ -89,8 +90,20 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 				$option['title'],
 				$option['previewicon']
 			);
+			if($option['uid'] === $page['tx_templavoila_to']) {
+				$selected_tv_ts = $page['tx_templavoila_to'];
+			}
+			if($option['uid'] === $page['tx_templavoila_next_to']) {
+				$selected_tv_ts_next = $page['tx_templavoila_next_to'];
+			}
 		}
-		$page                = t3lib_BEfunc::getRecord('pages',$pid);
+			// force reset due to invalid ts / to
+		if(!isset($selected_tv_ts)) {
+			$selected_tv_ts = $options[0]['uid'];
+		}
+		if(!isset($selected_tv_ts_next)) {
+			$selected_tv_ts_next = $options[0]['uid'];
+		}
 		return array(
 			'layout' => 'form',
 			'items' => array(
@@ -98,15 +111,19 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 					'xtype'      => 'sitemgrcombobox',
 					'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:sitemgr_template/Resources/Private/Language/Modules/Template/locallang.xml:SitemgrTemplates_rootpageTvStructure'),
 					'staticData' => $options,
-					'value'      => $page['tx_templavoila_to'],
+					'value'      => $selected_tv_ts,
 					'name'       => 'options[tv_ts]',
 				),
-				array(
+				// useless due to the option, that the starting page is a link
+				/*array(
 					'xtype'      => 'sitemgrcombobox',
 					'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:sitemgr_template/Resources/Private/Language/Modules/Template/locallang.xml:SitemgrTemplates_rootpageTvStructure_next'),
 					'staticData' => $options,
-					'value'      => $page['tx_templavoila_next_to'],
+					'value'      => $selected_tv_ts_next,
 					'name'       => 'options[tv_ts_next]',
+				),*/
+				array(
+					'xtype'      => 'sitemgrTemplavoilaRereferenceButton',
 				),
 			),
 		);
@@ -117,6 +134,8 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		$saveId = $this->tsParserTplRow['uid'];
 		$recData['sys_template'][$saveId]['skin_selector'] = $templateUID;
 		$recData['sys_template'][$saveId]['root']          = 1;
+		$recData['sys_template'][$saveId]['clear']         = 0;
+
 			// set tv setttings
 		if($options !== null) {
 			if($options['tv_ts'] != 0) {
@@ -147,7 +166,7 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 			if(is_array($to)) {
 				return $to['datastructure'];
 			} else {
-				throw new Exception('Invalid TO '.$to_uid);
+				throw new Exception('Invalid TO ' . $to_uid);
 			}
 		} else {
 			return '';
