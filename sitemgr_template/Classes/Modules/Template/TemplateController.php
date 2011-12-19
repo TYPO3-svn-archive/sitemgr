@@ -190,22 +190,27 @@ class Tx_SitemgrTemplate_Modules_Template_TemplateController extends Tx_Sitemgr_
 		$cid           = Tx_Sitemgr_Utilities_CustomerUtilities::getCustomerForPage($uid);
 		$customer      = new Tx_Sitemgr_Utilities_CustomerUtilities($cid);
 		$customer->enableExceptions();
-		$customer->isAdministratorForCustomer();
-		$pid           = $customer->getRootPage();
-			// init repository
-		$TemplateRepository = new Tx_SitemgrTemplate_Domain_Repository_TemplateRepository();
-			// apply filters for customer
-		$allowed = $GLOBALS["BE_USER"]->getTSConfig(
-			'mod.web_txsitemgr.template.allowedList',
-			t3lib_BEfunc::getPagesTSconfig($pid)
-		);
-		$denied = $GLOBALS["BE_USER"]->getTSConfig(
-			'mod.web_txsitemgr.template.deniedList',
-			t3lib_BEfunc::getPagesTSconfig($pid)
-		);
-		$TemplateRepository->setFilter($allowed['value'], $denied['value']);
-			// return
-		return $TemplateRepository->getAllTemplatesAsArrayMarkInUse($pid);
+		try {
+			$customer->isAdministratorForCustomer();
+			$pid           = $customer->getRootPage();
+				// init repository
+			$TemplateRepository = new Tx_SitemgrTemplate_Domain_Repository_TemplateRepository();
+				// apply filters for customer
+			$allowed = $GLOBALS["BE_USER"]->getTSConfig(
+				'mod.web_txsitemgr.template.allowedList',
+				t3lib_BEfunc::getPagesTSconfig($pid)
+			);
+			$denied = $GLOBALS["BE_USER"]->getTSConfig(
+				'mod.web_txsitemgr.template.deniedList',
+				t3lib_BEfunc::getPagesTSconfig($pid)
+			);
+			$TemplateRepository->setFilter($allowed['value'], $denied['value']);
+				// return
+			return $TemplateRepository->getAllTemplatesAsArrayMarkInUse($pid);
+		} catch (Exception $e) {
+			return array();
+		}
+			
 	}
 	/**
 	 * Sets template and related options through the model which was selected
