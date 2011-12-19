@@ -155,6 +155,7 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		$tce->stripslashes_values = 0;
 		// Initialize
 		$tce->start($recData, Array());
+		$tce->admin = true;
 		// Saved the stuff
 		$tce->process_datamap();
 		// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)

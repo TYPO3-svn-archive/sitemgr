@@ -142,9 +142,10 @@ abstract class Tx_SitemgrTemplate_Domain_Model_TemplateAbstractModel {
 			// Create new  tce-object
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values = 0;
-			#$tce->admin = 1;
+
 			// Initialize
 			$tce->start($recData, Array());
+			$tce->admin = 1;
 			// Saved the stuff
 			$tce->process_datamap();
 			// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
