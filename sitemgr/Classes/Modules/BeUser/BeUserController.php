@@ -182,7 +182,7 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 				}
 			}
 		//check wether prefix should be forced
-			$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ks_sitemgr']);
+			$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sitemgr']);
 			if($extConfig['forceBeUserPrefix']){
 				if((strlen($arg['username'])<strlen($customer->getName())) && !(substr($arg['username'],0,strlen($customer->getName()))==$customer->getName())) {
 					$this->addErrorForForm(

@@ -156,6 +156,7 @@
 		Ext.getCmp('Sitemgr_App_Tabs').add({
 			title:TYPO3.lang.SitemgrBeUser_title,
 			iconCls: 'beuser-tab-icon',
+			disabled:(!TYPO3.settings.sitemgr.customerSelected) && TYPO3.settings.sitemgr.user.isCustomerAdmin,
 			layout:'vbox',
 			layoutConfig: {
 				padding:'0',

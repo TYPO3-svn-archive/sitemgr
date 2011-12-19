@@ -68,8 +68,7 @@ class Tx_Sitemgr_ToolbarItems_CustomerSelector_Item  implements backend_toolbarI
 				$buffer.='<img src="'.t3lib_extMgm::extRelPath('sitemgr').'mod1/moduleicon.gif" onClick="TYPO3BackendSitemgr.openManagement('.$entry['pid'].');">';
 				$buffer.='</td></tr>';
 				//show users
-				$customer = new tx_ks_sitemgr_customer($entry['uid']);
-				$customer->init();
+				$customer = new Tx_Sitemgr_Utilities_CustomerUtilities($entry['uid']);
 				foreach($customer->getAllUsers() as $user) {
 					$buffer.='<tr><td>';
 					$buffer.='</td><td>';

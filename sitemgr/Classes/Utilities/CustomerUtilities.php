@@ -49,6 +49,11 @@ require_once(PATH_t3lib.'/class.t3lib_page.php');
 		 */
 		function __construct($customerId=null) {
 			$this->customerId = $customerId;
+			try {
+				$this->init();
+			} catch(Exception $e) {
+			
+			}
 		}
 		/**
 		 * @throws Exception

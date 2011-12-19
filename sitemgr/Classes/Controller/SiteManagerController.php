@@ -60,25 +60,33 @@
 		$pageId = intval($_GET['id']);
 		try {
 			$settings = array(
-				'customerId'       => $customer->getCustomerForPage($pageId), // ###CID###,
-				'customerSelected' => true,                                   // ###CS?###,
-				'customerName'     => addslashes($customer->getName()),
-				'customerRootPid'  => $customer->getPage(),                   // ###CIDROOTPID###,
-				'customerRootName' => addslashes($customer->getName()),
-				'beUserAdmin'      => $GLOBALS['BE_USER']->user['admin'],
-				'uid'              => $pageId,                                // ###UID###,
-				'version'          => t3lib_extMgm::getExtensionVersion('sitemgr'),
+				'customerId'         => $customer->getCustomerForPage($pageId), // ###CID###,
+				'customerSelected'   => true,                                   // ###CS?###,
+				'customerName'       => addslashes($customer->getName()),
+				'customerRootPid'    => $customer->getPage(),                   // ###CIDROOTPID###,
+				'customerRootName'   => addslashes($customer->getName()),
+				'beUserAdmin'        => $GLOBALS['BE_USER']->isAdmin(),
+				'user'               => array(
+					'isCustomerAdmin' => $GLOBALS['BE_USER']->isAdmin() || $customer->isAdministratorForCustomer(),
+					'isGlobalAdmin'   => $GLOBALS['BE_USER']->isAdmin(),
+				),
+				'uid'                => $pageId,                                // ###UID###,
+				'version'            => t3lib_extMgm::getExtensionVersion('sitemgr'),
 			);
 		} catch(Exception $e) {
 			$settings = array(
-				'customerId'       => 0,                                      // ###CID###,
-				'customerSelected' => false,                                  // ###CS?###,
-				'customerName'     => '-',
-				'customerRootPid'  => 0,                                      //###CIDROOTPID###,
-				'customerRootName' => 'ROOT - unknown',
-				'beUserAdmin'      => $GLOBALS['BE_USER']->user['admin'],
-				'uid'              => $pageId,                                //###UID###,
-				'version'          => t3lib_extMgm::getExtensionVersion('sitemgr'),
+				'customerId'         => 0,                                      // ###CID###,
+				'customerSelected'   => false,                                  // ###CS?###,
+				'customerName'       => '-',
+				'customerRootPid'    => 0,                                      //###CIDROOTPID###,
+				'customerRootName'   => 'ROOT - unknown',
+				'beUserAdmin'        => $GLOBALS['BE_USER']->user['admin'],
+				'user'               => array(
+					'isCustomerAdmin' => $GLOBALS['BE_USER']->isAdmin(),
+					'isGlobalAdmin'   => $GLOBALS['BE_USER']->isAdmin(),
+				),
+				'uid'                => $pageId,                                //###UID###,
+				'version'            => t3lib_extMgm::getExtensionVersion('sitemgr'),
 			);
 		}
 		return $settings;
