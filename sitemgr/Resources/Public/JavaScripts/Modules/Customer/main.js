@@ -34,15 +34,14 @@
  * @author Kay Strobach <typo3@kay-strobach.de>
  */
 	Ext.onReady(function (){
-		console.log(TYPO3.settings.sitemgr.user.isGlobalAdmin);
 		Ext.getCmp('Sitemgr_App_Tabs').add({
 			title   :TYPO3.lang.SitemgrCustomer_title,
 			xtype   :'pagedgrid',
-			iconCls: 'customer-tab-icon',
+			iconCls : 'customer-tab-icon',
+			hidden  : !TYPO3.settings.sitemgr.user.isGlobalAdmin,
+			disabled: !TYPO3.settings.sitemgr.user.isGlobalAdmin,
 			loadMask:true,
 			id      :'customerGrid',
-			disabled: !TYPO3.settings.sitemgr.user.isGlobalAdmin,
-			hidden  : !TYPO3.settings.sitemgr.user.isGlobalAdmin,
 			store   :new Ext.data.DirectStore({
 				storeId      : 'customerStore',
 				directFn     : TYPO3.sitemgr.tabs.dispatchPaged,

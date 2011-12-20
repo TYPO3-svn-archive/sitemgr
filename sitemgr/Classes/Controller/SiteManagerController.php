@@ -60,33 +60,33 @@
 		$pageId = intval($_GET['id']);
 		try {
 			$settings = array(
-				'customerId'         => $customer->getCustomerForPage($pageId), // ###CID###,
-				'customerSelected'   => true,                                   // ###CS?###,
-				'customerName'       => addslashes($customer->getName()),
-				'customerRootPid'    => $customer->getPage(),                   // ###CIDROOTPID###,
-				'customerRootName'   => addslashes($customer->getName()),
-				'beUserAdmin'        => $GLOBALS['BE_USER']->isAdmin(),
-				'user'               => array(
-					'isCustomerAdmin' => $GLOBALS['BE_USER']->isAdmin() || $customer->isAdministratorForCustomer(),
+				'customerId'       => $customer->getCustomerForPage($pageId), // ###CID###,
+				'customerSelected' => true,                                   // ###CS?###,
+				'customerName'     => addslashes($customer->getName()),
+				'customerRootPid'  => $customer->getPage(),                   // ###CIDROOTPID###,
+				'customerRootName' => addslashes($customer->getName()),
+				'beUserAdmin'      => $GLOBALS['BE_USER']->user['admin'],
+				'user'             => array(
 					'isGlobalAdmin'   => $GLOBALS['BE_USER']->isAdmin(),
+					'isCustomerAdmin' => $customer->isAdministratorForCustomer(),
 				),
-				'uid'                => $pageId,                                // ###UID###,
-				'version'            => t3lib_extMgm::getExtensionVersion('sitemgr'),
+				'uid'              => $pageId,                                // ###UID###,
+				'version'          => t3lib_extMgm::getExtensionVersion('sitemgr'),
 			);
 		} catch(Exception $e) {
 			$settings = array(
-				'customerId'         => 0,                                      // ###CID###,
-				'customerSelected'   => false,                                  // ###CS?###,
-				'customerName'       => '-',
-				'customerRootPid'    => 0,                                      //###CIDROOTPID###,
-				'customerRootName'   => 'ROOT - unknown',
-				'beUserAdmin'        => $GLOBALS['BE_USER']->user['admin'],
-				'user'               => array(
-					'isCustomerAdmin' => $GLOBALS['BE_USER']->isAdmin(),
+				'customerId'       => 0,                                      // ###CID###,
+				'customerSelected' => false,                                  // ###CS?###,
+				'customerName'     => '-',
+				'customerRootPid'  => 0,                                      //###CIDROOTPID###,
+				'customerRootName' => 'ROOT - unknown',
+				'beUserAdmin'      => $GLOBALS['BE_USER']->user['admin'],
+				'user'             => array(
 					'isGlobalAdmin'   => $GLOBALS['BE_USER']->isAdmin(),
+					'isCustomerAdmin' => $GLOBALS['BE_USER']->isAdmin(),
 				),
-				'uid'                => $pageId,                                //###UID###,
-				'version'            => t3lib_extMgm::getExtensionVersion('sitemgr'),
+				'uid'              => $pageId,                                //###UID###,
+				'version'          => t3lib_extMgm::getExtensionVersion('sitemgr'),
 			);
 		}
 		return $settings;

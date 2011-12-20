@@ -7,19 +7,16 @@ if (!defined ('TYPO3_MODE')) {
 class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_Abstract_AbstractController{
 	protected $file = __FILE__;
 	function getModuleJavaScript(&$js,$uid) {
-		if($GLOBALS['BE_USER']->isAdmin()) {
-			$extConfig       = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sitemgr']);
-			$customerPidPage = $GLOBALS["BE_USER"]->getTSConfig(
-			  	'mod.web_txsitemgrM1.customerPidPage',
-				t3lib_BEfunc::getPagesTSconfig($uid)
-			);
-			if((!$extConfig['customerPidPageTS']) || ($extConfig['customerPidPageTS'] && $uid == $customerPidPage['value'] && $uid!=0)) {
-				$js.= $this->getModuleJavaScriptHelper(
-					array(),
-					$uid
-				);
-			}
-		}
+		$extConfig       = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ks_sitemgr']);
+		$customerPidPage = $GLOBALS["BE_USER"]->getTSConfig(
+		  	'mod.web_txsitemgrM1.customerPidPage',
+			t3lib_BEfunc::getPagesTSconfig($uid)
+		);
+		if((!$extConfig['customerPidPageTS']) || ($extConfig['customerPidPageTS'] && $uid == $customerPidPage['value'] && $uid!=0))
+		$js.= $this->getModuleJavaScriptHelper(
+			array(),
+			$uid
+		);
 	}
 	function getCustomers($args) {
 		if(intval($args['start'])<0) {
@@ -232,7 +229,7 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 					'NEW21' => array(
 						'pid'                    => $pageId,
 						'constants'              => '######################################################################'."\n".
-													'# EXT:sitemgr'."\n".
+													'# EXT:ks_sitemgr'."\n".
 													'# createdate: '.date('r')."\n".
 													'# userfolder: '.$GLOBALS['$TYPO3_CONF_VARS']['BE']['userHomePath'].$userId."\n".
 						                            '  usr_name                    = '.$userId."\n".
@@ -243,7 +240,7 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 													'  plugin.tx_sitemgr.rootPage  = '.$pageId."\n".
 													'######################################################################'."\n",
 						'sitetitle'              => $arg['customerName'],
-						'title'                  => 'template for ext:sitemgr, contains username const. only',
+						'title'                  => 'template for ext:ks_sitemgr, contains username const. only',
 					),
 				),
 				//create customer

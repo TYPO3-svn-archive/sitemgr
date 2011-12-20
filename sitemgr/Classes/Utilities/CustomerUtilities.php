@@ -49,10 +49,12 @@ require_once(PATH_t3lib.'/class.t3lib_page.php');
 		 */
 		function __construct($customerId=null) {
 			$this->customerId = $customerId;
-			try {
-				$this->init();
-			} catch(Exception $e) {
-			
+			if($this->customerId !==null) {
+				try {
+					$this->init();
+				} catch(Exception $e) {
+					// just hope for manual init ;)
+				}
 			}
 		}
 		/**
@@ -101,7 +103,7 @@ require_once(PATH_t3lib.'/class.t3lib_page.php');
 			if($uid === null || $uid === 0) {
 				throw new Exception('no customer found, object is not valid ...');
 			}
-			$this->customerId = $uid; 
+			$this->customerId = $uid;
 			return $uid;
 		}
 		function getCustomerForUser($uid) {
@@ -263,7 +265,7 @@ require_once(PATH_t3lib.'/class.t3lib_page.php');
 				return false;
 			}
 			//global admin?
-			if($GLOBALS['BE_USER']->user['admin']==1) {
+			if($GLOBALS['BE_USER']->isAdmin()) {
 				return true;
 			}
 			//is customer admin and uid in getAllUsersUid
@@ -285,7 +287,7 @@ require_once(PATH_t3lib.'/class.t3lib_page.php');
 		function isAdministratorForCustomer($beUserId = null) {
 			if($beUserId === null) {
 				$beUserId = $GLOBALS['BE_USER']->user['uid'];
-				if($GLOBALS['BE_USER']->user['admin'] == 1) {
+				if($GLOBALS['BE_USER']->isAdmin()) {
 					return true;
 				}
 			} else {

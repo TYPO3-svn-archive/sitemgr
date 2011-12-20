@@ -126,6 +126,12 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 			),
 		);
 	}
+	/**
+	 * delete an existing user
+	 *
+	 * @param $arg
+	 * @return array
+	 */
 	function deleteUser($arg) {
 		list($uid,$cid) = explode(':',$arg);
 		$customer = new Tx_Sitemgr_Utilities_CustomerUtilities($cid);
@@ -151,6 +157,12 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 		}
 		return array('errorMessage' => $arg);
 	}
+	/**
+	 * add or update an new or existing user
+	 *
+	 * @param $arg
+	 * @return array
+	 */
 	function addOrUpdateUser($arg) {
 		//check access
 			if($arg['cid']) {
@@ -182,7 +194,7 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 				}
 			}
 		//check wether prefix should be forced
-			$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sitemgr']);
+			$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ks_sitemgr']);
 			if($extConfig['forceBeUserPrefix']){
 				if((strlen($arg['username'])<strlen($customer->getName())) && !(substr($arg['username'],0,strlen($customer->getName()))==$customer->getName())) {
 					$this->addErrorForForm(
@@ -240,6 +252,12 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 		// return form
 			return $this->getReturnForForm();
 	}
+	/**
+	 * returns access rights for a user
+	 *
+	 * @param $uid
+	 * @return array
+	 */
 	function getAccessForUser($uid) {
 		$user = t3lib_BEfunc::getRecord(
 			'be_users',
@@ -255,7 +273,9 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 		$return = array();
 		foreach($grants as $grant) {
 			$path     = t3lib_BEfunc::getRecordPath(
-				$grant['pid']
+				$grant['pid'],
+				'',
+				100
 			);
 			$return[] = array(
 				'username' => $user['username'],
@@ -268,23 +288,26 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 		return $return;
 	}
 	/**
-	 * potential security risk, if not check if user is customer admin	
-	 * root node of a customer admin should not be removed!	 
+	 * root node of a customer admin should not be removed!
 	 * @todo
-	 */	 	
+	 * @return array
+	 */
 	function deleteGrant($args) {
-		//check uid
+		$customer = new Tx_Sitemgr_Utilities_CustomerUtilities();
+		$customer->getCustomerForPage($args->uid);
+		if($customer->isAllowedToModifyUser($args->user)) {
+				//check uid
 			if($GLOBALS['BE_USER']->user['uid'] == $args->user) {
 				return array(
 					'errorMessage' => 'Access denied',
 				);
 			}
-		//drop acls
+				//drop acls
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 				'tx_beacl_acl',
 				'pid='.intval($args->pid).' AND object_id='.intval($args->user).' AND type=0'
 			);
-		//drop mountpoints
+				//drop mountpoints
 			$user = t3lib_BEfunc::getRecord(
 				'be_users',
 				$args->user
@@ -295,20 +318,26 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 				'uid='.intval($args->user),
 				$user
 			);
-		
+		} else {
+			throw new Exception('Permission denied');
+		}
 	}
 	/**
 	 * @todo
 	 * add check, if pages is into the same customer	 
 	 */	 	
 	function addGrant($args) {
-		// check selection
+		$customer = new Tx_Sitemgr_Utilities_CustomerUtilities();
+		$customer->getCustomerForPage($args['args']);
+		if($customer->isAllowedToModifyUser($args['userID'])) {
+				// check selection
 			if(intval($args['grantPid'])!=$args['grantPid']) {
 				return array(
+					'success'      => false,
 					'errorMessage' => 'No PID selected'
 				);
 			}
-		//add mountpoint
+				//add mountpoint
 			$user = t3lib_BEfunc::getRecord(
 				'be_users',
 				$args['userID']
@@ -319,7 +348,7 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 				'uid='.intval($args['userID']),
 				$user
 			);
-		//add grants
+				//add grants
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
 				'tx_beacl_acl',
 				array(
@@ -342,36 +371,30 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 					'recursive'   => 1
 				)
 			);
-		/*ob_start();
-		print_r($args);
-		$buffer = ob_get_contents();
-		ob_end_clean();
-		return array(
-			'errorMessage' => $buffer
-		);*/
+		} else {
+			return array(
+				'success'      => false,
+				'errorMessage' => 'Permission denied'
+			);
+		}
 		return array(
 			'success' => true
 		);
 	}
 	function getUsersRights($cid) {
-		include_once(t3lib_extMgm::extPath('ks_sitemgr').'tabs/beuser/class.tx_ks_sitemgr_tab_beuser.php');
-		$beUser       = new tx_ks_sitemgr_tab_beuser();
 		$customer     = new Tx_Sitemgr_Utilities_CustomerUtilities($cid);
 		$customer->init();
 		$users        = $customer->getAllUsers();
-		//$return[]     = t3lib_BEfunc::getRecord('pages', $customer->getPage());
 		$this->rights = array();
 		foreach($users as $user) {
-			$rights = $beUser->getAccessForUser($user['uid']);
+			$rights = $this->getAccessForUser($user['uid']);
 			foreach($rights as $right) {
 				$this->rights[$right['pid']][$user['username']] = 1;
 			}
 		}
 		$return       = $this->getPages($customer->getPage(),$customer->getName().'/');
-		//$return       = $this->getPages($customer->getPage(),'&nbsp;&nbsp;');
 		return array(
 			'success' =>true,
-			//'errorMessage' => $this->debug($this->rights),
 			'rows' => array_values($return)
 		);
 	}

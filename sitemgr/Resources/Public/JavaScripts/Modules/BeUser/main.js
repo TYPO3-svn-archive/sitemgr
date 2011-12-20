@@ -156,8 +156,8 @@
 		Ext.getCmp('Sitemgr_App_Tabs').add({
 			title:TYPO3.lang.SitemgrBeUser_title,
 			iconCls: 'beuser-tab-icon',
-			disabled:(!TYPO3.settings.sitemgr.customerSelected) && TYPO3.settings.sitemgr.user.isCustomerAdmin,
 			layout:'vbox',
+			disabled:!TYPO3.settings.sitemgr.user.isCustomerAdmin,
 			layoutConfig: {
 				padding:'0',
 				align:'stretch'
@@ -206,7 +206,7 @@
 							//text:'TYPO3.lang.SitemgrBeUser_action.newUser###',
 							tooltip:TYPO3.lang.SitemgrBeUser_title+' '+TYPO3.lang.SitemgrBeUser_action_newUser,
 							iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new',
-							disabled:!TYPO3.settings.sitemgr.customerSelected,
+							disabled:!TYPO3.settings.sitemgr.customerSelected || !TYPO3.settings.sitemgr.user.isCustomerAdmin,
 							handler:function() {
 								Ext.getCmp('newUserForm').get(0).getForm().load({
 									waitMsg:TYPO3.lang.SitemgrBeUser_action_newUser,
@@ -227,6 +227,7 @@
 							//text:'TYPO3.lang.SitemgrBeUser_action.editUser###',
 							tooltip:TYPO3.lang.SitemgrBeUser_title+' '+TYPO3.lang.SitemgrBeUser_action_editUser,
 							iconCls:'t3-icon-actions t3-icon-actions-document t3-icon-document-open',
+							disabled:!TYPO3.settings.sitemgr.user.isCustomerAdmin,
 							handler:function() {
 								var sm  = Ext.getCmp('userGrid').getSelectionModel();
 								var sel = sm.getSelected();
@@ -253,6 +254,7 @@
 							//text:'TYPO3.lang.SitemgrBeUser_action.deleteUser###',
 							tooltip:TYPO3.lang.SitemgrBeUser_title+' '+TYPO3.lang.SitemgrBeUser_action_deleteUser,
 							iconCls:'t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-delete',
+							disabled:!TYPO3.settings.sitemgr.user.isCustomerAdmin,
 							handler:function() {
 								var sm  = Ext.getCmp('userGrid').getSelectionModel();
 								var sel = sm.getSelected();
@@ -283,7 +285,7 @@
 							//text:'TYPO3.lang.SitemgrBeUser_action.usersRightsOverview###',
 							tooltip:TYPO3.lang.SitemgrBeUser_action_usersRightsOverview,
 							iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-pagetree-backend-user',
-							disabled:!TYPO3.settings.sitemgr.customerSelected,
+							disabled:!TYPO3.settings.sitemgr.user.isCustomerAdmin,
 							handler:function() {
 								if(!Ext.getCmp('beUserRightsWindow')) {
 									cols = new Array(
@@ -385,7 +387,7 @@
 							//text:'TYPO3.lang.SitemgrBeUser_action.switchUser###',
 							tooltip:TYPO3.lang.SitemgrBeUser_action_switchUser,
 							iconCls:'t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-backend-user-emulate',
-							disabled:!TYPO3.settings.sitemgr.beUserAdmin,
+							disabled:!TYPO3.settings.sitemgr.user.isGlobalAdmin,
 							handler:function() {
 								var sm  = Ext.getCmp('userGrid').getSelectionModel();
 								var sel = sm.getSelected();
@@ -474,6 +476,7 @@
 							//text:'TYPO3.lang.SitemgrBeUser_action.addRight###',
 							tooltip:TYPO3.lang.SitemgrBeUser_userAccessGrid_title+' '+TYPO3.lang.SitemgrBeUser_action_addRight,
 							iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new',
+							disabled:!TYPO3.settings.sitemgr.user.isCustomerAdmin,
 							handler:function() {
 								var sm  = Ext.getCmp('userGrid').getSelectionModel();
 								var sel = sm.getSelected();
@@ -574,6 +577,7 @@
 							//text:'TYPO3.lang.SitemgrBeUser_action.deleteRight###',
 							tooltip:TYPO3.lang.SitemgrBeUser_userAccessGrid_title+' '+TYPO3.lang.SitemgrBeUser_action_deleteRight,
 							iconCls:'t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-delete',
+							disabled:!TYPO3.settings.sitemgr.user.isCustomerAdmin,
 							handler:function() {
 								var sm  = Ext.getCmp('userGrantsGrid').getSelectionModel();
 								var sel = sm.getSelected();
@@ -590,7 +594,8 @@
 														'deleteGrant',
 														{
 															pid :sel.data.pid,
-															user:Ext.getCmp('userGrid').getSelectionModel().getSelected().data.uid
+															user:Ext.getCmp('userGrid').getSelectionModel().getSelected().data.uid,
+															uid: TYPO3.settings.sitemgr.uid
 														},
 														function() {
 															Ext.getCmp('userGrantsGrid').getStore().reload();
