@@ -131,24 +131,26 @@ abstract class Tx_SitemgrTemplate_Domain_Model_TemplateAbstractModel {
 		);
 
 		$this->tsParser->changed = 0;
-		//$this->tsParser->ext_dontCheckIssetValues = 1;
+			//$this->tsParser->ext_dontCheckIssetValues = 1;
 		$this->tsParser->ext_procesInput($postData, $_FILES, $this->tsParserConstants, $this->tsParserTplRow);
 
 		if ($this->tsParser->changed) {
-			// Set the data to be saved
+				// Set the data to be saved
 			$saveId = $this->tsParserTplRow['uid'];
 			$recData = array();
 			$recData['sys_template'][$saveId]['constants'] = implode($this->tsParser->raw, chr(10));
-			// Create new  tce-object
+				// Create new  tce-object
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values = 0;
 
-			// Initialize
-			$tce->start($recData, Array());
+				// Initialize
+			$user = clone $GLOBALS['BE_USER'];
+			$user->user['admin'] = 1;
+			$tce->start($recData, Array(), $user);
 			$tce->admin = 1;
-			// Saved the stuff
+				// Saved the stuff
 			$tce->process_datamap();
-			// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
+				// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
 			$tce->clear_cacheCmd('all');
 		}
 	}

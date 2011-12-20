@@ -24,13 +24,14 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		}
 			//build config array
 		$this->config = array(
-			'id'         => get_class($this).'|'.$name,
-			'icon'       => $previewIconFilename,
-			'screens'    => $additionalScreenshots,
-			'description'=> $skinInfo['description'],
-			'title'      => $skinInfo['title'],
-			'copyright'  => null,
-			'version'    => t3lib_extMgm::getExtensionVersion($name),
+			'id'           => get_class($this).'|'.$name,
+			'icon'         => $previewIconFilename,
+			'screens'      => $additionalScreenshots,
+			'description'  => $skinInfo['description'],
+			'title'        => $skinInfo['title'],
+			'copyright'    => null,
+			'version'      => t3lib_extMgm::getExtensionVersion($name),
+			'extensionKey' => $extName,
 		);
 			// get copy info
 		$this->config['copyright'] = $this->getCopyrightInformation();
@@ -49,17 +50,19 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 	function getCopyrightInformation() {
 		list($class, $extensionKey) = explode('|', $this->config['id']);
 		if(substr($extensionKey,0,4) == 'EXT:') {
-			$extensionKey = substr($extensionKey,4);
-			include(t3lib_extMgm::extPath($extensionKey) . 'ext_emconf.php');
+			$_EXTKEY = substr($extensionKey,4);
+			include(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php');
 			$copyArray = array(
-				'name'           => $this->config['title'],
-				'nameAdditional' => $EM_CONF[$extensionKey]['title'],
-				'version'        => $EM_CONF[$extensionKey]['version'],
-				'state'          => $EM_CONF[$extensionKey]['state'],
-				'authorName'     => $EM_CONF[$extensionKey]['author'],
-				'authorCompany'  => $EM_CONF[$extensionKey]['author_company'],
-				'authorEmail'    => $EM_CONF[$extensionKey]['author_email'],
-				'license'        => 'GPL'
+				'name'             => $this->config['title'],
+				'nameAdditional'   => $EM_CONF[$_EXTKEY]['title'],
+				'description'      => $EM_CONF[$_EXTKEY]['description'],
+				'version'          => $EM_CONF[$_EXTKEY]['version'],
+				'state'            => $EM_CONF[$_EXTKEY]['state'],
+				'authorName'       => $EM_CONF[$_EXTKEY]['author'],
+				'authorCompany'    => $EM_CONF[$_EXTKEY]['author_company'],
+				'authorEmail'      => $EM_CONF[$_EXTKEY]['author_email'],
+				'license'          => 'GPL',
+				'hasDocumentation' => file_exists(t3lib_extMgm::extPath($_EXTKEY).'doc/manual.sxw'),
 			);
 		} else {
 			$copyArray = array();
@@ -152,13 +155,15 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		$recData['pages'][$pid]['storage_pid'] = $tvFrameworkSettings['templateObjectPID'];
 			// store changes
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = new t3lib_TCEmain();
 		$tce->stripslashes_values = 0;
-		// Initialize
-		$tce->start($recData, Array());
-		$tce->admin = true;
-		// Saved the stuff
+			// Initialize
+		$user = clone $GLOBALS['BE_USER'];
+		$user->user['admin'] = 1;
+		$tce->start($recData, Array(), $user);
+			// Save the stuff
 		$tce->process_datamap();
-		// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
+			// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
 		$tce->clear_cacheCmd('all');
 	}
 	private function getTvDs($to_uid) {

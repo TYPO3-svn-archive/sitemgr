@@ -29,7 +29,7 @@
 			<label index="sitemgr_SitemgrTemplavoilaRereferenceButton_loadingText">Please be paitend, i do some remapping for you.</label>
 			<label index="sitemgr_SitemgrTemplavoilaRereferenceButton_header_status">rereferenzing all content objects - please be patiend</label>
 			<label index="sitemgr_SitemgrTemplavoilaRereferenceButton_doneText">Remapping done, please check the consistency of your site.</label>
-
+			<label index="sitemgr_SitemgrTemplates_Documentation">Manual or Documentation</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="SitemgrTemplates_title">Gestaltung</label>
@@ -53,6 +53,7 @@
 			<label index="sitemgr_SitemgrTemplavoilaRereferenceButton_header_status">referenziere Seiteninhalte - bitte haben Sie einen Moment Geduld.</label>
 			<label index="sitemgr_SitemgrTemplavoilaRereferenceButton_loadingText">Ein klein wenig Geduld Bitte, ich rereferenziere die Datensätze.</label>
 			<label index="sitemgr_SitemgrTemplavoilaRereferenceButton_doneText">Rereferenzieren der Datensätze erledigt, bitte überprüfen Sie ihre Internetseiten.</label>
+			<label index="sitemgr_SitemgrTemplates_Documentation">Handbuch oder Dokumentation</label>
 		</languageKey>
 	</data>
 </T3locallang>

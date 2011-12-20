@@ -108,6 +108,13 @@
 								this.showTemplateOptions(record);
 							},
 							scope:this
+						}, '-', {
+							iconCls: 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-documentation',
+							handler: function() {
+								window.open('../typo3conf/ext/' + record.extensionKey + '/doc/manual.sxw', '_blank');
+							},
+							disabled: !record.copyright.hasDocumentation,
+							scope: this
 						}, '->', {
 							tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
 							iconCls:'t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-typoscript-documentation-open',
@@ -149,6 +156,7 @@
 													'<div class="message-body">',
 														'<p>{nameAdditional} - {version} - {state}<p>',
 														'<br></p><p>{parent.description}</p>',
+														'<br><p><i>{description}</i></p>',
 														'<br><p>&copy;{license} by <a href="mailto:{authorEmail}">{authorName}</a> - {authorCompany}</small></p>',
 													'</div>',
 												'</div>',
@@ -262,7 +270,7 @@
 										}
 									});
 								}
-							}, '-', {
+							},'-', {
 								tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
 								iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-view',
 								handler:function() {
@@ -275,6 +283,13 @@
 										window.open(uri, windowName);
 									}
 								}
+							}, '-', {
+								iconCls: 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-documentation',
+								handler: function() {
+									window.open('../typo3conf/ext/' + record.extensionKey + '/doc/manual.sxw', '_blank');
+								},
+								disabled: !record.copyright.hasDocumentation,
+								scope: this
 							}
 						],
 						items:[
@@ -312,6 +327,8 @@
 			this.templateStructureStore = new Ext.data.DirectStore({
 				storeId:'templateStructureStore',
 				autoLoad:true,
+				autoSave: false,
+				pruneModifiedRecords: false,
 				directFn:TYPO3.sitemgr.tabs.dispatch,
 				paramsAsHash: false,
 				paramOrder:'module,fn,args',
@@ -329,7 +346,8 @@
 					'title',
 					'copyright',
 					'version',
-					'isInUse'
+					'isInUse',
+					'extensionKey'
 				]
 			});
 			this.tab = Ext.getCmp('Sitemgr_App_Tabs').add({
