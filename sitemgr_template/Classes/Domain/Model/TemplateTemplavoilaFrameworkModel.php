@@ -45,7 +45,7 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		} else {
 			$this->config['isInUse'] = FALSE;
 		}
-		// @todo checkhow to init the isInUse property
+		// @todo check how to init the isInUse property
 	}
 	function getCopyrightInformation() {
 		list($class, $extensionKey) = explode('|', $this->config['id']);
@@ -70,7 +70,7 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		return $copyArray;
 	}
 	/**
-	 * @todo discuss things like ts and ts_next
+	 * returns environment options
 	 *
 	 * @param integer $pid
 	 * @return array
@@ -142,13 +142,17 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 			// set tv setttings
 		if($options !== null) {
 			if($options['tv_ts'] != 0) {
+					// set page ts and ds
 				$recData['pages'][$pid]['tx_templavoila_to'] = $options['tv_ts'];
 				$recData['pages'][$pid]['tx_templavoila_ds'] = $this->getTvDs($options['tv_ts']);
+					// preselect for subpages to ensure clean switches
+				$recData['pages'][$pid]['tx_templavoila_next_to'] = 0;
+				$recData['pages'][$pid]['tx_templavoila_next_ds'] = 0;
 			}
-			if($options['tv_ts_next'] != 0) {
-				$recData['pages'][$pid]['tx_templavoila_next_to'] = $options['tv_ts_next'];
-				$recData['pages'][$pid]['tx_templavoila_next_ds'] =$this->getTvDs($options['tv_ts_next']);
-			}
+			#if($options['tv_ts_next'] != 0) {
+			#	$recData['pages'][$pid]['tx_templavoila_next_to'] = $options['tv_ts_next'];
+			#	$recData['pages'][$pid]['tx_templavoila_next_ds'] =$this->getTvDs($options['tv_ts_next']);
+			#}
 		}
 			// set general record storage page
 		$tvFrameworkSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila_framework']);
