@@ -53,16 +53,17 @@ class Tx_SitemgrTemplate_Domain_Repository_TemplateAbstractRepository {
 		if($this->filter === null) {
 			return TRUE;
 		}
-			// most important
-		if(t3lib_div::inList($this->filter['denied'], $name)) {
-			return FALSE;
-		}
+			// check wether something is explicitly allowed
 		if(strlen(trim($this->filter['allowed'])) !== 0) {
 			if(t3lib_div::inList($this->filter['allowed'], $name)) {
 				return TRUE;
 			} else {
 				return FALSE;
 			}
+		}
+			// check wether something is denied
+		if(t3lib_div::inList($this->filter['denied'], $name)) {
+			return FALSE;
 		}
 		return TRUE;
 	}

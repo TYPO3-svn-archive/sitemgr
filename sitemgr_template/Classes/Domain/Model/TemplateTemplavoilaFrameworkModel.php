@@ -77,16 +77,31 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 	 */
 	function getEnvironmentOptions($pid) {
 		$config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila_framework']);
+		// @todo add option for respecting the filter
+		$allowedDS = $GLOBALS["BE_USER"]->getTSConfig(
+			'mod.web_txsitemgr.template.allowedTemplavoilaPageDS',
+			t3lib_BEfunc::getPagesTSconfig($pid)
+		);
+		if(strlen(trim($allowedDS)) !== 0) {
+			$andQuery = 'AND uid IN (' . $allowedDS . ')';
+		} else {
+			$andQuery = '';
+		}
 		$templates = t3lib_BEfunc::getRecordsByField(
 			'tx_templavoila_tmplobj',
 			'pid',
 			$config['templateObjectPID'],
-			'AND datastructure LIKE "%templavoila_framework/core_templates/datastructures/page/f%"',
+			$allowedDS . ' AND datastructure LIKE "%templavoila_framework/core_templates/datastructures/page/f%"',
 			'',
 			'title'
 		);
-		$page                = t3lib_BEfunc::getRecord('pages',$pid);
-		$options = array();
+		$page           = t3lib_BEfunc::getRecord('pages',$pid);
+		$options        = array();
+		$selected_tv_ts = null;
+		$default_tv_ts_setting = trim($GLOBALS["BE_USER"]->getTSConfig(
+			'mod.web_txsitemgr.template.defaultTemplavoilaPageDS',
+			t3lib_BEfunc::getPagesTSconfig($pid)
+		));
 		foreach($templates as $option) {
 			$options[] = array(
 				$option['uid'],
@@ -96,16 +111,13 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 			if($option['uid'] === $page['tx_templavoila_to']) {
 				$selected_tv_ts = $page['tx_templavoila_to'];
 			}
-			if($option['uid'] === $page['tx_templavoila_next_to']) {
-				$selected_tv_ts_next = $page['tx_templavoila_next_to'];
+			if(($option['uid'] === $default_tv_ts_setting) && ($selected_tv_ts === null)) {
+				$selected_tv_ts = $page['tx_templavoila_to'];
 			}
 		}
 			// force reset due to invalid ts / to
-		if(!isset($selected_tv_ts)) {
+		if($selected_tv_ts === null) {
 			$selected_tv_ts = $options[0]['uid'];
-		}
-		if(!isset($selected_tv_ts_next)) {
-			$selected_tv_ts_next = $options[0]['uid'];
 		}
 		return array(
 			'layout' => 'form',
@@ -117,14 +129,6 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 					'value'      => $selected_tv_ts,
 					'name'       => 'options[tv_ts]',
 				),
-				// useless due to the option, that the starting page is a link
-				/*array(
-					'xtype'      => 'sitemgrcombobox',
-					'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:sitemgr_template/Resources/Private/Language/Modules/Template/locallang.xml:SitemgrTemplates_rootpageTvStructure_next'),
-					'staticData' => $options,
-					'value'      => $selected_tv_ts_next,
-					'name'       => 'options[tv_ts_next]',
-				),*/
 				array(
 					'xtype'      => 'sitemgrTemplavoilaRereferenceButton',
 				),
