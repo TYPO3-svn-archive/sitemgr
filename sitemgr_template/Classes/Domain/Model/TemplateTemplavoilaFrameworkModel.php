@@ -82,26 +82,28 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 			'mod.web_txsitemgr.template.allowedTemplavoilaPageDS',
 			t3lib_BEfunc::getPagesTSconfig($pid)
 		);
-		if(strlen(trim($allowedDS)) !== 0) {
-			$andQuery = 'AND uid IN (' . $allowedDS . ')';
-		} else {
+
+		#if(count($allowedDS) > 1) {
+		#	$andQuery = 'AND uid IN (' . substr(implode(',', $allowedDS), 0, -1) . ')';
+		#} else {
 			$andQuery = '';
-		}
+		#}
 		$templates = t3lib_BEfunc::getRecordsByField(
 			'tx_templavoila_tmplobj',
 			'pid',
 			$config['templateObjectPID'],
-			$allowedDS . ' AND datastructure LIKE "%templavoila_framework/core_templates/datastructures/page/f%"',
+			$andQuery . ' AND datastructure LIKE "%templavoila_framework/core_templates/datastructures/page/f%"',
 			'',
 			'title'
 		);
 		$page           = t3lib_BEfunc::getRecord('pages',$pid);
 		$options        = array();
 		$selected_tv_ts = null;
-		$default_tv_ts_setting = trim($GLOBALS["BE_USER"]->getTSConfig(
+		$default_tv_ts  = null;
+		$default_tv_ts_setting = $GLOBALS["BE_USER"]->getTSConfig(
 			'mod.web_txsitemgr.template.defaultTemplavoilaPageDS',
 			t3lib_BEfunc::getPagesTSconfig($pid)
-		));
+		);
 		foreach($templates as $option) {
 			$options[] = array(
 				$option['uid'],
@@ -111,13 +113,38 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 			if($option['uid'] === $page['tx_templavoila_to']) {
 				$selected_tv_ts = $page['tx_templavoila_to'];
 			}
-			if(($option['uid'] === $default_tv_ts_setting) && ($selected_tv_ts === null)) {
-				$selected_tv_ts = $page['tx_templavoila_to'];
+			if($option['uid'] === $default_tv_ts_setting['value']) {
+				$default_tv_ts = $default_tv_ts_setting['value'];
 			}
+		}
+			// set default value
+		if(($selected_tv_ts === null) && ($default_tv_ts !== null)) {
+			$selected_tv_ts = $default_tv_ts;
+
+			$recData = array(
+				'pages' =>array(
+					$pid => array (
+						'tx_templavoila_to' => $selected_tv_ts,
+						'tx_templavoila_ds' => $this->getTvDs($selected_tv_ts),
+					)
+				)
+			);
+
+			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+				// Initialize
+			$user = clone $GLOBALS['BE_USER'];
+			$user->user['admin'] = 1;
+			$tce->start($recData, Array(), $user);
+			$tce->admin = 1;
+				// Saved the stuff
+			$tce->process_datamap();
+				// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
+			$tce->clear_cacheCmd('all');
+
 		}
 			// force reset due to invalid ts / to
 		if($selected_tv_ts === null) {
-			$selected_tv_ts = $options[0]['uid'];
+			$selected_tv_ts = $templates[0]['uid'];
 		}
 		return array(
 			'layout' => 'form',
@@ -171,6 +198,7 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		$tce->start($recData, Array(), $user);
 			// Save the stuff
 		$tce->process_datamap();
+			// @todo add admin flag!
 			// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
 		$tce->clear_cacheCmd('all');
 	}
