@@ -14,8 +14,12 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 			//fetch screenshots
 		$extName = substr($name,4);
 		if(($name !== 'LOCAL:error') && (t3lib_extMgm::isLoaded($extName, FALSE))){
-			$additionalScreenshots = t3lib_div::getFilesInDir(t3lib_extMgm::extRelPath($extName) . 'screenshots', '', TRUE);
+			$additionalScreenshots = t3lib_div::getFilesInDir(t3lib_extMgm::extPath($extName) . 'screenshots', '', TRUE, 1);
 			$additionalScreenshots = array_values($additionalScreenshots);
+			$additionalScreenshots = t3lib_div::removePrefixPathFromList($additionalScreenshots, PATH_site);
+			foreach($additionalScreenshots as $k => $v) {
+				$additionalScreenshots[$k] = '../' . $additionalScreenshots[$k];
+			}
 		}
 		if(count($additionalScreenshots) === 0) {
 			$additionalScreenshots = array(
@@ -83,11 +87,11 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 			t3lib_BEfunc::getPagesTSconfig($pid)
 		);
 
-		#if(count($allowedDS) > 1) {
-		#	$andQuery = 'AND uid IN (' . substr(implode(',', $allowedDS), 0, -1) . ')';
-		#} else {
+		if(strlen(trim(substr(implode(',', $allowedDS), 0, -1))) > 0) {
+			$andQuery = 'AND uid IN (' . substr(implode(',', $allowedDS), 0, -1) . ')';
+		} else {
 			$andQuery = '';
-		#}
+		}
 		$templates = t3lib_BEfunc::getRecordsByField(
 			'tx_templavoila_tmplobj',
 			'pid',
