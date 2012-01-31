@@ -22,7 +22,6 @@ class Tx_SitemgrTemplate_Modules_Template_TemplateController extends Tx_Sitemgr_
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.sitemgrCombobox.js',
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.sitemgrWizardfield.js',
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.wizard.js',
-			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.sitemgrTemplavoilaRereferenceButton.js',
 		);
 		$this->cssFiles = array(
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-ColorField-ryanpetrelo/Ext.ux.ColorField.css',
@@ -229,47 +228,5 @@ class Tx_SitemgrTemplate_Modules_Template_TemplateController extends Tx_Sitemgr_
 		$pid           = $customer->getRootPage();
 		$this->TemplateRepository->get($templateName)->applyToPid($pid, $constants, $isSetConstants,$options);
 		return $this->getReturnForForm();
-	}
-	/**
-	 * remap all tt_content records for all pages in the tree of this customer.
-	 *
-	 * @param $args
-	 * @throws Exception
-	 */
-	function templavoilaRemapContent($args) {
-		if(!t3lib_extMgm::isLoaded('templavoila', 0)) {
-			throw new Exception('Function only available if templavoila is installed and configured!');
-		}
-
-		$uid = $args->uid;
-		$cid           = Tx_Sitemgr_Utilities_CustomerUtilities::getCustomerForPage($uid);
-		$customer      = new Tx_Sitemgr_Utilities_CustomerUtilities($cid);
-		$customer->enableExceptions();
-		$customer->isAdministratorForCustomer();
-		$pid           = $customer->getRootPage();
-
-			//collect settings
-		$treeStartingRecord = t3lib_BEfunc::getRecord('pages', $pid);
-		$depth = 99;
-
-			// Initialize tree object:
-		$tree = t3lib_div::makeInstance('t3lib_pageTree');
-		$tree->init('AND '.$GLOBALS['BE_USER']->getPagePermsClause(1));
-
-		$tree->tree[] = array(
-			'row' => $treeStartingRecord,
-			'HTML' => ''
-		);
-
-			// Create the tree from starting point:
-		if ($depth>0)	{
-			$tree->getTree($pid, $depth, '');
-		}
-			// use the API and DO NOT DO it on my OWN!
-		include_once(t3lib_extMgm::extPath('templavoila') . 'func_wizards/class.tx_templavoila_referenceelementswizard.php');
-
-		$t = new tx_templavoila_referenceElementsWizard();
-		$t->templavoilaAPIObj = t3lib_div::makeInstance ('tx_templavoila_api');
-		$t->createReferencesForTree($tree);
 	}
 }
