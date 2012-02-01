@@ -199,12 +199,8 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		$tce->start($recData, Array(), $user);
 			// Save the stuff
 		$tce->process_datamap();
-<<<<<<< .mine
-			// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
-=======
 			// @todo add admin flag!
 			// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
->>>>>>> .r57027
 		$tce->clear_cacheCmd('all');
 	}
 	private function getTvDs($to_uid) {
