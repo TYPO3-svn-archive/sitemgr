@@ -87,22 +87,35 @@ class Tx_Sitemgr_Modules_Abstract_AbstractController{
 		return $this->settings;
 	}
 	/**
+	 * inits the form
+	 */
+	protected function initForm() {
+		if($this->form === null) {
+			$this->form = array(
+				'success' => 'true',
+			);
+		}
+	}
+	/**
 	 * @param $field
 	 * @param $message
 	 * @param null $value
 	 * @return array
 	 */
 	protected function addErrorForForm($field,$message,$value=NULL) {
-		if($this->form == null) {
-			$this->form = array(
-				'success' => 'true',
-				'errors'  => array()
-			);
-		}
+			// field related error
+		$this->initForm();
+		$this->form['errors']  = array();
 		$this->form['success'] = false;
-		$this->form['errors'][$field] = $message;
-		if($value) {
-			$this->form['data'][$field] = $value;
+		if($field !== null) {
+			$this->form['errors'][$field] = $message;
+			if($value) {
+				$this->form['data'][$field] = $value;
+			}
+		} else {
+			if($field === null) {
+				$this->form['errorMessage'].= $message;
+			}
 		}
 		return $this->form;
 	}
@@ -110,11 +123,11 @@ class Tx_Sitemgr_Modules_Abstract_AbstractController{
 	 * @return array
 	 */
 	protected function getReturnForForm() {
-		if($this->form == null) {
-			$this->form = array(
-				'success' => 'true'
-			);
-		}
+		$this->initForm();
 		return $this->form;
+	}
+	protected function addSuccessMessage($message) {
+		$this->initForm();
+		$this->form['successMessage'].= $message;
 	}
 }

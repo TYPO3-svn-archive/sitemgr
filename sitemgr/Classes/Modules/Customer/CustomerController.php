@@ -7,7 +7,7 @@ if (!defined ('TYPO3_MODE')) {
 class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_Abstract_AbstractController{
 	protected $file = __FILE__;
 	function getModuleJavaScript(&$js,$uid) {
-		$extConfig       = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ks_sitemgr']);
+		$extConfig       = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sitemgr']);
 		$customerPidPage = $GLOBALS["BE_USER"]->getTSConfig(
 		  	'mod.web_txsitemgrM1.customerPidPage',
 			t3lib_BEfunc::getPagesTSconfig($uid)
@@ -17,6 +17,10 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 			array(),
 			$uid
 		);
+		$tgroup = $GLOBALS["BE_USER"]->getTSConfig(
+			  	'mod.web_txsitemgr.customer.createUser.group',
+				t3lib_BEfunc::getPagesTSconfig($arg['uid'])
+			);
 	}
 	function getCustomers($args) {
 		if(intval($args['start'])<0) {
@@ -159,6 +163,13 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 			  	'mod.web_txsitemgr.customer.createUser.group',
 				t3lib_BEfunc::getPagesTSconfig($arg['uid'])
 			);
+			if(!strlen(trim($tgroup['value']))) {
+				$this->addErrorForForm(
+					null,
+					'Sry, but you need to define mod.web_txsitemgr.customer.createUser.group in PageTS to ensure proper user rights'
+				);
+				return;
+			}
 		/***********************************************************************
 		 * create first step records
 		 */		 		
@@ -240,7 +251,7 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 													'  plugin.tx_sitemgr.rootPage  = '.$pageId."\n".
 													'######################################################################'."\n",
 						'sitetitle'              => $arg['customerName'],
-						'title'                  => 'template for ext:ks_sitemgr, contains username const. only',
+						'title'                  => 'template for ext:sitemgr, contains username const. only',
 					),
 				),
 				//create customer

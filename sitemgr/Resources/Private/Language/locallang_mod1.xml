@@ -7,9 +7,13 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="mlang_tabs_tab">Management</label>
+			<label index="servercommunication_error"  >Error during Server communication ...</label>
+			<label index="servercommunication_success">Everything worked fine ...</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="mlang_tabs_tab">Verwaltung</label>
+			<label index="servercommunication_error"  >Der Server hat ein Problem gemeldet ...</label>
+			<label index="servercommunication_success">Das hat geklappt ...</label>
 		</languageKey>
 	</data>
 </T3locallang>

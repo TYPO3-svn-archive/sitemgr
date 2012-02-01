@@ -87,11 +87,26 @@
 		Ext.Direct.on('event',function(e,provider) {
 			if(e.result) {
 				if(e.result.errorMessage) {
-					Ext.Msg.alert('',e.result.errorMessage);
+					top.TYPO3.Flashmessage.display(
+						TYPO3.Severity.error,
+						TYPO3.lang.servercommunication_error,
+						e.result.errorMessage
+					);
+				}
+				if(e.result.successMessage) {
+					top.TYPO3.Flashmessage.display(
+						TYPO3.Severity.ok,
+						TYPO3.lang.servercommunication_success,
+						e.result.errorMessage
+					);
 				}
 			} else {
 				if(e.type == 'exception') {
-					Ext.Msg.alert('Server Exception:','<div style="width:100px;overflow:auto">'+e.xhr.responseText+'</div>');
+					top.TYPO3.Flashmessage.display(
+						TYPO3.Severity.error,
+							TYPO3.lang.servercommunication_error,
+						e.xhr.responseText
+					);
 				}
 			}
 		});
@@ -136,7 +151,7 @@
 								html:'<a onClick="window.open(\'http://www.sn.schule.de\');">Sponsor: Sächsischer Bildungsserver</a>'
 							},'-',{
 								xtype:'panel',
-								html:'<a onClick="window.open(\'http://www.kay-strobach.de\');">Developer: Kay Strobach</a>'
+								html:'<a onClick="window.open(\'http://www.kay-strobach.de\');">Dev: Kay Strobach</a>'
 							},'-',{
 								xtype:'panel',
 								html:'<a onClick="window.open(\'http://typo3.org/extensions/repository/view/sitemgr/current/\');">Powered by sitemgr Version '+TYPO3.settings.sitemgr.version+'</a>'
