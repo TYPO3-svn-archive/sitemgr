@@ -53,8 +53,7 @@
 	TYPO3.Sitemgr.TemplateApp = {
 		tpl: new Ext.XTemplate(
 			'<tpl for=".">',
-				'<tpl if="isInUse==0"><div class="template-item-wrap" id="structure{uid}"></tpl>',
-				'<tpl if="isInUse==1"><div class="template-item-wrap template-item-selected" id="structure{uid}"></tpl>',
+				'<div class="template-item-wrap" id="structure{uid}">',
 					'<div class="thumb" style="background-image: url({icon});">',
 						'<div class="template-selector"></div>',
 						'<div class="template-title">{title}</div>',
@@ -93,11 +92,16 @@
 					layout: 'fit',
 					maximized: true,
 					closable: false,
+					listeners: {
+						close: function(p) {
+							this.tab.findById('templateSelector').getStore().reload();
+						},
+						scope: this
+					},
 					tbar: [
 						{
 							iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-close',
 							handler:function() {
-								Ext.getCmp('templateSelector').getStore().reload();
 								Ext.getCmp('templatePreviewWindow').close();
 							}
 						}, '-', {
@@ -168,9 +172,6 @@
 											text: '<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-undo"></span>' + TYPO3.lang.SitemgrTemplates_theme_cansel_apply,
 											handler: function() {
 												Ext.getCmp('templatePreviewWindow').close();
-												if(this.templateStructureStore) {
-													this.templateStructureStore.reload();
-												}
 											},
 											scope: this
 										}, '->',{
@@ -188,9 +189,6 @@
 													this
 												);
 												Ext.getCmp('templatePreviewWindow').close();
-												if(this.templateStructureStore) {
-													this.templateStructureStore.reload();
-												}
 											},
 											scope: this
 										}
@@ -225,11 +223,16 @@
 						width:500,
 						resizeable:false,
 						layout: 'fit',
+						listeners: {
+							close: function(p) {
+								this.tab.findById('templateSelector').getStore().reload();
+							},
+							scope: TYPO3.Sitemgr.TemplateApp
+						},
 						tbar: [
 							{
 								iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-close',
 								handler:function() {
-									Ext.getCmp('templateSelector').getStore().reload();
 									Ext.getCmp('templateWindow').close();
 								}
 							}, '-', {
@@ -243,9 +246,6 @@
 											module:'sitemgr_template',
 											fn    :'setTemplateAndOptions',
 											args  : record.id + ';' + TYPO3.settings.sitemgr.uid
-										},
-										success: function(f,a){
-											this.templateStructureStore.reload();
 										}
 									});
 								},
@@ -264,12 +264,10 @@
 										},
 										success: function(f,a){
 											Ext.getCmp('templateWindow').close();
-											if(this.templateStructureStore) {
-												this.templateStructureStore.reload();
-											}
 										}
 									});
-								}
+								},
+								scope:this
 							},'-', {
 								tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
 								iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-view',
@@ -348,13 +346,25 @@
 					'version',
 					'isInUse',
 					'extensionKey'
-				]
+				],
+				listeners: {
+					load: function(store, records, options) {
+						var usedTemplate = store.find('isInUse',true);
+						if(usedTemplate !== -1) {
+							this.tab.findById('templateSelector').select(
+								usedTemplate,
+								false,
+								false
+							);
+						}
+					},
+					scope: this
+				}
 			});
 			this.tab = Ext.getCmp('Sitemgr_App_Tabs').add({
 				title:TYPO3.lang.SitemgrTemplates_title,
 				disabled:!TYPO3.settings.sitemgr.customerSelected,
 				layoutConfig: {
-					//padding:'5',
 					border:false
 				},
 				iconCls: 'template-tab-icon',
@@ -375,12 +385,12 @@
 								itemSelector:'div.template-item-wrap',
 								store: this.templateStructureStore,
 								tpl: this.tpl,
-								multiSelect:false,
+								//multiSelect:false,
 								singleSelect:true,
 								listeners: {
-									selectionchange: function(dv,nodes){
-										var record    =  dv.getSelectedRecords()[0].data;
-										this.showTemplatePreview(record);
+									click : function(dv, idx, node, e) {
+										record = dv.getStore().getAt(idx);
+										this.showTemplatePreview(record.data);
 									},
 									scope:this
 								}
