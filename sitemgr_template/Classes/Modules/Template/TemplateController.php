@@ -14,18 +14,23 @@ class Tx_SitemgrTemplate_Modules_Template_TemplateController extends Tx_Sitemgr_
 	protected $TemplateRepository = array();
 	function __construct() {
 		$this->initRepository();
+			// general files
 		$this->jsFiles = array(
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/JavaScripts/Modules/Template/functions.js',
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.patches.js',
-			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-ColorField-ryanpetrelo/Ext.ux.ColorField.js',
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.sitemgrMultiField.js',
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.sitemgrCombobox.js',
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.sitemgrWizardfield.js',
 			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-sitemgrTemplate/Ext.ux.wizard.js',
 		);
-		$this->cssFiles = array(
-			t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-ColorField-ryanpetrelo/Ext.ux.ColorField.css',
-		);
+			// ryanpetrello colorfield
+		#$this->jsFiles[]  = t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-ColorField-ryanpetrelo/Ext.ux.ColorField.js';
+		#$this->cssFiles[] = t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-ColorField-ryanpetrelo/Ext.ux.ColorField.css';
+			// vtswingkid colorpicker
+		$this->jsFiles[]  = t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-ColorPicker-vtswingkid/sources/ColorPicker.js';
+		$this->jsFiles[]  = t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-ColorPicker-vtswingkid/sources/ColorMenu.js';
+		$this->jsFiles[]  = t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-ColorPicker-vtswingkid/sources/ColorPickerField.js';
+		$this->cssFiles[] = t3lib_extMgm::extRelPath('sitemgr_template').'Resources/Public/Contrib/ux-ColorPicker-vtswingkid/resources/css/colorpicker.css';
 	}
 	protected function initRepository() {
 		$this->TemplateRepository = new Tx_SitemgrTemplate_Domain_Repository_TemplateRepository();
@@ -135,7 +140,11 @@ class Tx_SitemgrTemplate_Modules_Template_TemplateController extends Tx_Sitemgr_
 				}
 			break;
 			case 'color':
-				$field['fieldConfig']['xtype'] = 'colorfield';
+				#$field['fieldConfig']['xtype'] = 'colorfield';
+				$field['fieldConfig']['xtype'] = 'colorpickerfield';
+				$field['fieldConfig']['editMode'] = 'all';
+				$field['fieldConfig']['hideHtmlCode'] = true;
+				$field['fieldConfig']['opacity'] = false;
 			break;
 			case 'boolean':
 				$field['fieldConfig']['xtype'] = 'sitemgrcombobox';

@@ -53,7 +53,8 @@
 	TYPO3.Sitemgr.TemplateApp = {
 		tpl: new Ext.XTemplate(
 			'<tpl for=".">',
-				'<div class="template-item-wrap" id="structure{uid}">',
+				'<tpl if="isInUse==0"><div class="template-item-wrap" id="structure{uid}"></tpl>',
+				'<tpl if="isInUse==1"><div class="template-item-wrap template-item-selected" id="structure{uid}"></tpl>',
 					'<div class="thumb" style="background-image: url({icon});">',
 						'<div class="template-selector"></div>',
 						'<div class="template-title">{title}</div>',
@@ -351,11 +352,7 @@
 					load: function(store, records, options) {
 						var usedTemplate = store.find('isInUse',true);
 						if(usedTemplate !== -1) {
-							this.tab.findById('templateSelector').select(
-								usedTemplate,
-								false,
-								false
-							);
+							this.tab.findById('templateSelector').select(usedTemplate);
 						}
 					},
 					scope: this

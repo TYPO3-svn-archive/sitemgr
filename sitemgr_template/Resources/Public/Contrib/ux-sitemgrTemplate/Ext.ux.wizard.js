@@ -5,6 +5,7 @@ Ext.ux.Wizard = Ext.extend(Ext.Panel, {
 	layout    : 'card',
 	activeItem: 0,
 	activeCard: 0,
+	cls: 'sitemgr-template-previewimage',
 	bbar: [
 		{
 			id       : 'move-prev',

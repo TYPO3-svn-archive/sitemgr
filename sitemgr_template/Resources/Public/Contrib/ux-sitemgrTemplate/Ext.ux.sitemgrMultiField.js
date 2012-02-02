@@ -31,7 +31,6 @@ Ext.ux.sitemgrMultiField = Ext.extend(Ext.Panel,  {
 						autoShow: true,
 						iconCls: 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open',
 						hidden: config.checkState,
-						disabled: config.checkState,
 						handler: function(button, event) {
 							panel = button.findParentByType('panel');
 							panel.get(4).setValue(true);
@@ -70,12 +69,12 @@ Ext.ux.sitemgrMultiField = Ext.extend(Ext.Panel,  {
 									field.get(1).show();
 									field.get(2).hide();
 									field.get(3).show();
-									field.get(2).setRawValue(field.get(2).defaultValue);
-										// Suppress validation
 									field.get(2).disable();
 									field.get(3).enable();
+										// Suppress validation
+									field.get(2).setRawValue(field.get(2).defaultValue);
 								}
-								field.doLayout();
+								field.doLayout()
 							}
 						}
 					}
