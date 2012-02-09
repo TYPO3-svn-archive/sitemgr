@@ -90,7 +90,8 @@
 					top.TYPO3.Flashmessage.display(
 						TYPO3.Severity.error,
 						TYPO3.lang.servercommunication_error,
-						e.result.errorMessage
+						e.result.errorMessage,
+						30
 					);
 				}
 				if(e.result.successMessage) {
@@ -104,8 +105,9 @@
 				if(e.type == 'exception') {
 					top.TYPO3.Flashmessage.display(
 						TYPO3.Severity.error,
-							TYPO3.lang.servercommunication_error,
-						e.xhr.responseText
+						TYPO3.lang.servercommunication_error,
+						e.xhr.responseText,
+						30
 					);
 				}
 			}
