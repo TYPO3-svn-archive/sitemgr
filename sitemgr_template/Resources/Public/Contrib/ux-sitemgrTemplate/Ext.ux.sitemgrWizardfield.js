@@ -23,7 +23,7 @@ Ext.ux.sitemgrWizardfield= Ext.extend(Ext.form.ComboBox,
 					}
 				);
 				win.show();//*/
-				window.open(uri, 'Tetete', "width=600, height=600");
+				window.open(uri, 'Tetete', "width=600, height=600, scrollbars=yes, dependent=yes, resizable=yes");
 				document.sitemgrWizardfield_OpenWizardRef = {'ref':this.el.dom};
 			} else {
 				alert('unknown handler: ' + this.internalHandler);
