@@ -195,10 +195,10 @@ class Tx_SitemgrTemplate_Modules_Template_TemplateController extends Tx_Sitemgr_
 	 */
 	public function getTemplates($uid) {
 			// init customer
-		$cid           = Tx_Sitemgr_Utilities_CustomerUtilities::getCustomerForPage($uid);
-		$customer      = new Tx_Sitemgr_Utilities_CustomerUtilities($cid);
-		$customer->enableExceptions();
 		try {
+			$cid           = Tx_Sitemgr_Utilities_CustomerUtilities::getCustomerForPage($uid);
+			$customer      = new Tx_Sitemgr_Utilities_CustomerUtilities($cid);
+			$customer->enableExceptions();
 			$customer->isAdministratorForCustomer();
 			$pid           = $customer->getRootPage();
 				// init repository
