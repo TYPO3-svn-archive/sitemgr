@@ -202,7 +202,7 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 						'pid'                    => 0,
 						'title'                  => 'E: '.$arg['customerName'],
 						'hidden'                 => 0,
-						'subgroup'               => $tgroup['value'], //add to group redakteure //needs to be changed, to be dynamic.
+						'subgroup'               => $tgroup['value'],
 						'db_mountpoints'         => 'NEW11',
 					),
 				),
@@ -221,16 +221,31 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 						'db_mountpoints'         => 'NEW11',
 					),
 				),
-				
-				
 			);
+
+				//execute hook
+			$this->executeDatabasePreprocessing(
+				'customerCreateRound2',
+				$data,
+				array(
+					'parentUid'           => $arg['uid'],
+					'description'         => $arg['description'],
+					'customerName'        => $arg['customerName'],
+					'customerParentGroup' => $tgroup['value'],
+					'customerEmail'       => $arg['customerEmail'],
+					'customerPassword'    => $arg['password'],
+					'defaultLang'         => $GLOBALS['BE_USER']->uc['lang'],
+				)
+			);
+
+
 			$tcemain = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tcemain->start($data,array());
 			$tcemain->process_datamap();
 			$groupId = $tcemain->substNEWwithIDs['NEW41'];
 			$userId = $tcemain->substNEWwithIDs['NEW31'];
 			$pageId = $tcemain->substNEWwithIDs['NEW11'];
-			unset($tgroup);
+
 		/***********************************************************************
 		 * create second step records
 		 */	
@@ -252,6 +267,7 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 													'######################################################################'."\n",
 						'sitetitle'              => $arg['customerName'],
 						'title'                  => 'template for ext:sitemgr, contains username const. only',
+						'root'                   => 1,
 					),
 				),
 				//create customer
@@ -290,7 +306,25 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 					),
 				),
 			);
-			
+
+				//execute hook
+			$this->executeDatabasePreprocessing(
+				'customerCreateRound2',
+				$data,
+				array(
+					'parentUid'           => $arg['uid'],
+					'description'         => $arg['description'],
+					'defaultLang'         => $GLOBALS['BE_USER']->uc['lang'],
+					'customerName'        => $arg['customerName'],
+					'customerParentGroup' => $tgroup['value'],
+					'customerEmail'       => $arg['customerEmail'],
+					'customerPassword'    => $arg['password'],
+					'customerAdminUid'    => $userId,
+					'customerGroupUid'    => $groupId,
+					'customerRootPid'     => $pageId,
+				)
+			);
+
 			$tcemain = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tcemain->start($data,array());
 			$tcemain->process_datamap();
@@ -330,9 +364,39 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 				$tcemain->start(array(),$cmd);
 				$tcemain->process_cmdmap();
 			}
+
+		$this->executeDatabasePreprocessing(
+			'customerCreateRound3',
+			$data,
+			array(
+				'parentUid'           => $arg['uid'],
+				'description'         => $arg['description'],
+				'defaultLang'         => $GLOBALS['BE_USER']->uc['lang'],
+				'customerName'        => $arg['customerName'],
+				'customerParentGroup' => $tgroup['value'],
+				'customerEmail'       => $arg['customerEmail'],
+				'customerPassword'    => $arg['password'],
+				'customerAdminUid'    => $userId,
+				'customerGroupUid'    => $groupId,
+				'customerRootPid'     => $pageId,
+			)
+		);
+
 		/***********************************************************************
 		 * clear cache
 		 */
 		 	$tcemain->clear_cacheCmd('pages');	
+	}
+	/**
+	 * @param $hookname string name of the hook
+	 * @param $fields   array of fields
+	 * @param $params   known params
+	 */
+	private function executeDatabasePreprocessing($hookname, &$fields, $params) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr'][$hookname])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sitemgr'][$hookname] as $userFunc) {
+				t3lib_div::callUserFunction($userFunc, $fields, $params, $this);
+			}
+		}
 	}
 }
