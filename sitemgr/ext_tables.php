@@ -101,6 +101,7 @@ if (!defined ('TYPO3_MODE')) {
 				'access' => 'user,group',
 				'icon'   => 'EXT:sitemgr/Resources/Public/Images/Backend/mod1/moduleicon.gif', 
 				'labels' => 'LLL:EXT:sitemgr/Resources/Private/Language/locallang_mod1.xml',
+				'navigationComponentId' => 'typo3-pagetree',
 			)
 		);
 	}
