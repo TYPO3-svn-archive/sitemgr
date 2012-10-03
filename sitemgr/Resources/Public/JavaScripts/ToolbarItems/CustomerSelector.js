@@ -28,6 +28,10 @@
  * class to handle the open documents menu, loads the open documents dynamically
  *
  */
+Ext.ns('TYPO3.settings.sitemgr');
+TYPO3.settings.sitemgr.uid = 0;
+
+
 var sitemgrCustomerSelector = Class.create({
 	ajaxScript: 'ajax.php',
 	menu: null,
@@ -40,91 +44,211 @@ var sitemgrCustomerSelector = Class.create({
 		Event.observe(window, 'resize', this.positionMenu);
 
 		Ext.onReady(function() {
-			this.positionMenu();
 			this.toolbarItemIcon     = $$('#tx-sitemgr-menu .toolbar-item img.t3-icon')[0];
 			this.origToolbarItemIcon = this.toolbarItemIcon.src;
 			this.ajaxScript          = top.TS.PATH_typo3 + this.ajaxScript; // can't be initialized earlier
 
 			Event.observe($$('#tx-sitemgr-menu .toolbar-item')[0], 'click', this.toggleMenu);
-			this.menu = $$('#tx-sitemgr-menu #toolbar-item-menu-dynamic')[0];
-			
-			form = new Ext.form.TextField({
-				renderTo:Ext.get('sitemgr_form'),
-				id:'sitemgr_form_customer',
-				xtype:'textfield',
-				width:190,
-				margin:10,
-				enableKeyEvents:true,
-				listeners:{
-					valid:{
-						buffer:1,
-						fn:function() {
-							top.TYPO3BackendSitemgr.updateMenu();
-						}
-					}
-				}
-			});
-			
+
 			
 		}, this);
-	},
-
-	/**
-	 * positions the menu below the toolbar icon, let's do some math!
-	 */
-	positionMenu: function() {
-		var calculatedOffset = 0;
-		var parentWidth      = $('tx-sitemgr-menu').getWidth();
-		var currentToolbarItemLayer = $$('#tx-sitemgr-menu .toolbar-item-menu')[0];
-		var ownWidth         = currentToolbarItemLayer.getWidth();
-		var parentSiblings   = $('tx-sitemgr-menu').previousSiblings();
-
-		parentSiblings.each(function(toolbarItem) {
-			calculatedOffset += toolbarItem.getWidth() - 1;
-			// -1 to compensate for the margin-right -1px of the list items,
-			// which itself is necessary for overlaying the separator with the active state background
-
-			if(toolbarItem.down().hasClassName('no-separator')) {
-				calculatedOffset -= 1;
-			}
-		});
-		calculatedOffset = calculatedOffset - ownWidth + parentWidth;
-
-			// border correction
-		if (currentToolbarItemLayer.getStyle('display') !== 'none') {
-			calculatedOffset += 2;
-		}
-
-		$$('#tx-sitemgr-menu .toolbar-item-menu')[0].setStyle({
-			left: calculatedOffset + 'px'
-		});
 	},
 
 	/**
 	 * toggles the visibility of the menu and places it under the toolbar icon
 	 */
 	toggleMenu: function(event) {
-		var toolbarItem = $$('#tx-sitemgr-menu > a')[0];
-		var menu        = $$('#tx-sitemgr-menu .toolbar-item-menu')[0];
-		toolbarItem.blur();
+		TYPO3.Sitemgr.CustomerApp.customerStore.clearFilter();
+		TYPO3.Sitemgr.CustomerApp.beuserStore.clearFilter();
+		win = new Ext.Window(
+			{
+				modal: true,
+				layout: 'border',
+				width: 800,
+				height: 400,
+				closeAction: 'close',
+				listeners: {
+					afterrender: function(cmp) {
+						window.setTimeout(function() {
+							Ext.getCmp('customerAndUserSearchField').focus();
+						}, 400);
+					}
+				},
+				items: [
+					{
+						region: 'north',
+						layout: 'fit',
+						height: 30,
+						items: [
+							{
+								xtype: 'textfield',
+								id: 'customerAndUserSearchField',
+								fieldLabel: 'Test',
+								enableKeyEvents: true,
+								listeners: {
+									keyup: function(cmp, event) {
+										TYPO3.Sitemgr.CustomerApp.customerStore.filter('title', cmp.getValue());
+										TYPO3.Sitemgr.CustomerApp.beuserStore.filter('username', cmp.getValue());
+									}
+								}
+							}
+						]
+					},{
+						region: 'center',
+						xtype   :'grid',
+						loadMask:true,
+						id      :'customerGrid',
+						store   :TYPO3.Sitemgr.CustomerApp.customerStore,
+						flex: 1,
+						colModel: new Ext.grid.ColumnModel(
+							{
+								defaults: {
+									sortable: true
+								},
+								columns: [
+									{id: 'uid', header: 'ID', width: 200, sortable: true, dataIndex: 'uid',hidden:true},
+									{header: TYPO3.lang.SitemgrCustomer_grid_type, width:30,fixed:true,sortable:false,renderer:function(val){
+										return '<span class="t3-icon t3-icon-tcarecords t3-icon-tcarecords-tx_sitemgr_customer t3-icon-tx_sitemgr_customer-default"></span>';
+									}},
+									{header: TYPO3.lang.SitemgrCustomer_grid_customer, dataIndex: 'title'},
+									{header: TYPO3.lang.SitemgrCustomer_grid_users   , dataIndex: 'users',sortable:false}
+								]
+							}
+						),
+						listeners: {
+							rowclick: function(grid, rowIndex, e) {
+								var sm  = grid.getSelectionModel();
+								var sel = sm.getSelected();
+								if(sm.hasSelection() && sel.data.uid!='') {
+									TYPO3.Sitemgr.CustomerApp.beuserStore.filter('customerName', sel.data.title);
+								}
+							}
+						},
+						viewConfig: {
+							forceFit: true
+						},
+						bbar:[
+							{
+								//text:'###LANG.action.editCustomer###',
+								tooltip:TYPO3.lang.SitemgrCustomer_title + ' ' + TYPO3.lang.SitemgrCustomer_action_editCustomer,
+								iconCls:'t3-icon t3-icon-tcarecords t3-icon-tcarecords-tx_sitemgr_customer t3-icon-tx_sitemgr_customer-default',
+								handler:function() {
+									var sm  = Ext.getCmp('customerGrid').getSelectionModel();
+									var sel = sm.getSelected();
+									if(sm.hasSelection() && sel.data.uid!='') {
+										window.open('alt_doc.php?returnUrl=close.html&edit[tx_sitemgr_customer]['+sel.data.uid+']=edit','','width=800,height=600');
+									}
+								}
+							}, {
+								//text:'###LANG.action.editCustomer###',
+								tooltip:TYPO3.lang.SitemgrCustomer_title + ' ' + TYPO3.lang.SitemgrCustomer_action_preview_page,
+								iconCls:'t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-pagemodule-open',
+								handler:function() {
+									var sm  = Ext.getCmp('customerGrid').getSelectionModel();
+									var sel = sm.getSelected();
+									if(sm.hasSelection()) {
+										if(sel.data.uid!='') {
+											window.open('../index.php?id=' + sel.data.pid + '','','maximized=yes');
+										}
+									}
+								}
+							}, {
+								//text:'###LANG.action.editCustomer###',
+								tooltip:TYPO3.lang.SitemgrCustomer_title + ' '+ TYPO3.lang.SitemgrCustomer_action_open_management,
+								iconCls:'t3-icon t3-icon-extensions t3-icon-extensions-sitemgr t3-icon-sitemgr-moduleicon',
+								handler:function() {
+									var sm  = Ext.getCmp('customerGrid').getSelectionModel();
+									var sel = sm.getSelected();
+									if(sm.hasSelection() && sel.data.uid!='') {
+										top.fsMod.recentIds.web = sel.data.pid;
+										top.fsMod.navFrameHighlightedID.web = "pages" + sel.data.pid + "_0";		// For highlighting
 
-		if(!toolbarItem.hasClassName('toolbar-item-active')) {
-			toolbarItem.addClassName('toolbar-item-active');
-			Effect.Appear(menu, {duration: 0.2});
-			TYPO3BackendToolbarManager.hideOthers(toolbarItem);
-			new Ext.util.DelayedTask(function() {
-				Ext.getCmp('sitemgr_form_customer').focus(true,true);
-			}).delay(100);
-		} else {
-			toolbarItem.removeClassName('toolbar-item-active');
-			Effect.Fade(menu, {duration: 0.1});
-		}
+										if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
+											top.content.nav_frame.refresh_nav();
+										}
+										goToModule('web_SitemgrTxSitemgrMod1', 0, '');
+									}
+								}
+							}, {
+								//text:'###LANG.action.editCustomer###',
+								tooltip:TYPO3.lang.SitemgrCustomer_title + ' ' + TYPO3.lang.SitemgrCustomer_action_open_page_module,
+								iconCls:'t3-icon t3-icon-extensions t3-icon-extensions-templavoila t3-icon-templavoila-type-fce',
+								handler:function() {
+									var sm  = Ext.getCmp('customerGrid').getSelectionModel();
+									var sel = sm.getSelected();
+									if(sm.hasSelection() && sel.data.uid!='') {
+										loadEditId(sel.data.pid);
+									}
+								}
+							}
 
-		if(event) {
-			Event.stop(event);
-		}
+						]
+					}, {
+						width: 400,
+						region: 'east',
+						xtype   :'grid',
+						loadMask:true,
+						id      :'userGrid',
+						store   :TYPO3.Sitemgr.CustomerApp.beuserStore,
+						flex: 1,
+						colModel: new Ext.grid.ColumnModel(
+							{
+								defaults: {
+									sortable: true
+								},
+								columns: [
+									{id: 'uid', header: 'ID', width: 200, sortable: true, dataIndex: 'uid',hidden:true},
+									{header: TYPO3.lang.SitemgrBeUser_grid_admin, dataIndex: 'admin', width:30, fixed:true, renderer:function(val){
+										if(val != 1) {
+											return '<span class="t3-icon t3-icon-status t3-icon-status-user t3-icon-user-backend"></span>';
+										} else {
+											return '<span class="t3-icon t3-icon-status t3-icon-status-user t3-icon-user-admin"></span>'
+										}
+									}},
+									{header: TYPO3.lang.SitemgrBeUser_grid_username, dataIndex: 'username'},
+									{header: TYPO3.lang.SitemgrBeUser_grid_realname   , dataIndex: 'realname'},
+									{header: TYPO3.lang.SitemgrBeUser_grid_customerName   , dataIndex: 'customerName'}
+								]
+							}
+						),
+						viewConfig: {
+							forceFit: true
+						},
+						bbar: [
+							{
+								//text:'###LANG.action.editCustomer###',
+								tooltip: TYPO3.lang.SitemgrBeUser_action_editUser,
+								iconCls:'t3-icon t3-icon-status t3-icon-status-user t3-icon-user-backend',
+								handler:function() {
+									var sm  = Ext.getCmp('userGrid').getSelectionModel();
+									var sel = sm.getSelected();
+									if(sm.hasSelection()) {
+										if(sel.data.uid!='') {
+											window.open('alt_doc.php?returnUrl=close.html&edit[be_users]['+sel.data.uid+']=edit','','width=800,height=600');
+										}
+									}
+								}
+							}, {
+								//text:'TYPO3.lang.SitemgrBeUser_action.switchUser###',
+								tooltip:TYPO3.lang.SitemgrBeUser_action_switchUser,
+								iconCls:'t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-backend-user-emulate',
+								handler:function() {
+									var sm  = Ext.getCmp('userGrid').getSelectionModel();
+									var sel = sm.getSelected();
+									if(sm.hasSelection()) {
+										if(sel.data.uid!='') {
+											top.location.href='mod.php?M=tools_beuser&SwitchUser='+sel.data.uid+'&switchBackUser=1';
+										}
+									}
+									Ext.get(win.getEl()).mask(TYPO3.LLL.core.loadingIndicator);
+								}
+							}
+						]
+					}
+				]
+			}
+		).show();
 	},
-
 	/**
 	 * displays the menu and does the AJAX call to the TYPO3 backend
 	 */

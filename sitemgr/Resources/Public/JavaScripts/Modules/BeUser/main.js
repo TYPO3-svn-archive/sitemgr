@@ -172,35 +172,7 @@
 					loadMask:true,
 					flex:1.5,
 					id:'userGrid',
-					store:new Ext.data.DirectStore({
-						storeId:'beuserStore',
-						directFn:TYPO3.sitemgr.tabs.dispatchPaged,
-						paramsAsHash: false,
-						remoteSort :true,
-						paramOrder:'module,fn,args,start,limit,sort,dir',
-						baseParams:{
-							module:'sitemgr_beuser',
-							fn    :'getUsers',
-							args  :TYPO3.settings.sitemgr.uid,
-							start: 0,
-				        	limit: 10,
-				        	sort:  'username',
-				        	dir :  'ASC'
-						},
-						root: 'rows',
-			    		totalProperty: 'count',
-						idProperty: 'uid',
-						fields: [{
-					        name: 'uid',
-					        type: 'int'
-					    },
-					        'username',
-					        'realName',
-					        'admin',
-					        'email',
-					        'customerName'
-					    ]
-					}),
+					store:TYPO3.Sitemgr.CustomerApp.beuserStore,
 					tbar:[
 						{
 							//text:'TYPO3.lang.SitemgrBeUser_action.newUser###',

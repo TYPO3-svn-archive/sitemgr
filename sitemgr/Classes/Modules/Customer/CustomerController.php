@@ -6,6 +6,11 @@ if (!defined ('TYPO3_MODE')) {
 
 class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_Abstract_AbstractController{
 	protected $file = __FILE__;
+	function __construct() {
+		$this->jsFiles = array(
+			t3lib_extMgm::extRelPath('sitemgr').'Resources/Public/JavaScripts/Modules/Customer/customerStore.js',
+		);
+	}
 	function getModuleJavaScript(&$js,$uid) {
 		$extConfig       = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sitemgr']);
 		$customerPidPage = $GLOBALS["BE_USER"]->getTSConfig(
@@ -73,7 +78,7 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 			$t = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 				'*',
 				'tx_sitemgr_customer',
-				'title='.$GLOBALS['TYPO3_DB']->fullQuoteStr($arg['customerName']).' AND deleted=0',
+				'title='.$GLOBALS['TYPO3_DB']->fullQuoteStr($arg['customerName'], 'tx_sitemgr_customer').' AND deleted=0',
 				'',
 				'');
 			if(count($t)>0) {
@@ -85,7 +90,7 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 			$t = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 				'*',
 				'be_users',
-				'username='.$GLOBALS['TYPO3_DB']->fullQuoteStr($arg['customerName']).' AND deleted=0',
+				'username='.$GLOBALS['TYPO3_DB']->fullQuoteStr($arg['customerName'], 'be_users').' AND deleted=0',
 				'',
 				'');
 				

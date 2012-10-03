@@ -8,6 +8,11 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 	protected $access = array(
 		'general' => 'customerAdmin'
 	);
+	function __construct() {
+		$this->jsFiles = array(
+			t3lib_extMgm::extRelPath('sitemgr').'Resources/Public/JavaScripts/Modules/BeUser/beuserStore.js',
+		);
+	}
 	function getModuleJavaScript(&$js,$uid) {
 		$js.= $this->getModuleJavaScriptHelper(
 			array(

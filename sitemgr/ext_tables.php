@@ -86,6 +86,17 @@ if (!defined ('TYPO3_MODE')) {
 	}
 
 /*******************************************************************************
+ * Add extbase Module
+ */
+	t3lib_SpriteManager::addSingleIcons(
+		array(
+			'moduleicon'             => t3lib_extMgm::extRelPath('sitemgr') . 'Resources/Public/Images/Backend/mod1/moduleicon.gif',
+			'moduleicon-templavoila' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/moduleicon.gif',
+		),
+		$_EXTKEY
+	);
+
+/*******************************************************************************
  * Add extbase Module 
  */ 
 	if (TYPO3_MODE == 'BE') {
@@ -114,4 +125,48 @@ if (!defined ('TYPO3_MODE')) {
 	   'tx_sitemgr_customer',
 	   'EXT:sitemgr/Resources/Private/Language/locallang_csh_tx_sitemgr_customer.xml'
 	);
+
+/*******************************************************************************
+ * reduce chooseable fe_user_groups to the ones defined below the customer root page
+ */
+	if (TYPO3_MODE == 'BE') {
+		$settings = unserialize($TYPO3_CONF_VARS['EXT']['extConf']['sitemgr']);
+		if($settings['restrictFeUserAccessToCustomer']) {
+
+			$config = array(
+				'type'		=> 'select',
+				'size'		=> 7,
+				'maxitems'	=> 100,
+				'items'		=>	array(
+						array('LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1),
+						array('LLL:EXT:lang/locallang_general.xml:LGL.any_login', -2),
+						array('LLL:EXT:lang/locallang_general.xml:LGL.usergroups', '--div--')
+					),
+				'itemsProcFunc' => 'user_dbmissingthings->get_fe_user_groups'
+			);
+			t3lib_div::loadTCA('fe_groups');
+			$TCA['fe_users']['columns']['usergroup']['config'] = $config;
+
+			t3lib_div::loadTCA('fe_users');
+			$TCA['fe_groups']['columns']['subgroup']['config'] = $config;
+
+			t3lib_div::loadTCA('tt_content');
+			$TCA['tt_content']['columns']['fe_group']['config'] = $config;
+
+			t3lib_div::loadTCA('pages');
+			$TCA['pages']['columns']['fe_group']['config'] = $config;
+
+			if(t3lib_extMgm::isLoaded('tt_address', 0)) {
+				t3lib_div::loadTCA('tt_address_group');
+				$TCA['tt_address_group']['columns']['fe_group']['config'] = $config;
+			}
+			if(t3lib_extMgm::isLoaded('tt_news', 0)) {
+				t3lib_div::loadTCA('tt_news');
+				$TCA['tt_news']['columns']['fe_group']['config'] = $config;
+				t3lib_div::loadTCA('tt_news_cat');
+				$TCA['tt_news_cat']['columns']['fe_group']['config'] = $config;
+			}
+		}
+
+	}
 ?>

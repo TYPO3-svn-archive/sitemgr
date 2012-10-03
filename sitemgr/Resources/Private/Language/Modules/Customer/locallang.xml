@@ -11,6 +11,9 @@
 			<label index="SitemgrCustomer_action_saveCustomer">save</label>
 			<label index="SitemgrCustomer_action_editCustomer">edit</label>
 			<label index="SitemgrCustomer_action_deleteCustomer">delete</label>
+			<label index="SitemgrCustomer_action_preview_page">preview customer page</label>
+			<label index="SitemgrCustomer_action_open_management">open management module</label>
+			<label index="SitemgrCustomer_action_open_page_module">open page module</label>
 			<label index="SitemgrCustomer_grid_customer">Customer</label>
 			<label index="SitemgrCustomer_grid_users">Users</label>
 			<label index="SitemgrCustomer_grid_type">Type</label>
@@ -34,6 +37,9 @@
 			<label index="SitemgrCustomer_action_saveCustomer">speichern</label>
 			<label index="SitemgrCustomer_action_editCustomer">bearbeiten</label>
 			<label index="SitemgrCustomer_action_deleteCustomer">löschen</label>
+			<label index="SitemgrCustomer_action_preview_page">Seite ansehen</label>
+			<label index="SitemgrCustomer_action_open_management">Verwaltung öffnen</label>
+			<label index="SitemgrCustomer_action_open_page_module">Öffne Seitenmodul</label>
 			<label index="SitemgrCustomer_grid_customer">Mandant</label>
 			<label index="SitemgrCustomer_grid_users">Benutzer</label>
 			<label index="SitemgrCustomer_grid_type">Typ</label>
