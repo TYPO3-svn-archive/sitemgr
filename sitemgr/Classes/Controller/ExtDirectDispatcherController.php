@@ -37,13 +37,13 @@ class Tx_Sitemgr_Controller_ExtDirectDispatcherController{
 	/**
 	 * special function to allow paged display of grids
 	 */	 	
-	public function dispatchPaged($module,$function,$args,$start,$stop,$sort,$dir) {
+	public function dispatchPaged($module, $function, $args, $start, $stop, $sort, $dir) {
 		$args = array(
 			'args'   => $args,
 			'start'  => intval($start),
 			'stop'   => intval($stop),
 			'sort'   => $sort,
-			'dir'    => $dir == 'DESC' ? 'DESC' : 'ASC',
+			'dir'    => $dir == 'DESC' ? 'DESC' : 'ASC'
 		);
 		return $this->dispatch($module,$function,$args);
 	}

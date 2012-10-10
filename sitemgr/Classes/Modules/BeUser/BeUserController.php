@@ -22,42 +22,50 @@ class Tx_Sitemgr_Modules_BeUser_BeUserController extends Tx_Sitemgr_Modules_Abst
 		);
 	}
 	function getUsers($args) {
+		if(($args['args']->filterField === 'username') && ($args['args']->filterValue !== '')) {
+			$additionalCondition = ' AND ' . $GLOBALS['TYPO3_DB']->searchQuery(array($args['args']->filterValue), array($args['args']->filterField), 'be_users');
+		} else {
+			$additionalCondition = '';
+		}
+		if(($args['args']->filterField === 'customerPid') && ($args['args']->filterValue !== '')) {
+			$args['args']->uid = $args['args']->filterValue;
+			$additionalCondition = '';
+		}
 		try{
 			$customer = new Tx_Sitemgr_Utilities_CustomerUtilities();
-			$customer->getCustomerForPage($args['args']);
+			$customer->getCustomerForPage(intval($args['args']->uid));
 			$uids     = $customer->getAllUsersUids();
 			$name     = $customer->getName();
 			
 			$rows  =  array_values($GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 					'uid,username,realname,email,admin',
 					'be_users',
-					'deleted=0 AND uid IN ('.implode(',',$uids).')',
+					'deleted=0 AND uid IN ('.implode(',', $uids).')' . $additionalCondition,
 					'',
 					$args['sort'].' '.$args['dir'],
 					$args['start'].','.$args['stop']));
 			$count =  $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 					'count(*) as count',
 					'be_users',
-					'deleted=0 AND uid IN ('.implode(',',$uids).')'
+					'deleted=0 AND uid IN ('.implode(',',$uids).')' . $additionalCondition
 					);
 
 			foreach($rows as $k=>$val) {
 				$rows[$k]['customerName']=$name;
 			}
-			
 		} catch(Exception $e) {
 			if($GLOBALS['BE_USER']->user['admin']==1) {
 				$rows  =  array_values($GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 						'uid,username,realname,email,admin',
 						'be_users',
-						'deleted=0',
+						'deleted=0' . $additionalCondition,
 						'',
 						$args['sort'].' '.$args['dir'],
 						$args['start'].','.$args['stop']));
 				$count =  $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 						'count(*) as count',
 						'be_users',
-						'deleted=0'
+						'deleted=0' . $additionalCondition
 						); 
 			} else {
 				return array(

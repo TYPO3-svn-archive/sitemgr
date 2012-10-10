@@ -40,17 +40,22 @@ class Tx_Sitemgr_Modules_Customer_CustomerController extends Tx_Sitemgr_Modules_
 		if(($args['sort'] !== 'title') && ($args['sort']!== 'uid') && ($args['sort']!== 'pid')) {
 			$args['sort'] = 'title';
 		}
+		if(($args['args']->filterField === 'title') && ($args['args']->filterValue !== '')) {
+			$additionalCondition = ' AND ' . $GLOBALS['TYPO3_DB']->searchQuery(array($args['args']->filterValue), array($args['args']->filterField), 'tx_sitemgr_customer');
+		} else {
+			$additionalCondition = '';
+		}
 		$rows  =  array_values($GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 				'uid,pid,title',
 				'tx_sitemgr_customer',
-				'deleted=0',
+				'deleted=0' . $additionalCondition,
 				'',
 				$args['sort'].' '.$args['dir'],
 				intval($args['start']).','.intval($args['stop'])));
 		$count =  $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 				'count(*) as count',
 				'tx_sitemgr_customer',
-				'deleted=0'
+				'deleted=0' . $additionalCondition
 				);
 		foreach($rows as $i=>$row) {
 			try {

@@ -17,7 +17,9 @@ Ext.onReady(function (){
 			baseParams   : {
 				module   : 'sitemgr_beuser',
 				fn       : 'getUsers',
-				args     : TYPO3.settings.sitemgr.uid,
+				args     : {
+					uid: TYPO3.settings.sitemgr.uid
+				},
 				start    : 0,
 				limit    : 25,
 				sort     : 'username',
