@@ -9,14 +9,37 @@ class Tx_SitemgrFesettings_Helper_TsParserWrapper implements t3lib_Singleton{
 	protected $tsParserConstants;
 	protected $tsParserInitialized;
 
-	function applyToPid($pid,array $constants, $isSetConstants = array(), $options) {
+	function applyToPid($pid,array $constants, $isSetConstants = array()) {
 		$this->initializeTSParser($pid);
 		$this->setConstants($pid, $constants, $isSetConstants);
 		//@todo add hook to apply additional options
 	}
 	function getConstants($pid) {
 		$this->initializeTSParser($pid);
+
 		return $this->tsParserConstants;
+	}
+
+	function getCategories($pid) {
+		$this->initializeTSParser($pid);
+
+		$extConf          = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sitemgr_fesettings']);
+		$categoriesToShow = t3lib_div::trimExplode(',', $extConf['categoriesToShow']);
+		$deniedFields     = t3lib_div::trimExplode(',', $extConf['constantsToHide']);
+
+		foreach($this->tsParser->categories as $categorieName => $categorie) {
+			if(in_array($categorieName, $categoriesToShow)) {
+				foreach($categorie as $constantName => $type) {
+					if(in_array($constantName, $deniedFields)) {
+						unset($this->tsParser->categories[$categorieName][$constantName]);
+					}
+				}
+			} else {
+				unset($this->tsParser->categories[$categorieName]);
+			}
+
+		}
+		return $this->tsParser->categories;
 	}
 	function getTsParser($pid) {
 		$this->initializeTSParser($pid);

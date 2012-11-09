@@ -48,7 +48,10 @@ class Tx_SitemgrFesettings_Modules_Settings_SettingsController extends Tx_Sitemg
 		$pid           = $customer->getRootPage();
 		/** @var $tsParserWrapper Tx_SitemgrFesettings_Helper_TsParserWrapper */
 		$tsParserWrapper = t3lib_div::makeInstance('Tx_SitemgrFesettings_Helper_TsParserWrapper');
-		$tsParserWrapper ->applyToPid($pid, $constants, $isSetConstants,$options);
+		$tsParserWrapper ->applyToPid($pid, $constants, $isSetConstants);
+
+		//@todo add hook to apply options from skins
+
 		return $this->getReturnForForm();
 	}
 	/**
@@ -67,10 +70,7 @@ class Tx_SitemgrFesettings_Modules_Settings_SettingsController extends Tx_Sitemg
 
 		//build output for fields
 		$return = array(
-			$this->renderFields(
-				$tsParserWrapper->getTsParser($pid),
-				$tsParserWrapper->getConstants($pid)
-			)
+			$this->renderFields($tsParserWrapper,$pid)
 		);
 			//add special options
 		//@todo
@@ -91,13 +91,14 @@ class Tx_SitemgrFesettings_Modules_Settings_SettingsController extends Tx_Sitemg
 			'form' =>$return
 		);
 	}
-	private function renderFields($tsParser, $constants) {
+	private function renderFields(Tx_SitemgrFesettings_Helper_TsParserWrapper $tsParserWrapper, $pid) {
 		$definition = array();
-		$categories = $tsParser->categories;
+		$categories = $tsParserWrapper->getCategories($pid);
+		$constants  = $tsParserWrapper->getConstants($pid);
 		foreach($categories as $categorieName => $categorie) {
 			asort($categorie);
 			//@todo add dynamic filter
-			if(is_array($categorie) && ($categorieName == 'site constants')) {
+			if(is_array($categorie)) {
 				$title = $GLOBALS['LANG']->sL('LLL:EXT:sitemgr_template/Resources/Private/Language/Constants/locallang.xml:cat_' . $categorieName);
 				if(strlen($title) === 0) {
 					$title = $categorieName;
@@ -105,12 +106,10 @@ class Tx_SitemgrFesettings_Modules_Settings_SettingsController extends Tx_Sitemg
 				$definition[$categorieName] = array(
 					//'title'  => $GLOBALS['LANG']->sL($categorieName),
 					'title'  => $title,
-					'layout' => 'form',
-					'labelAlign' => 'top',
 					'items'  => array(),
 				);
 				foreach($categorie as $constantName => $type) {
-					$definition[$categorieName]['items'][] = $this->renderField($constantName,$constants);
+					$definition[$categorieName]['items'][] = $this->renderField($constantName, $constants);
 				}
 			}
 		}
