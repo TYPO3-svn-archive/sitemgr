@@ -164,6 +164,7 @@ class Tx_SitemgrTemplate_Domain_Model_TemplateTemplavoilaFrameworkModel extends 
 		);
 	}
 	function setEnvironment($pid, $options) {
+		//@todo fix this
 		$this->initializeTSParser($pid);
 		list($templateClass, $templateUID) = explode('|', $this->config['id']);
 		$saveId = $this->tsParserTplRow['uid'];

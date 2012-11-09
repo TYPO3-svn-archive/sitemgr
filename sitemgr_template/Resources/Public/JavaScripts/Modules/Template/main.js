@@ -89,9 +89,11 @@
 					id   : 'templatePreviewWindow',
 					modal:true,
 					closeAction: 'close',
-					resizeable:false,
+					resizeable: true,
 					layout: 'fit',
-					maximized: true,
+					//maximized: true,
+					width: 480,
+					height: 400,
 					closable: false,
 					listeners: {
 						close: function(p) {
@@ -99,6 +101,33 @@
 						},
 						scope: this
 					},
+					bbar: [
+						{
+							xtype: 'button',
+							text: '<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-undo"></span>' + TYPO3.lang.SitemgrTemplates_theme_cansel_apply,
+							handler: function() {
+								Ext.getCmp('templatePreviewWindow').close();
+							},
+							scope: this
+						}, '->',{
+							xtype: 'button',
+							text: '<span class="t3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-ok"></span>' + TYPO3.lang.SitemgrTemplates_theme_apply,
+							handler: function() {
+								Ext.Msg.confirm(
+									TYPO3.lang.SitemgrTemplates_applyTemplateHeader,
+									TYPO3.lang.SitemgrTemplates_applyTemplateMessage,
+									function(button) {
+										if(button == 'yes') {
+											this.showTemplateOptions(record);
+										}
+									},
+									this
+								);
+								Ext.getCmp('templatePreviewWindow').close();
+							},
+							scope: this
+						}
+					],
 					tbar: [
 						{
 							iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-close',
@@ -166,34 +195,7 @@
 													'</div>',
 												'</div>',
 											'</tpl>'
-									).apply(record),
-									bbar: [
-										{
-											xtype: 'button',
-											text: '<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-undo"></span>' + TYPO3.lang.SitemgrTemplates_theme_cansel_apply,
-											handler: function() {
-												Ext.getCmp('templatePreviewWindow').close();
-											},
-											scope: this
-										}, '->',{
-											xtype: 'button',
-											text: '<span class="t3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-ok"></span>' + TYPO3.lang.SitemgrTemplates_theme_apply,
-											handler: function() {
-												Ext.Msg.confirm(
-													TYPO3.lang.SitemgrTemplates_applyTemplateHeader,
-													TYPO3.lang.SitemgrTemplates_applyTemplateMessage,
-													function(button) {
-														if(button == 'yes') {
-															this.showTemplateOptions(record);
-														}
-													},
-													this
-												);
-												Ext.getCmp('templatePreviewWindow').close();
-											},
-											scope: this
-										}
-									]
+									).apply(record)
 								}
 							]
 						}
@@ -203,124 +205,27 @@
 			}
 		},
 		showTemplateOptions: function(record) {
-			Ext.Msg.wait(
-				'<center><img src="' + record.icon + '"></center>',
-				TYPO3.lang.SitemgrTemplates_loadingForm + ' ' + record.title
-			);
-			TYPO3.sitemgr.tabs.dispatch(
-				'sitemgr_template',
-				'setTemplateAndGetOptions',
-				record,
-				function(provider,response) {
-					Ext.Msg.hide();
-					var win = new Ext.Window({
-						title:TYPO3.lang.SitemgrTemplates_settings + ' ' + record.title,
-						id   :'templateWindow',
-						modal:true,
-						closeAction: 'close',
-						closable: false,
-						maximized:true,
-						height:450,
-						width:500,
-						resizeable:false,
-						layout: 'fit',
-						listeners: {
-							close: function(p) {
-								this.tab.findById('templateSelector').getStore().reload();
-							},
-							scope: TYPO3.Sitemgr.TemplateApp
-						},
-						tbar: [
-							{
-								iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-close',
-								handler:function() {
-									Ext.getCmp('templateWindow').close();
-								}
-							}, '-', {
-								tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
-								iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save',
-								handler:function() {
-									form = Ext.getCmp('templateForm').getForm();
-									form.submit({
-										waitMsg: TYPO3.lang.SitemgrTemplates_theme_apply,
-										params: {
-											module:'sitemgr_template',
-											fn    :'setTemplateAndOptions',
-											args  : record.id + ';' + TYPO3.settings.sitemgr.uid
-										}
-									});
-								},
-								scope:this
-							}, {
-								tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
-								iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
-								handler:function() {
-									form = Ext.getCmp('templateForm').getForm();
-									form.submit({
-										waitMsg: TYPO3.lang.SitemgrTemplates_theme_apply,
-										params: {
-											module:'sitemgr_template',
-											fn    :'setTemplateAndOptions',
-											args  : record.id + ';' + TYPO3.settings.sitemgr.uid
-										},
-										success: function(f,a){
-											Ext.getCmp('templateWindow').close();
-										}
-									});
-								},
-								scope:this
-							},'-', {
-								tooltip:TYPO3.lang.SitemgrBeUser_action_saveRight,
-								iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-view',
-								handler:function() {
-									windowName = 'previewForId-' + TYPO3.settings.sitemgr.customerRootPid;
-									uri        = '../?id=' + TYPO3.settings.sitemgr.customerRootPid;
-									if(frames && frames[windowName]) {
-										frames[windowName].location.href = uri;
-										frames[windowName].focus();
-									} else {
-										window.open(uri, windowName);
-									}
-								}
-							}, '-', {
-								iconCls: 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-documentation',
-								handler: function() {
-									window.open('../typo3conf/ext/' + record.extensionKey + '/doc/manual.sxw', '_blank');
-								},
-								disabled: !record.copyright.hasDocumentation,
-								scope: this
-							}
-						],
-						items:[
-							{
-								xtype:'form',
-								id:'templateForm',
-								api:{
-									submit:TYPO3.sitemgr.tabs.handleForm
-								},
-								border:false,
-								paramOrder: 'module,fn,args',
-								//fileUpload:true, //needs to be enabled for uploades!
-								items: [
-									{
-										border: false,
-										activeTab:0,
-										xtype: 'tabpanel',
-										anchor:'100% 100%',
-										//deferredRender:false,
-										defaults: {
-											autoScroll: true
-										},
-										enableTabScroll: true,
-										items: response.result.form
-									}
-								]
-							}
-						]
-					});
-					win.show();
+			if(record.isInUse) {
+				if(Ext.getCmp('sitemgr_fesettings-tab')) {
+					Ext.getCmp('Sitemgr_App_Tabs').setActiveTab('sitemgr_fesettings-tab');
 				}
-			);
+			} else {
+				Ext.getBody().mask();
+				TYPO3.sitemgr.tabs.dispatch(
+					'sitemgr_template',
+					'setTemplate',
+					record,
+					function(provider,response) {
+						record.isInUse = true;
+						// reload the template store
+						TYPO3.Sitemgr.TemplateApp.showTemplateOptions(record);
+						TYPO3.Sitemgr.FesettingsApp.loadOptions();
+						TYPO3.Sitemgr.TemplateApp.tab.findById('templateSelector').getStore().reload();
+						Ext.getBody().unmask();
+					}
+				);
+			}
+
 		},
 		init: function() {
 			this.templateStructureStore = new Ext.data.DirectStore({
