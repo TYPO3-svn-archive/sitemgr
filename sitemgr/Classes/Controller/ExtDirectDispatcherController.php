@@ -75,11 +75,13 @@ class Tx_Sitemgr_Controller_ExtDirectDispatcherController{
 	 * @see initialize()
 	 */
 	protected function initializeClassLoader() {
+		// fix for prior version 6.0
 		if (!class_exists('Tx_Extbase_Utility_ClassLoader', FALSE)) {
-			include(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
+			if(file_exists(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php')) {
+				include(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
+				$classLoader = new Tx_Extbase_Utility_ClassLoader();
+				spl_autoload_register(array($classLoader, 'loadClass'));
+			}
 		}
-
-		$classLoader = new Tx_Extbase_Utility_ClassLoader();
-		spl_autoload_register(array($classLoader, 'loadClass'));
 	}
 }

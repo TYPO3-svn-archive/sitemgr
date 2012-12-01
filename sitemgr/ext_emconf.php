@@ -32,13 +32,10 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '2.4.0',
 	'constraints' => array(
 		'depends' => array(
-			'be_acl' => '1.4.1-1.4.3',
+			'be_acl' => '1.4.4',
 			'cms' => '',
 			'extbase' => '',
 			'fluid' => '',
-		),
-		'conflicts' => array(
-			'be_acl' => '1.4.0-1.4.0',
 		),
 		'suggests' => array(
 			'fluid' => 'sitemgr_template',
