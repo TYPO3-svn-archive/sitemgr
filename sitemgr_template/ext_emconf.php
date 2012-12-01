@@ -32,7 +32,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '1.0.34',
 	'constraints' => array(
 		'depends' => array(
-			'sitemgr' => '2.0.0-2.0.99',
+			'sitemgr' => '2.4.0-2.4.99',
 			'cms' => '',
 			'extbase' => '',
 			'fluid' => '',
@@ -42,7 +42,6 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 			'templavoila' => '1.4.0-1.5.99',
 			'templavoila_framework' => '1.2.4-1.2.99',
-			'fluid_css' => '0.0.0-0.0.99',
 		),
 	),
 	'suggests' => array(
