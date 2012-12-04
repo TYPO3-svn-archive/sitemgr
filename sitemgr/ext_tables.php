@@ -91,7 +91,6 @@ if (!defined ('TYPO3_MODE')) {
 	t3lib_SpriteManager::addSingleIcons(
 		array(
 			'moduleicon'             => t3lib_extMgm::extRelPath('sitemgr') . 'Resources/Public/Images/Backend/mod1/moduleicon.gif',
-			'moduleicon-templavoila' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/moduleicon.gif',
 		),
 		$_EXTKEY
 	);
