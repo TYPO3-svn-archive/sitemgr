@@ -6,6 +6,16 @@
 			'Tx_SitemgrTemplate_Modules_Template_TemplateController',
 			'before:sitemgr_help'
 		);
+
+		if(t3lib_extMgm::isLoaded('templavoila')) {
+			t3lib_SpriteManager::addSingleIcons(
+				array(
+					'moduleicon-templavoila' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/moduleicon.gif',
+				),
+				$_EXTKEY
+			);
+		}
 	}
+
 
 ?>
